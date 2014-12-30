@@ -83,7 +83,6 @@ void CartesianWidget::paintEvent(QPaintEvent *e)
     // draw zero number
     painter.drawText(-fm.width("0")-4, fm.height(), "0");
 
-
     QPen pen3;
     pen3.setColor(Qt::blue);
     painter.setPen(pen3);
