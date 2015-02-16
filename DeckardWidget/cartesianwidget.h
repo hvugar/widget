@@ -11,14 +11,30 @@
 typedef double(*R1Function)(double x);
 typedef double(*RnFunction)(double* x, int size);
 
+typedef struct
+{
+    R1Function f;
+    int a;
+    int b;
+    QPen pen;
+} FunctionConfig;
+
 class CartesianWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit CartesianWidget(QWidget *parent = 0);
+    virtual ~CartesianWidget();
 
-    void setScale(int scale);
-    int scale();
+    // scale
+    int scaleX() const;
+    int scaleY() const;
+    void setScaleX(int scaleX);
+    void setScaleY(int scaleY);
+    void setScale(int scaleX, int scaleY);
+
+    void setFunctionConfig(FunctionConfig fc);
+    void addFunctionConfig(FunctionConfig fc);
 
 protected:
     virtual void resizeEvent(QResizeEvent*);
@@ -28,15 +44,20 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent*);
     virtual void mouseMoveEvent(QMouseEvent*);
 
-    void drawFunction(R1Function f, QPainter& painter);
+    virtual void drawFunction(R1Function f, QPainter& painter);
 
 private:
-    int m_scale;
-    int offsetX;
-    int offsetY;
-    bool pressed;
+    int m_scaleX;
+    int m_scaleY;
+
+    int m_offsetX;
+    int m_offsetY;
+
+    bool leftButtonPressed;
+    bool rightButtonPressed;
     QPoint last;
 
+    QList<FunctionConfig> fcs;
 signals:
 
 public slots:

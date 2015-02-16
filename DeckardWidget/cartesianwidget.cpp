@@ -4,26 +4,41 @@
 #include <QtGui/QFontMetricsF>
 #include <QtCore/QDebug>
 
-CartesianWidget::CartesianWidget(QWidget *parent) :
-    QWidget(parent)
+/**
+ * @brief CartesianWidget::CartesianWidget
+ * @param parent
+ */
+CartesianWidget::CartesianWidget(QWidget *parent) : QWidget(parent)
 {
     setAutoFillBackground(true);
     setBackgroundRole(QPalette::Base);
 
-    setScale(100);
-    offsetX = 0;
-    offsetY = 0;
-    pressed = false;
+    setScale(100, 100);
+    m_offsetX = 0;
+    m_offsetY = 0;
+    leftButtonPressed = false;
 }
 
-void CartesianWidget::resizeEvent(QResizeEvent *e)
-{}
-
-double f(double x)
+/**
+ * @brief CartesianWidget::~CartesianWidget
+ */
+CartesianWidget::~CartesianWidget()
 {
-    return x*x-x*x*x*x+0.5;
 }
 
+/**
+ * @brief CartesianWidget::resizeEvent
+ * @param e
+ */
+void CartesianWidget::resizeEvent(QResizeEvent *e)
+{
+    QWidget::resizeEvent(e);
+}
+
+/**
+ * @brief CartesianWidget::paintEvent
+ * @param e
+ */
 void CartesianWidget::paintEvent(QPaintEvent *e)
 {
     int w = width();
@@ -37,45 +52,45 @@ void CartesianWidget::paintEvent(QPaintEvent *e)
 
     QPainter painter(this);
 
-    painter.translate(w/2 + offsetX, h/2 + offsetY);
+    painter.translate(w/2 + m_offsetX, h/2 + m_offsetY);
 
-    if (scale() >= 50)
+    if (scaleX() >= 50 && scaleY() >= 50)
     {
         QPen pen1;
         pen1.setColor(0xE0E0D1);
         pen1.setStyle(Qt::DashLine);
         painter.setPen(pen1);
-        for (int i=-w/2-offsetX; i<w/2-offsetX; i++) if ((i % (scale()/5)) == 0) painter.drawLine(i, -h/2-offsetY, i, h/2-offsetY);
-        for (int i=-h/2-offsetY; i<h/2-offsetY; i++) if ((i % (scale()/5)) == 0) painter.drawLine(-w/2-offsetX, i, w/2-offsetX, i);
+        for (int i=-w/2-m_offsetX; i<w/2-m_offsetX; i++) if ((i % (scaleX()/5)) == 0) painter.drawLine(i, -h/2-m_offsetY, i, h/2-m_offsetY);
+        for (int i=-h/2-m_offsetY; i<h/2-m_offsetY; i++) if ((i % (scaleY()/5)) == 0) painter.drawLine(-w/2-m_offsetX, i, w/2-m_offsetX, i);
     }
 
     QPen pen2;
     pen2.setColor(0xCACABC);
-    if (scale() < 50) pen2.setStyle(Qt::DashLine);
+    if (scaleX() < 50 || scaleY() < 50) pen2.setStyle(Qt::DashLine);
     painter.setPen(pen2);
-    for (int i=-w/2-offsetX; i<w/2-offsetX; i++) if ((i % scale()) == 0) painter.drawLine(i, -h/2-offsetY, i, h/2-offsetY);
-    for (int i=-h/2-offsetY; i<h/2-offsetY; i++) if ((i % scale()) == 0) painter.drawLine(-w/2-offsetX, i, w/2-offsetX, i);
+    for (int i=-w/2-m_offsetX; i<w/2-m_offsetX; i++) if ((i % scaleX()) == 0) painter.drawLine(i, -h/2-m_offsetY, i, h/2-m_offsetY);
+    for (int i=-h/2-m_offsetY; i<h/2-m_offsetY; i++) if ((i % scaleY()) == 0) painter.drawLine(-w/2-m_offsetX, i, w/2-m_offsetX, i);
 
     painter.setPen(Qt::black);
-    painter.drawLine(-w/2-offsetX, 0, w/2-offsetX, 0);
-    painter.drawLine(0, -h/2-offsetY, 0, h/2-offsetY);
+    painter.drawLine(-w/2-m_offsetX, 0, w/2-m_offsetX, 0);
+    painter.drawLine(0, -h/2-m_offsetY, 0, h/2-m_offsetY);
 
     // draw absis scale numbers
-    for (int i=-w/2-offsetX; i<w/2-offsetX; i++)
+    for (int i=-w/2-m_offsetX; i<w/2-m_offsetX; i++)
     {
-        if ((i % scale()) == 0 && i != 0)
+        if ((i % scaleX()) == 0 && i != 0)
         {
-            QString s = QString::number(i/scale());
+            QString s = QString::number(i/scaleX());
             painter.drawText(i-fm.width(s)/2, fm.height(), s);
         }
     }
 
     // draw ordinate scale numbers
-    for (int i=-h/2-offsetY; i<h/2-offsetY; i++)
+    for (int i=-h/2-m_offsetY; i<h/2-m_offsetY; i++)
     {
-        if ((i % scale()) == 0 && i != 0)
+        if ((i % scaleY()) == 0 && i != 0)
         {
-            QString s = QString::number(-i/scale());
+            QString s = QString::number(-i/scaleY());
             painter.drawText(-fm.width(s)-4, i+fm.height()/2-3, s);
         }
     }
@@ -88,60 +103,139 @@ void CartesianWidget::paintEvent(QPaintEvent *e)
     painter.setPen(pen3);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    drawFunction(f, painter);
+    drawFunction(0, painter);
 
     painter.end();
 }
 
+/**
+ * @brief CartesianWidget::wheelEvent
+ * @param e
+ */
 void CartesianWidget::wheelEvent(QWheelEvent* e)
 {
-    e->delta() > 0 ? setScale(scale()+10) : setScale(scale()-10);
-    update();
+    e->delta() > 0 ? setScale(scaleX()+10, scaleY()+10) : setScale(scaleX()-10, scaleY()-10);
 }
 
+/**
+ * @brief CartesianWidget::mousePressEvent
+ * @param e
+ */
 void CartesianWidget::mousePressEvent(QMouseEvent* e)
 {
-    pressed = true;
-    last = e->pos();
-}
-
-void CartesianWidget::mouseReleaseEvent(QMouseEvent* e)
-{
-    pressed = false;
-}
-
-void CartesianWidget::mouseMoveEvent(QMouseEvent* e)
-{
-    if (pressed) offsetX += e->pos().x() - last.x();
-    if (pressed) offsetY += e->pos().y() - last.y();
-    last = e->pos();
-    update();
-}
-
-void CartesianWidget::drawFunction(R1Function f, QPainter& painter)
-{
-    int min = -1.2 * scale();
-    int max = +1.2 * scale();
-
-    for (int i=min; i<max; i++)
+    if (e->button() == Qt::LeftButton)
     {
-        double x1 = (double)(i+0)/scale();
-        double x2 = (double)(i+1)/scale();
-        double y1 = -f(x1);
-        double y2 = -f(x2);
-        painter.drawLine(i, y1*scale(), i+1, y2*scale());
+        leftButtonPressed = true;
+        last = e->pos();
     }
 }
 
-void CartesianWidget::setScale(int s)
+/**
+ * @brief CartesianWidget::mouseReleaseEvent
+ * @param e
+ */
+void CartesianWidget::mouseReleaseEvent(QMouseEvent* e)
 {
-    if (s < 20)
-        return;
-    m_scale = s;
+    leftButtonPressed = false;
+}
+
+/**
+ * @brief CartesianWidget::mouseMoveEvent
+ * @param e
+ */
+void CartesianWidget::mouseMoveEvent(QMouseEvent* e)
+{
+    if (leftButtonPressed) m_offsetX += e->pos().x() - last.x();
+    if (leftButtonPressed) m_offsetY += e->pos().y() - last.y();
+    last = e->pos();
     update();
 }
 
-int CartesianWidget::scale()
+/**
+ * @brief CartesianWidget::scaleX
+ * @return
+ */
+int CartesianWidget::scaleX() const
 {
-    return m_scale;
+    return m_scaleX;
 }
+
+/**
+ * @brief CartesianWidget::scaleY
+ * @return
+ */
+int CartesianWidget::scaleY() const
+{
+    return m_scaleY;
+}
+
+/**
+ * @brief CartesianWidget::setScaleX
+ * @param scaleX
+ */
+void CartesianWidget::setScaleX(int scaleX)
+{
+    setScale(scaleX, m_scaleY);
+}
+
+/**
+ * @brief CartesianWidget::setScaleY
+ * @param scaleY
+ */
+void CartesianWidget::setScaleY(int scaleY)
+{
+    setScale(m_scaleX, scaleY);
+}
+
+/**
+ * @brief CartesianWidget::setScale
+ * @param scaleX
+ * @param scaleY
+ */
+void CartesianWidget::setScale(int scaleX, int scaleY)
+{
+    if (scaleX < 20) return;
+    if (scaleY < 20) return;
+
+    m_scaleX = scaleX;
+    m_scaleY = scaleY;
+
+    update();
+}
+
+/**
+ * @brief CartesianWidget::drawFunction
+ * @param f
+ * @param painter
+ */
+void CartesianWidget::drawFunction(R1Function f, QPainter& painter)
+{
+    QPen pen = painter.pen();
+
+    for (int i=0; i<fcs.size(); i++)
+    {
+        FunctionConfig fc = fcs.at(i);
+
+        int min = fc.a * scaleX();
+        int max = fc.b * scaleX();
+
+        for (int i=min; i<max; i++)
+        {
+            double x1 = (double)(i+0)/scaleX();
+            double x2 = (double)(i+1)/scaleX();
+            double y1 = -fc.f(x1);
+            double y2 = -fc.f(x2);
+            painter.setPen(fc.pen);
+            painter.drawLine(i, y1*scaleY(), i+1, y2*scaleY());
+            painter.setPen(pen);
+        }
+    }
+
+    painter.setPen(pen);
+}
+
+void CartesianWidget::addFunctionConfig(FunctionConfig fc)
+{
+    fcs.append(fc);
+}
+
