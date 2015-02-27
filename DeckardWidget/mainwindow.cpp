@@ -46,9 +46,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     cartesianWidget = new CartesianWidget1;
     setCentralWidget(cartesianWidget);
+//    setWindowState(Qt::WindowMaximized);
 
     FunctionConfig fc1;
-    fc1.f = lagrange;
+    fc1.f = sin;
     fc1.a = -2.5;
     fc1.b = +2.5;
     fc1.pen = QPen(Qt::red);
@@ -60,6 +61,13 @@ MainWindow::MainWindow(QWidget *parent)
     fc2.b = +2.5;
     fc2.pen = QPen(Qt::blue);
     cartesianWidget->addFunctionConfig(fc2);
+
+    FunctionConfig fc3;
+    fc3.f = f2;
+    fc3.a = -10.5;
+    fc3.b = +10.5;
+    fc3.pen = QPen(Qt::blue);
+    cartesianWidget->addFunctionConfig(fc3);
 }
 
 MainWindow::~MainWindow()

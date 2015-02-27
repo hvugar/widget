@@ -7,8 +7,8 @@ typedef double(*RnFunction)(double* x, int size);
 typedef struct
 {
     R1Function f;
-    int a;
-    int b;
+    double a;
+    double b;
     QPen pen;
 } FunctionConfig;
 
