@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "cartesianwidget.h"
+#include "cartesianwidget1.h"
 
 class MainWindow : public QMainWindow
 {
@@ -13,7 +14,7 @@ public:
     ~MainWindow();
 
 private:
-    CartesianWidget* cartesianWidget;
+    CartesianWidget1* cartesianWidget;
 };
 
 #endif // MAINWINDOW_H

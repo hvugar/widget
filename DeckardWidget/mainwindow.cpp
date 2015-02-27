@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     resize(800, 600);
 
-    cartesianWidget = new CartesianWidget;
+    cartesianWidget = new CartesianWidget1;
     setCentralWidget(cartesianWidget);
 
     FunctionConfig fc1;

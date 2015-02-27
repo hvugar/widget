@@ -7,17 +7,7 @@
 #include <QWheelEvent>
 #include <QMouseEvent>
 #include <QPainter>
-
-typedef double(*R1Function)(double x);
-typedef double(*RnFunction)(double* x, int size);
-
-typedef struct
-{
-    R1Function f;
-    int a;
-    int b;
-    QPen pen;
-} FunctionConfig;
+#include "functionconfig.h"
 
 class CartesianWidget : public QWidget
 {
