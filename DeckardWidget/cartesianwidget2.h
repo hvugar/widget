@@ -1,5 +1,5 @@
-#ifndef CARTESIANWIDGET1_H
-#define CARTESIANWIDGET1_H
+#ifndef CARTESIANWIDGET2_H
+#define CARTESIANWIDGET2_H
 
 #include <QWidget>
 #include <QResizeEvent>
@@ -53,7 +53,7 @@ private:
     int m_offsetX;
     int m_offsetY;
 
-    double zoom;
+//    double zoom;
 
     bool leftButtonPressed;
     bool rightButtonPressed;
@@ -66,4 +66,4 @@ public slots:
 
 };
 
-#endif // CARTESIANWIDGET1_H
+#endif // CARTESIANWIDGET2_H

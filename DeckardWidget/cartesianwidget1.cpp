@@ -10,7 +10,7 @@
  * @brief CartesianWidget::CartesianWidget
  * @param parent
  */
-CartesianWidget2::CartesianWidget2(QWidget *parent) : QWidget(parent)
+CartesianWidget1::CartesianWidget1(QWidget *parent) : QWidget(parent)
 {
     setAutoFillBackground(true);
     setBackgroundRole(QPalette::Base);
@@ -27,7 +27,7 @@ CartesianWidget2::CartesianWidget2(QWidget *parent) : QWidget(parent)
 /**
  * @brief CartesianWidget::~CartesianWidget
  */
-CartesianWidget2::~CartesianWidget2()
+CartesianWidget1::~CartesianWidget1()
 {
 }
 
@@ -35,7 +35,7 @@ CartesianWidget2::~CartesianWidget2()
  * @brief CartesianWidget::resizeEvent
  * @param e
  */
-void CartesianWidget2::resizeEvent(QResizeEvent *e)
+void CartesianWidget1::resizeEvent(QResizeEvent *e)
 {
     QWidget::resizeEvent(e);
 }
@@ -44,7 +44,7 @@ void CartesianWidget2::resizeEvent(QResizeEvent *e)
  * @brief CartesianWidget::paintEvent
  * @param e
  */
-void CartesianWidget2::paintEvent(QPaintEvent *e)
+void CartesianWidget1::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
 
@@ -70,7 +70,7 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
  * @brief CartesianWidget::wheelEvent
  * @param e
  */
-void CartesianWidget2::wheelEvent(QWheelEvent* e)
+void CartesianWidget1::wheelEvent(QWheelEvent* e)
 {
 //    e->delta() > 0 ? setScale(scaleX()*2.0, scaleY()*2.0) : setScale(scaleX()/2.0, scaleY()/2.0);
     e->delta() > 0 ? zoom /= 2.0 : zoom *= 2.0;
@@ -82,7 +82,7 @@ void CartesianWidget2::wheelEvent(QWheelEvent* e)
  * @brief CartesianWidget::mousePressEvent
  * @param e
  */
-void CartesianWidget2::mousePressEvent(QMouseEvent* e)
+void CartesianWidget1::mousePressEvent(QMouseEvent* e)
 {
     if (e->button() == Qt::LeftButton)
     {
@@ -95,7 +95,7 @@ void CartesianWidget2::mousePressEvent(QMouseEvent* e)
  * @brief CartesianWidget::mouseReleaseEvent
  * @param e
  */
-void CartesianWidget2::mouseReleaseEvent(QMouseEvent* e)
+void CartesianWidget1::mouseReleaseEvent(QMouseEvent* e)
 {
     Q_UNUSED(e)
 
@@ -106,7 +106,7 @@ void CartesianWidget2::mouseReleaseEvent(QMouseEvent* e)
  * @brief CartesianWidget::mouseMoveEvent
  * @param e
  */
-void CartesianWidget2::mouseMoveEvent(QMouseEvent* e)
+void CartesianWidget1::mouseMoveEvent(QMouseEvent* e)
 {
     if (leftButtonPressed) m_offsetX += e->pos().x() - last.x();
     if (leftButtonPressed) m_offsetY += e->pos().y() - last.y();
@@ -118,7 +118,7 @@ void CartesianWidget2::mouseMoveEvent(QMouseEvent* e)
  * @brief CartesianWidget::scaleX
  * @return
  */
-int CartesianWidget2::scaleX() const
+int CartesianWidget1::scaleX() const
 {
     return m_scaleX;
 }
@@ -127,7 +127,7 @@ int CartesianWidget2::scaleX() const
  * @brief CartesianWidget::scaleY
  * @return
  */
-int CartesianWidget2::scaleY() const
+int CartesianWidget1::scaleY() const
 {
     return m_scaleY;
 }
@@ -136,7 +136,7 @@ int CartesianWidget2::scaleY() const
  * @brief CartesianWidget::setScaleX
  * @param scaleX
  */
-void CartesianWidget2::setScaleX(int scaleX)
+void CartesianWidget1::setScaleX(int scaleX)
 {
     setScale(scaleX, m_scaleY);
 }
@@ -145,7 +145,7 @@ void CartesianWidget2::setScaleX(int scaleX)
  * @brief CartesianWidget::setScaleY
  * @param scaleY
  */
-void CartesianWidget2::setScaleY(int scaleY)
+void CartesianWidget1::setScaleY(int scaleY)
 {
     setScale(m_scaleX, scaleY);
 }
@@ -155,7 +155,7 @@ void CartesianWidget2::setScaleY(int scaleY)
  * @param scaleX
  * @param scaleY
  */
-void CartesianWidget2::setScale(int scaleX, int scaleY)
+void CartesianWidget1::setScale(int scaleX, int scaleY)
 {
 //    if (scaleX < 20) return;
 //    if (scaleY < 20) return;
@@ -169,7 +169,7 @@ void CartesianWidget2::setScale(int scaleX, int scaleY)
 /**
  * @brief CartesianWidget1::offsetX
  */
-int CartesianWidget2::offsetX() const
+int CartesianWidget1::offsetX() const
 {
     return m_offsetX;
 }
@@ -178,7 +178,7 @@ int CartesianWidget2::offsetX() const
  * @brief CartesianWidget1::setOffsetX
  * @param offsetX
  */
-void CartesianWidget2::setOffsetX(int offsetX)
+void CartesianWidget1::setOffsetX(int offsetX)
 {
     m_offsetX = offsetX;
 }
@@ -186,7 +186,7 @@ void CartesianWidget2::setOffsetX(int offsetX)
 /**
  * @brief CartesianWidget1::offsetY
  */
-int CartesianWidget2::offsetY() const
+int CartesianWidget1::offsetY() const
 {
     return m_offsetY;
 }
@@ -195,7 +195,7 @@ int CartesianWidget2::offsetY() const
  * @brief CartesianWidget1::setOffsetY
  * @param offsetY
  */
-void CartesianWidget2::setOffsetY(int offsetY)
+void CartesianWidget1::setOffsetY(int offsetY)
 {
     m_offsetY = offsetY;
 }
@@ -205,7 +205,7 @@ void CartesianWidget2::setOffsetY(int offsetY)
  * @param offsetX
  * @param offsetY
  */
-void CartesianWidget2::setOffset(int offsetX, int offsetY)
+void CartesianWidget1::setOffset(int offsetX, int offsetY)
 {
     m_offsetX = offsetX;
     m_offsetY = offsetY;
@@ -215,7 +215,7 @@ void CartesianWidget2::setOffset(int offsetX, int offsetY)
  * @brief drawGrid
  * @param painter
  */
-void CartesianWidget2::drawGridLines(QPainter& painter)
+void CartesianWidget1::drawGridLines(QPainter& painter)
 {
     painter.save();
 
@@ -238,7 +238,7 @@ void CartesianWidget2::drawGridLines(QPainter& painter)
     painter.restore();
 }
 
-void CartesianWidget2::drawGridLabels(QPainter& painter)
+void CartesianWidget1::drawGridLabels(QPainter& painter)
 {
     painter.save();
 
@@ -285,7 +285,7 @@ void CartesianWidget2::drawGridLabels(QPainter& painter)
     painter.restore();
 }
 
-void CartesianWidget2::drawR1Graphic(R1Function f, QPainter& painter)
+void CartesianWidget1::drawR1Graphic(R1Function f, QPainter& painter)
 {
     Q_UNUSED(f)
 
@@ -306,7 +306,7 @@ void CartesianWidget2::drawR1Graphic(R1Function f, QPainter& painter)
             double x2 = (double)(i+1)/scaleX();
             double y1 = -fc.f(x1);
             double y2 = -fc.f(x2);
-            painter.setPen(fc.pen);
+            painter.setPen(fc.penColor);
             painter.drawLine(i, y1*scaleY(), i+1, y2*scaleY());
         }
     }
@@ -319,7 +319,7 @@ void CartesianWidget2::drawR1Graphic(R1Function f, QPainter& painter)
  * @param f
  * @param painter
  */
-void CartesianWidget2::drawFunction(R1Function f, QPainter& painter)
+void CartesianWidget1::drawFunction(R1Function f, QPainter& painter)
 {
     Q_UNUSED(f)
 
@@ -342,7 +342,7 @@ void CartesianWidget2::drawFunction(R1Function f, QPainter& painter)
 
             double y1 = -fc.f(x1);
             double y2 = -fc.f(x2);
-            painter.setPen(fc.pen);
+            painter.setPen(fc.penColor);
 
             painter.drawLine(i, y1*scaleY()/zoom, i+1, y2*scaleY()/zoom);
         }
@@ -351,7 +351,7 @@ void CartesianWidget2::drawFunction(R1Function f, QPainter& painter)
     painter.restore();
 }
 
-void CartesianWidget2::addFunctionConfig(FunctionConfig fc)
+void CartesianWidget1::addFunctionConfig(FunctionConfig fc)
 {
     fcs.append(fc);
 }

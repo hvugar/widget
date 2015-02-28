@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "cartesianwidget.h"
 #include "cartesianwidget1.h"
+#include "cartesianwidget2.h"
 
 class MainWindow : public QMainWindow
 {
@@ -14,7 +15,7 @@ public:
     ~MainWindow();
 
 private:
-    CartesianWidget2* cartesianWidget;
+    CartesianWidget* cartesianWidget;
 };
 
 #endif // MAINWINDOW_H

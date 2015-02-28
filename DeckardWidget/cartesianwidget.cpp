@@ -225,7 +225,7 @@ void CartesianWidget::drawFunction(R1Function f, QPainter& painter)
             double x2 = (double)(i+1)/scaleX();
             double y1 = -fc.f(x1);
             double y2 = -fc.f(x2);
-            painter.setPen(fc.pen);
+            painter.setPen(QPen(fc.penColor));
             painter.drawLine(i, y1*scaleY(), i+1, y2*scaleY());
             painter.setPen(pen);
         }

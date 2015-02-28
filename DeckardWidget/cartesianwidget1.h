@@ -9,12 +9,12 @@
 #include <QPainter>
 #include "functionconfig.h"
 
-class CartesianWidget2 : public QWidget
+class CartesianWidget1 : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CartesianWidget2(QWidget *parent = 0);
-    virtual ~CartesianWidget2();
+    explicit CartesianWidget1(QWidget *parent = 0);
+    virtual ~CartesianWidget1();
 
     // scale
     int scaleX() const;
