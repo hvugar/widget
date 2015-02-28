@@ -1,4 +1,4 @@
-#include "cartesianwidget1.h"
+#include "cartesianwidget2.h"
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
 #include <QtGui/QFontMetricsF>

@@ -14,8 +14,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    cartesianwidget.cpp cartesianwidget1.cpp
+    cartesianwidget.cpp cartesianwidget1.cpp cartesianwidget2.cpp
 
 HEADERS  += mainwindow.h \
-    cartesianwidget.h cartesianwidget1.h \
-    functionconfig.h
+    functionconfig.h \
+    cartesianwidget.h cartesianwidget1.h cartesianwidget2.h

@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     resize(800, 600);
 
-    cartesianWidget = new CartesianWidget1;
+    cartesianWidget = new CartesianWidget2;
     setCentralWidget(cartesianWidget);
 //    setWindowState(Qt::WindowMaximized);
 

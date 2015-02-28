@@ -14,7 +14,7 @@ public:
     ~MainWindow();
 
 private:
-    CartesianWidget1* cartesianWidget;
+    CartesianWidget2* cartesianWidget;
 };
 
 #endif // MAINWINDOW_H
