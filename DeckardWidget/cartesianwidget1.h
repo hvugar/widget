@@ -1,36 +1,14 @@
 #ifndef CARTESIANWIDGET1_H
 #define CARTESIANWIDGET1_H
 
-#include <QWidget>
-#include <QResizeEvent>
-#include <QPaintEvent>
-#include <QWheelEvent>
-#include <QMouseEvent>
-#include <QPainter>
-#include "functionconfig.h"
+#include "cartesianwidget.h"
 
-class CartesianWidget1 : public QWidget
+class CartesianWidget1 : public CartesianWidget
 {
     Q_OBJECT
 public:
     explicit CartesianWidget1(QWidget *parent = 0);
     virtual ~CartesianWidget1();
-
-    // scale
-    int scaleX() const;
-    int scaleY() const;
-    void setScaleX(int scaleX);
-    void setScaleY(int scaleY);
-    void setScale(int scaleX, int scaleY);
-
-    int offsetX() const;
-    int offsetY() const;
-    void setOffsetX(int offsetX);
-    void setOffsetY(int offsetY);
-    void setOffset(int offsetX, int offsetY);
-
-    void setFunctionConfig(FunctionConfig fc);
-    void addFunctionConfig(FunctionConfig fc);
 
 protected:
     virtual void resizeEvent(QResizeEvent*);
@@ -41,25 +19,12 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent*);
 
     virtual void drawGridLines(QPainter& painter);
-    virtual void drawGridLabels(QPainter& painter);
-    virtual void drawFunction(R1Function f, QPainter& painter);
-    virtual void drawR1Graphic(R1Function f, QPainter& painter);
-
+    virtual void drawGridLabel(QPainter& painter);
+    virtual void drawR1Graphic(QPainter& painter);
 
 private:
-    int m_scaleX;
-    int m_scaleY;
-
-    int m_offsetX;
-    int m_offsetY;
-
     double zoom;
 
-    bool leftButtonPressed;
-    bool rightButtonPressed;
-    QPoint last;
-
-    QList<FunctionConfig> fcs;
 signals:
 
 public slots:

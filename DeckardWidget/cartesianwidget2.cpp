@@ -6,45 +6,23 @@
 
 #include "math.h"
 
-/**
- * @brief CartesianWidget::CartesianWidget
- * @param parent
- */
-CartesianWidget2::CartesianWidget2(QWidget *parent) : QWidget(parent)
+CartesianWidget2::CartesianWidget2(QWidget *parent) : CartesianWidget(parent)
 {
-    setAutoFillBackground(true);
-    setBackgroundRole(QPalette::Base);
-
     setScale(100, 100);
-
-//    zoom = 1.0;
-
-    m_offsetX = 0;
-    m_offsetY = 0;
-    leftButtonPressed = false;
+    setCenter(-1.0, -1.0);
+    setOffset(0, 0);
 }
 
-/**
- * @brief CartesianWidget::~CartesianWidget
- */
 CartesianWidget2::~CartesianWidget2()
 {
 }
 
-/**
- * @brief CartesianWidget::resizeEvent
- * @param e
- */
 void CartesianWidget2::resizeEvent(QResizeEvent *e)
 {
     QWidget::resizeEvent(e);
     update();
 }
 
-/**
- * @brief CartesianWidget::paintEvent
- * @param e
- */
 void CartesianWidget2::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
@@ -58,67 +36,53 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
     setFont(font1);
 
     QPainter painter(this);
-    painter.translate(w/2 + offsetX(), h/2 + offsetY());
+    painter.save();
+
+    double dx = w/2.0 - centerX() * scaleX();
+    double dy = h/2.0 + centerY() * scaleY();
+    painter.translate(dx, dy);
 
     drawGridLines(painter);
-    drawGridLabels(painter);
-    drawFunction(0, painter);
+    drawGridLabel(painter);
+    drawR1Graphic(painter);
+
+    painter.restore();
+
+    painter.setPen(Qt::red);
+    painter.drawLine(w/2-2,h/2,w/2+2,h/2);
+    painter.drawLine(w/2,h/2-2,w/2,h/2+2);
 
     painter.end();
 }
 
-/**
- * @brief CartesianWidget::wheelEvent
- * @param e
- */
 void CartesianWidget2::wheelEvent(QWheelEvent* e)
 {
     e->delta() > 0 ? setScale(scaleX()*2.0, scaleY()*2.0) : setScale(scaleX()/2.0, scaleY()/2.0);
-//    e->delta() > 0 ? zoom /= 2.0 : zoom *= 2.0;
-
-    int log_2 = log2((double)scaleX() / 100.0);
-    int a = log_2 % 3;
-    int b = log_2 / 3;
-    int c = 0;
-    if (a == 0) c = 1*pow(10, b);
-    if (a == 1) c = 2*pow(10, b);
-    if (a == 2) c = 5*pow(10, b);
-
     update();
 }
 
-/**
- * @brief CartesianWidget::mousePressEvent
- * @param e
- */
 void CartesianWidget2::mousePressEvent(QMouseEvent* e)
 {
     if (e->button() == Qt::LeftButton)
     {
         leftButtonPressed = true;
         last = e->pos();
+        setCursor(QCursor(Qt::ClosedHandCursor));
     }
 }
 
-/**
- * @brief CartesianWidget2::mouseReleaseEvent
- * @param e
- */
 void CartesianWidget2::mouseReleaseEvent(QMouseEvent* e)
 {
     Q_UNUSED(e)
-
+    setCursor(QCursor(Qt::ArrowCursor));
     leftButtonPressed = false;
 }
 
-/**
- * @brief CartesianWidget2::mouseMoveEvent
- * @param e
- */
 void CartesianWidget2::mouseMoveEvent(QMouseEvent* e)
 {
-    if (leftButtonPressed) m_offsetX += e->pos().x() - last.x();
-    if (leftButtonPressed) m_offsetY += e->pos().y() - last.y();
+    if (leftButtonPressed) setCenterX(centerX() - ((double)(e->pos().x() - last.x())/(double)scaleX()));
+    if (leftButtonPressed) setCenterY(centerY() + ((double)(e->pos().y() - last.y())/(double)scaleY()));
+
     last = e->pos();
     update();
 }
@@ -130,23 +94,31 @@ void CartesianWidget2::drawGridLines(QPainter& painter)
     int w = width();
     int h = height();
 
+    int dx = centerX() * scaleX();
+    int dy = centerY() * scaleY();
+
+    int leftX   = -w/2+dx;
+    int rightX  = w/2+dx;
+    int topY    = h/2-dy;
+    int bottomY = -h/2-dy;
+
     painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
-    for (int i=-w/2-offsetX(); i<w/2-offsetX(); i++) if ((i % 20) == 0) painter.drawLine(i, -h/2-offsetY(), i, h/2-offsetY());
-    for (int i=-h/2-offsetY(); i<h/2-offsetY(); i++) if ((i % 20) == 0) painter.drawLine(-w/2-offsetX(), i, w/2-offsetX(), i);
+    for (int i=leftX; i<rightX; i++) if ((i % 20) == 0) painter.drawLine(i, bottomY, i, topY);
+    for (int i=bottomY; i<topY; i++) if ((i % 20) == 0) painter.drawLine(leftX, i, rightX, i);
 
     painter.setPen(QPen(QColor(0xCACABC)));
-    for (int i=-w/2-offsetX(); i<w/2-offsetX(); i++) if ((i % 100) == 0) painter.drawLine(i, -h/2-offsetY(), i, h/2-offsetY());
-    for (int i=-h/2-offsetY(); i<h/2-offsetY(); i++) if ((i % 100) == 0) painter.drawLine(-w/2-offsetX(), i, w/2-offsetX(), i);
+    for (int i=leftX; i<rightX; i++) if ((i % 100) == 0) painter.drawLine(i, bottomY, i, topY);
+    for (int i=bottomY; i<topY; i++) if ((i % 100) == 0) painter.drawLine(leftX, i, rightX, i);
 
     //Drawin main axis (absis and ordinate arrow)
     painter.setPen(QPen(Qt::black));
-    painter.drawLine(-w/2-offsetX(), 0, w/2-offsetX(), 0);
-    painter.drawLine(0, -h/2-offsetY(), 0, h/2-offsetY());
+    painter.drawLine(leftX, 0, rightX, 0);
+    painter.drawLine(0, bottomY, 0, topY);
 
     painter.restore();
 }
 
-void CartesianWidget2::drawGridLabels(QPainter& painter)
+void CartesianWidget2::drawGridLabel(QPainter& painter)
 {
     painter.save();
 
@@ -155,43 +127,45 @@ void CartesianWidget2::drawGridLabels(QPainter& painter)
     int w = width();
     int h = height();
 
-    int log_2 = log2((double)scaleX() / 100.0);
-    int a = log_2 % 3;
-    int b = log_2 / 3;
-    int c = 0;
-    if (a == 0) c = 1*pow(10, b);
-    if (a == 1) c = 2*pow(10, b);
-    if (a == 2) c = 5*pow(10, b);
+    int dx = centerX() * scaleX();
+    int dy = centerY() * scaleY();
 
-    qDebug() << scaleX() << c;
+    int leftX   = -w/2+dx;
+    int rightX  = w/2+dx;
+    int topY    = h/2-dy;
+    int bottomY = -h/2-dy;
+
+//    int log_2 = log2((double)scaleX() / 100.0);
+//    int a = log_2 % 3;
+//    int b = log_2 / 3;
+//    int c = 0;
+//    if (a == 0) c = 1*pow(10, b);
+//    if (a == 1) c = 2*pow(10, b);
+//    if (a == 2) c = 5*pow(10, b);
 
     // draw absis scale numbers
-    for (int i=-w/2-offsetX(); i<w/2-offsetX(); i++)
+    for (int i=leftX; i<rightX; i++)
     {
-        if (i % (scaleX()/c) == 0 && i != 0)
+        if (i % 100 == 0 && i != 0)
         {
             double number = (double)(i) / scaleX();
-
-            int precition = 4;
-            //if (zoom < 1) precition = log2((2/zoom)/2);
-
+            int precition = 8;
             QString s = QString::number(number, 'f', precition);
+            while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
             painter.drawText(i-fm.width(s)/2, fm.height(), s);
         }
     }
 
     // draw ordinate scale numbers
-    for (int i=-h/2-offsetY(); i<h/2-offsetY(); i++)
+    for (int i=bottomY; i<topY; i++)
     {
         if (i % 100 == 0 && i != 0)
         {
-            //double number = (double)(i) * zoom / scaleX();
-
-            int precition = 0;
-            //if (zoom < 1) precition = log2((2/zoom)/2);
-
-            //QString s = QString::number(-number, 'f', precition);
-            //painter.drawText(-fm.width(s)-4, i+fm.height()/2-3, s);
+            double number = (double)(i) / scaleY();
+            int precition = 8;
+            QString s = QString::number(number, 'f', precition);
+            while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
+            painter.drawText(-fm.width(s)-4, i+fm.height()/2-3, s);
         }
     }
 
@@ -201,10 +175,8 @@ void CartesianWidget2::drawGridLabels(QPainter& painter)
     painter.restore();
 }
 
-void CartesianWidget2::drawR1Graphic(R1Function f, QPainter& painter)
+void CartesianWidget2::drawR1Graphic(QPainter& painter)
 {
-    Q_UNUSED(f)
-
     painter.save();
 
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -212,150 +184,29 @@ void CartesianWidget2::drawR1Graphic(R1Function f, QPainter& painter)
     for (int i=0; i<fcs.size(); i++)
     {
         FunctionConfig fc = fcs.at(i);
+        painter.setPen(QPen(QColor(fc.penColor), 1.0));
 
         int min = fc.a * scaleX();
         int max = fc.b * scaleX();
 
+        if (fc.a < xmin()) min = xmin() * scaleX();
+        if (fc.b > xmax()) max = xmax() * scaleX();
+
         for (int i=min; i<max; i++)
         {
-            double x1 = (double)(i+0)/scaleX();
-            double x2 = (double)(i+1)/scaleX();
+            double x1 = (double)(i+0)/(double)scaleX();
+            double x2 = (double)(i+1)/(double)scaleX();
+
             double y1 = -fc.f(x1);
             double y2 = -fc.f(x2);
-            painter.setPen(fc.penColor);
-            painter.drawLine(i, y1*scaleY(), i+1, y2*scaleY());
+
+            int y11 = y1*scaleY();
+            int y12 = y2*scaleY();
+            //qDebug() << min << max << i << i+1 << x1 << x2 << y11 << y12;
+
+            painter.drawLine(i, y11, i+1, y12);
         }
     }
 
     painter.restore();
-}
-
-void CartesianWidget2::drawFunction(R1Function f, QPainter& painter)
-{
-    Q_UNUSED(f)
-
-    painter.save();
-
-    painter.setPen(QPen(Qt::blue));
-    painter.setRenderHint(QPainter::Antialiasing, true);
-
-    for (int i=0; i<fcs.size(); i++)
-    {
-        FunctionConfig fc = fcs.at(i);
-
-        //int min = (fc.a / zoom) * scaleX();
-        //int max = (fc.b / zoom) * scaleX();
-
-        //for (int i=min; i<max; i++)
-        {
-            //double x1 = ((double)(i+0)/scaleX()) * zoom;
-            //double x2 = ((double)(i+1)/scaleX()) * zoom;
-
-            //double y1 = -fc.f(x1);
-            //double y2 = -fc.f(x2);
-            //painter.setPen(fc.pen);
-
-            //painter.drawLine(i, y1*scaleY()/zoom, i+1, y2*scaleY()/zoom);
-        }
-    }
-
-    painter.restore();
-}
-
-void CartesianWidget2::addFunctionConfig(FunctionConfig fc)
-{
-    fcs.append(fc);
-}
-
-/**
- * @brief CartesianWidget::scaleX
- * @return
- */
-int CartesianWidget2::scaleX() const
-{
-    return m_scaleX;
-}
-
-/**
- * @brief CartesianWidget::scaleY
- * @return
- */
-int CartesianWidget2::scaleY() const
-{
-    return m_scaleY;
-}
-
-/**
- * @brief CartesianWidget::setScaleX
- * @param scaleX
- */
-void CartesianWidget2::setScaleX(int scaleX)
-{
-    setScale(scaleX, m_scaleY);
-}
-
-/**
- * @brief CartesianWidget::setScaleY
- * @param scaleY
- */
-void CartesianWidget2::setScaleY(int scaleY)
-{
-    setScale(m_scaleX, scaleY);
-}
-
-/**
- * @brief CartesianWidget::setScale
- * @param scaleX
- * @param scaleY
- */
-void CartesianWidget2::setScale(int scaleX, int scaleY)
-{
-    m_scaleX = scaleX;
-    m_scaleY = scaleY;
-    update();
-}
-
-/**
- * @brief CartesianWidget2::offsetX
- */
-int CartesianWidget2::offsetX() const
-{
-    return m_offsetX;
-}
-
-/**
- * @brief CartesianWidget2::setOffsetX
- * @param offsetX
- */
-void CartesianWidget2::setOffsetX(int offsetX)
-{
-    m_offsetX = offsetX;
-}
-
-/**
- * @brief CartesianWidget2::offsetY
- */
-int CartesianWidget2::offsetY() const
-{
-    return m_offsetY;
-}
-
-/**
- * @brief CartesianWidget2::setOffsetY
- * @param offsetY
- */
-void CartesianWidget2::setOffsetY(int offsetY)
-{
-    m_offsetY = offsetY;
-}
-
-/**
- * @brief CartesianWidget2::setscaleY
- * @param offsetX
- * @param offsetY
- */
-void CartesianWidget2::setOffset(int offsetX, int offsetY)
-{
-    m_offsetX = offsetX;
-    m_offsetY = offsetY;
 }
