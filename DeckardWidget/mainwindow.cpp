@@ -15,17 +15,22 @@ MainWindow::MainWindow(QWidget *parent)
     label3 = new QLabel;
     label4 = new QLabel;
 
+    toolButton1 = new QToolButton;
+    toolButton2 = new QToolButton;
+    toolButton3 = new QToolButton;
+    toolBar = new QToolBar;
+    addToolBar(toolBar);
+
     statusBar->addWidget(label1);
     statusBar->addWidget(label2);
     statusBar->addWidget(label3);
     setStatusBar(statusBar);
 
-    toolBar = new QToolBar;
-    addToolBar(toolBar);
-
     cartesianWidget = new CartesianWidget2;
     setCentralWidget(cartesianWidget);
     setWindowState(Qt::WindowMaximized);
+
+    toolBar->addAction("A", cartesianWidget, SLOT(reset()));
 
     initFunction();
 

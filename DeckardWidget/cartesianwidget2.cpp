@@ -9,7 +9,7 @@
 CartesianWidget2::CartesianWidget2(QWidget *parent) : CartesianWidget(parent)
 {
     setScale(100, 100);
-    setCenter(-1.0, -1.0);
+    setCenter(0.0, 0.0);
     setOffset(0, 0);
 }
 
@@ -44,7 +44,7 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
 
     drawGridLines(painter);
     drawGridLabel(painter);
-    drawR1Graphic(painter);
+    //drawR1Graphic(painter);
 
     painter.restore();
 
@@ -55,9 +55,37 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
     painter.end();
 }
 
+int i=2;
 void CartesianWidget2::wheelEvent(QWheelEvent* e)
 {
-    e->delta() > 0 ? setScale(scaleX()*2.0, scaleY()*2.0) : setScale(scaleX()/2.0, scaleY()/2.0);
+//    e->delta() > 0 ? setScale(scaleX()*2.0, scaleY()*2.0) : setScale(scaleX()/2.0, scaleY()/2.0);
+    int min = 100;
+    int max = 150;
+
+    int delta = e->delta();
+    if (delta > 0)
+    {
+        setScale(scaleX() + 10, scaleY() + 10);
+        if (scaleX() > max)
+        {
+            setScale(min, min);
+            if (i % 3 == 0)
+                setZoom(zoom()/2.0);
+            else if ( i % 3 == 1)
+                setZoom(zoom()/5.0);
+            i++;
+        }
+    }
+    else
+    {
+        setScale(scaleX() - 10, scaleY() - 10);
+        if (scaleX() < min)
+        {
+            setScale(max, max);
+            setZoom(zoom()*2.0);
+        }
+    }
+
     update();
 }
 
@@ -102,6 +130,40 @@ void CartesianWidget2::drawGridLines(QPainter& painter)
     int topY    = h/2-dy;
     int bottomY = -h/2-dy;
 
+    int hx = w / scaleX();
+    int hy = h / scaleY();
+    int mx = w % scaleX();
+    int my = h % scaleY();
+
+    qDebug() << hx << hy << mx << my;
+
+    int a=1;
+    if (scaleX() % 5 == 0) {a = 5;} else
+    if (scaleX() % 4 == 0) {a = 4;} else
+    if (scaleX() % 2 == 0) {a = 2;} else
+    a = 1;
+
+    painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
+    for (int i=leftX; i<rightX; i++) if ((i % (scaleX()/a)) == 0) painter.drawLine(i, bottomY, i, topY);
+    for (int i=bottomY; i<topY; i++) if ((i % (scaleY()/a)) == 0) painter.drawLine(leftX, i, rightX, i);
+
+    painter.setPen(QPen(QColor(0xCACABC)));
+    for (int i=leftX; i<rightX; i++) if ((i % scaleX()) == 0) painter.drawLine(i, bottomY, i, topY);
+    for (int i=bottomY; i<topY; i++) if ((i % scaleY()) == 0) painter.drawLine(leftX, i, rightX, i);
+
+    painter.setPen(QPen(Qt::black));
+    painter.drawLine(leftX, 0, rightX, 0);
+    painter.drawLine(0, bottomY, 0, topY);
+
+ /*
+    int dx = centerX() * scaleX();
+    int dy = centerY() * scaleY();
+
+    int leftX   = -w/2+dx;
+    int rightX  = w/2+dx;
+    int topY    = h/2-dy;
+    int bottomY = -h/2-dy;
+
     painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
     for (int i=leftX; i<rightX; i++) if ((i % 20) == 0) painter.drawLine(i, bottomY, i, topY);
     for (int i=bottomY; i<topY; i++) if ((i % 20) == 0) painter.drawLine(leftX, i, rightX, i);
@@ -114,6 +176,8 @@ void CartesianWidget2::drawGridLines(QPainter& painter)
     painter.setPen(QPen(Qt::black));
     painter.drawLine(leftX, 0, rightX, 0);
     painter.drawLine(0, bottomY, 0, topY);
+*/
+
 
     painter.restore();
 }
@@ -135,20 +199,12 @@ void CartesianWidget2::drawGridLabel(QPainter& painter)
     int topY    = h/2-dy;
     int bottomY = -h/2-dy;
 
-//    int log_2 = log2((double)scaleX() / 100.0);
-//    int a = log_2 % 3;
-//    int b = log_2 / 3;
-//    int c = 0;
-//    if (a == 0) c = 1*pow(10, b);
-//    if (a == 1) c = 2*pow(10, b);
-//    if (a == 2) c = 5*pow(10, b);
-
     // draw absis scale numbers
     for (int i=leftX; i<rightX; i++)
     {
-        if (i % 100 == 0 && i != 0)
+        if (i % scaleX() == 0 && i != 0)
         {
-            double number = (double)(i) / scaleX();
+            double number = ((double)(i) / scaleX())*zoom();
             int precition = 8;
             QString s = QString::number(number, 'f', precition);
             while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
@@ -159,9 +215,9 @@ void CartesianWidget2::drawGridLabel(QPainter& painter)
     // draw ordinate scale numbers
     for (int i=bottomY; i<topY; i++)
     {
-        if (i % 100 == 0 && i != 0)
+        if (i % scaleY() == 0 && i != 0)
         {
-            double number = (double)(i) / scaleY();
+            double number = ((double)(i) / scaleY())*zoom();
             int precition = 8;
             QString s = QString::number(number, 'f', precition);
             while(s.endsWith('0') || s.endsWith('.')) s.chop(1);

@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QToolBar>
+#include <QToolButton>
 #include <QStatusBar>
 
 #include "cartesianwidget0.h"
@@ -28,7 +29,12 @@ public:
 
 private:
     CartesianWidget* cartesianWidget;
+
     QToolBar* toolBar;
+    QToolButton* toolButton1;
+    QToolButton* toolButton2;
+    QToolButton* toolButton3;
+
     QStatusBar* statusBar;
     QLabel* label1;
     QLabel* label2;

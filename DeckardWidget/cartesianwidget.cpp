@@ -5,6 +5,11 @@ CartesianWidget::CartesianWidget(QWidget *parent) : QWidget(parent)
     setAutoFillBackground(true);
     setBackgroundRole(QPalette::Base);
     leftButtonPressed = false;
+
+    setOffset(0, 0);
+    setCenter(0.0, 0.0);
+    setScale(100, 100);
+    setZoom(1.0);
 }
 
 CartesianWidget::~CartesianWidget() { }
@@ -70,14 +75,14 @@ double CartesianWidget::centerX() const
     return mcenterX;
 }
 
-double CartesianWidget::centerY() const
-{
-    return mcenterY;
-}
-
 void CartesianWidget::setCenterX(double centerX)
 {
     setCenter(centerX, mcenterY);
+}
+
+double CartesianWidget::centerY() const
+{
+    return mcenterY;
 }
 
 void CartesianWidget::setCenterY(double centerY)
@@ -112,6 +117,26 @@ double CartesianWidget::ymin() const
 double CartesianWidget::ymax() const
 {
     return mymax;
+}
+
+double CartesianWidget::zoom() const
+{
+    return mzoom;
+}
+
+void CartesianWidget::setZoom(double zoom)
+{
+    mzoom = zoom;
+    update();
+}
+
+void CartesianWidget::reset()
+{
+    setZoom(1.0);
+    setOffset(0, 0);
+    setCenter(0.0, 0.0);
+    setScale(100, 100);
+    update();
 }
 
 void CartesianWidget::calcBounds()

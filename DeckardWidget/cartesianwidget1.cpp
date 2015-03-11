@@ -146,11 +146,10 @@ void CartesianWidget1::drawGridLabel(QPainter& painter)
         if (i % 100 == 0 && i != 0)
         {
             double number = (double)(i) * zoom / scaleX();
-
             int precition = 0;
             if (zoom < 1) precition = log2((2/zoom)/2);
-
             QString s = QString::number(number, 'f', precition);
+            while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
             painter.drawText(i-fm.width(s)/2, fm.height(), s);
         }
     }
@@ -161,11 +160,10 @@ void CartesianWidget1::drawGridLabel(QPainter& painter)
         if (i % 100 == 0 && i != 0)
         {
             double number = (double)(i) * zoom / scaleX();
-
             int precition = 0;
             if (zoom < 1) precition = log2((2/zoom)/2);
-
             QString s = QString::number(-number, 'f', precition);
+            while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
             painter.drawText(-fm.width(s)-4, i+fm.height()/2-3, s);
         }
     }
