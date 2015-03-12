@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar->addWidget(label1);
     statusBar->addWidget(label2);
     statusBar->addWidget(label3);
+    statusBar->addWidget(label4);
+
     setStatusBar(statusBar);
 
     cartesianWidget = new CartesianWidget2;
@@ -37,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cartesianWidget, SIGNAL(centerChanged(double,double)), this, SLOT(cwCenterChanged(double,double)));
     connect(cartesianWidget, SIGNAL(offsetChanged(int,int)), this, SLOT(cwOffsetChanged(int,int)));
     connect(cartesianWidget, SIGNAL(scaleChanged(int,int)), this, SLOT(cwScaleChanged(int,int)));
+    connect(cartesianWidget, SIGNAL(zoomChanged(double)), this, SLOT(cwZoomChanged(double)));
 }
 
 MainWindow::~MainWindow()
@@ -45,12 +48,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::initFunction()
 {
-    FunctionConfig fc1;
-    fc1.f = sin;
-    fc1.a = -2.5;
-    fc1.b = +2.5;
-    fc1.penColor = 0xff0000;
-    cartesianWidget->addFunctionConfig(fc1);
+//    FunctionConfig fc1;
+//    fc1.f = sin;
+//    fc1.a = -2.5;
+//    fc1.b = +2.5;
+//    fc1.penColor = 0xff0000;
+//    cartesianWidget->addFunctionConfig(fc1);
 
 //    FunctionConfig fc2;
 //    fc2.f = f1;
@@ -59,12 +62,12 @@ void MainWindow::initFunction()
 //    fc2.penColor = 0x0000ff;
 //    cartesianWidget->addFunctionConfig(fc2);
 
-//    FunctionConfig fc3;
-//    fc3.f = f2;
-//    fc3.a = -10.5;
-//    fc3.b = +10.5;
-//    fc3.penColor = 0x0000ff;
-//    cartesianWidget->addFunctionConfig(fc3);
+    FunctionConfig fc3;
+    fc3.f = f2;
+    fc3.a = -1.5;
+    fc3.b = +2.5;
+    fc3.penColor = 0x0000ff;
+    cartesianWidget->addFunctionConfig(fc3);
 }
 
 void MainWindow::cwCenterChanged(double centerX, double centerY)
@@ -86,4 +89,9 @@ void MainWindow::cwOffsetChanged(int, int)
 void MainWindow::cwScaleChanged(int scaleX, int scaleY)
 {
     label3->setText(QString("Scale: (%1 %2)").arg(scaleX).arg(scaleY));
+}
+
+void MainWindow::cwZoomChanged(double zoom)
+{
+    label4->setText(QString("Zoom: %1").arg((zoom)));
 }

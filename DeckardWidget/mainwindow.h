@@ -46,6 +46,7 @@ public slots:
     void cwCenterChanged(double, double);
     void cwOffsetChanged(int, int);
     void cwScaleChanged(int, int);
+    void cwZoomChanged(double);
 };
 
 #endif // MAINWINDOW_H

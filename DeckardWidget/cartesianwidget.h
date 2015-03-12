@@ -15,6 +15,8 @@
 #include <math.h>
 #include "functionconfig.h"
 
+typedef enum { Level1, Level2, Level3 } Levels;
+
 class CartesianWidget : public QWidget
 {
     Q_OBJECT
@@ -62,6 +64,8 @@ protected:
     virtual void drawGridLabel(QPainter& painter) = 0;
     virtual void drawR1Graphic(QPainter& painter) = 0;
 
+    QString axisNumber(double) const;
+
     void calcBounds();
 
     double mxmin;
@@ -75,8 +79,8 @@ protected:
     QPoint last;
 
     QList<FunctionConfig> fcs;
+    Levels level;
 
-    int i;
 
 private:
     int m_scaleX;
@@ -92,6 +96,7 @@ signals:
     void centerChanged(double centerX, double centerY);
     void scaleChanged(int scaleX, int scaleY);
     void offsetChanged(int offsetX, int offsetY);
+    void zoomChanged(double zoom);
 
 public slots:
     void reset();

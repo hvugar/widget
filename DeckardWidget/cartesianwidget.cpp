@@ -6,10 +6,7 @@ CartesianWidget::CartesianWidget(QWidget *parent) : QWidget(parent)
     setBackgroundRole(QPalette::Base);
     leftButtonPressed = false;
 
-    setOffset(0, 0);
-    setCenter(0.0, 0.0);
-    setScale(100, 100);
-    setZoom(1.0);
+    reset();
 }
 
 CartesianWidget::~CartesianWidget() { }
@@ -127,16 +124,17 @@ double CartesianWidget::zoom() const
 void CartesianWidget::setZoom(double zoom)
 {
     mzoom = zoom;
+    emit zoomChanged(mzoom);
     update();
 }
 
 void CartesianWidget::reset()
 {
-    setZoom(1.0);
     setOffset(0, 0);
     setCenter(0.0, 0.0);
     setScale(100, 100);
-    i=2;
+    setZoom(1.0);
+    level = Level1;
     update();
 }
 
@@ -154,4 +152,20 @@ void CartesianWidget::calcBounds()
 void CartesianWidget::addFunctionConfig(FunctionConfig fc)
 {
     fcs.append(fc);
+}
+
+QString CartesianWidget::axisNumber(double number) const
+{
+    int precition = 15;
+    QString s = QString::number(number, 'f', precition);
+    while(s.endsWith('0') )
+    {
+        s.chop(1);
+        if (s.endsWith('.'))
+        {
+            s.chop(1);
+            break;
+        }
+    }
+    return s;
 }

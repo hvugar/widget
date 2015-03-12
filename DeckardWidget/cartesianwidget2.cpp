@@ -11,7 +11,6 @@ CartesianWidget2::CartesianWidget2(QWidget *parent) : CartesianWidget(parent)
     setScale(100, 100);
     setCenter(0.0, 0.0);
     setOffset(0, 0);
-    i = 1;
 }
 
 CartesianWidget2::~CartesianWidget2()
@@ -45,7 +44,7 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
 
     drawGridLines(painter);
     drawGridLabel(painter);
-    //drawR1Graphic(painter);
+    drawR1Graphic(painter);
 
     painter.restore();
 
@@ -58,32 +57,23 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
 
 void CartesianWidget2::wheelEvent(QWheelEvent* e)
 {
-//    e->delta() > 0 ? setScale(scaleX()*2.0, scaleY()*2.0) : setScale(scaleX()/2.0, scaleY()/2.0);
     int min = 80;
     int max = 150;
 
     int delta = e->delta();
     if (delta > 0)
     {
-        qDebug() << i;
         setScale(scaleX() + 10, scaleY() + 10);
         if (scaleX() > max)
         {
             setScale(min, min);
-
-            if (i % 3 == 1)
+            switch (level)
             {
-                setZoom(zoom()/2.0);
+            case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
+            case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
+            case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
+            default: break;
             }
-            if (i % 3 == 2)
-            {
-                setZoom(zoom()/2.5);
-            }
-            if (i % 3 == 0)
-            {
-                setZoom(zoom()/2.0);
-            }
-            i++;
         }
     }
     else
@@ -92,20 +82,13 @@ void CartesianWidget2::wheelEvent(QWheelEvent* e)
         if (scaleX() < min)
         {
             setScale(max, max);
-
-            if (i % 3 == 1)
+            switch (level)
             {
-                setZoom(zoom()*2.0);
+            case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
+            case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
+            case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
+            default: break;
             }
-            if (i % 3 == 2)
-            {
-                setZoom(zoom()*2.5);
-            }
-            if (i % 3 == 0)
-            {
-                setZoom(zoom()*2.0);
-            }
-            i++;
         }
     }
 
@@ -228,9 +211,7 @@ void CartesianWidget2::drawGridLabel(QPainter& painter)
         if (i % scaleX() == 0 && i != 0)
         {
             double number = ((double)(i) / scaleX())*zoom();
-            int precition = 8;
-            QString s = QString::number(number, 'f', precition);
-            while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
+            QString s = axisNumber(number);
             painter.drawText(i-fm.width(s)/2, fm.height(), s);
         }
     }
@@ -240,10 +221,8 @@ void CartesianWidget2::drawGridLabel(QPainter& painter)
     {
         if (i % scaleY() == 0 && i != 0)
         {
-            double number = ((double)(i) / scaleY())*zoom();
-            int precition = 8;
-            QString s = QString::number(number, 'f', precition);
-            while(s.endsWith('0') || s.endsWith('.')) s.chop(1);
+            double number = -((double)(i) / scaleY())*zoom();
+            QString s = axisNumber(number);
             painter.drawText(-fm.width(s)-4, i+fm.height()/2-3, s);
         }
     }
@@ -265,22 +244,22 @@ void CartesianWidget2::drawR1Graphic(QPainter& painter)
         FunctionConfig fc = fcs.at(i);
         painter.setPen(QPen(QColor(fc.penColor), 1.0));
 
-        int min = fc.a * scaleX();
-        int max = fc.b * scaleX();
+        int min = fc.a * scaleX() / zoom();
+        int max = fc.b * scaleX() / zoom();
 
-        if (fc.a < xmin()) min = xmin() * scaleX();
-        if (fc.b > xmax()) max = xmax() * scaleX();
+       // if (fc.a < xmin()) min = xmin() * scaleX();
+       // if (fc.b > xmax()) max = xmax() * scaleX();
 
         for (int i=min; i<max; i++)
         {
-            double x1 = (double)(i+0)/(double)scaleX();
-            double x2 = (double)(i+1)/(double)scaleX();
+            double x1 = (double)(i+0)/(double)scaleX()*zoom();
+            double x2 = (double)(i+1)/(double)scaleX()*zoom();
 
             double y1 = -fc.f(x1);
             double y2 = -fc.f(x2);
 
-            int y11 = y1*scaleY();
-            int y12 = y2*scaleY();
+            int y11 = y1*scaleY()/zoom();
+            int y12 = y2*scaleY()/zoom();
             //qDebug() << min << max << i << i+1 << x1 << x2 << y11 << y12;
 
             painter.drawLine(i, y11, i+1, y12);
