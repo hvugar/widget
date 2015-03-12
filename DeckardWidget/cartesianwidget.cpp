@@ -136,6 +136,7 @@ void CartesianWidget::reset()
     setOffset(0, 0);
     setCenter(0.0, 0.0);
     setScale(100, 100);
+    i=2;
     update();
 }
 

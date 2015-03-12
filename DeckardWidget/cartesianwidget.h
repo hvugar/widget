@@ -64,17 +64,6 @@ protected:
 
     void calcBounds();
 
-private:
-    int m_scaleX;
-    int m_scaleY;
-
-    int m_offsetX;
-    int m_offsetY;
-
-    double mcenterX;
-    double mcenterY;
-
-protected:
     double mxmin;
     double mxmax;
     double mymin;
@@ -86,6 +75,19 @@ protected:
     QPoint last;
 
     QList<FunctionConfig> fcs;
+
+    int i;
+
+private:
+    int m_scaleX;
+    int m_scaleY;
+
+    int m_offsetX;
+    int m_offsetY;
+
+    double mcenterX;
+    double mcenterY;
+
 signals:
     void centerChanged(double centerX, double centerY);
     void scaleChanged(int scaleX, int scaleY);

@@ -11,6 +11,7 @@ CartesianWidget2::CartesianWidget2(QWidget *parent) : CartesianWidget(parent)
     setScale(100, 100);
     setCenter(0.0, 0.0);
     setOffset(0, 0);
+    i = 1;
 }
 
 CartesianWidget2::~CartesianWidget2()
@@ -55,24 +56,33 @@ void CartesianWidget2::paintEvent(QPaintEvent *e)
     painter.end();
 }
 
-int i=2;
 void CartesianWidget2::wheelEvent(QWheelEvent* e)
 {
 //    e->delta() > 0 ? setScale(scaleX()*2.0, scaleY()*2.0) : setScale(scaleX()/2.0, scaleY()/2.0);
-    int min = 100;
+    int min = 80;
     int max = 150;
 
     int delta = e->delta();
     if (delta > 0)
     {
+        qDebug() << i;
         setScale(scaleX() + 10, scaleY() + 10);
         if (scaleX() > max)
         {
             setScale(min, min);
-            if (i % 3 == 0)
+
+            if (i % 3 == 1)
+            {
                 setZoom(zoom()/2.0);
-            else if ( i % 3 == 1)
-                setZoom(zoom()/5.0);
+            }
+            if (i % 3 == 2)
+            {
+                setZoom(zoom()/2.5);
+            }
+            if (i % 3 == 0)
+            {
+                setZoom(zoom()/2.0);
+            }
             i++;
         }
     }
@@ -82,7 +92,20 @@ void CartesianWidget2::wheelEvent(QWheelEvent* e)
         if (scaleX() < min)
         {
             setScale(max, max);
-            setZoom(zoom()*2.0);
+
+            if (i % 3 == 1)
+            {
+                setZoom(zoom()*2.0);
+            }
+            if (i % 3 == 2)
+            {
+                setZoom(zoom()*2.5);
+            }
+            if (i % 3 == 0)
+            {
+                setZoom(zoom()*2.0);
+            }
+            i++;
         }
     }
 
@@ -130,12 +153,12 @@ void CartesianWidget2::drawGridLines(QPainter& painter)
     int topY    = h/2-dy;
     int bottomY = -h/2-dy;
 
-    int hx = w / scaleX();
-    int hy = h / scaleY();
-    int mx = w % scaleX();
-    int my = h % scaleY();
+//    int hx = w / scaleX();
+//    int hy = h / scaleY();
+//    int mx = w % scaleX();
+//    int my = h % scaleY();
 
-    qDebug() << hx << hy << mx << my;
+//    qDebug() << hx << hy << mx << my;
 
     int a=1;
     if (scaleX() % 5 == 0) {a = 5;} else
