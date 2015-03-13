@@ -11,6 +11,15 @@ CartesianWidget::CartesianWidget(QWidget *parent) : QWidget(parent)
 
 CartesianWidget::~CartesianWidget() { }
 
+void CartesianWidget::resizeEvent(QResizeEvent *e)
+{
+    QWidget::resizeEvent(e);
+
+    calcBounds();
+
+    update();
+}
+
 int CartesianWidget::scaleX() const
 {
     return m_scaleX;
@@ -35,7 +44,9 @@ void CartesianWidget::setScale(int scaleX, int scaleY)
 {
     m_scaleX = scaleX;
     m_scaleY = scaleY;
-    update();
+
+    calcBounds();
+
     emit scaleChanged(m_scaleX, m_scaleY);
 }
 
@@ -63,7 +74,7 @@ void CartesianWidget::setOffset(int offsetX, int offsetY)
 {
     m_offsetX = offsetX;
     m_offsetY = offsetY;
-    update();
+
     emit offsetChanged(m_offsetX, m_offsetY);
 }
 
@@ -91,8 +102,9 @@ void CartesianWidget::setCenter(double centerX, double centerY)
 {
     mcenterX = centerX;
     mcenterY = centerY;
+
     calcBounds();
-    update();
+
     emit centerChanged(mcenterX, mcenterY);
 }
 
@@ -124,8 +136,10 @@ double CartesianWidget::zoom() const
 void CartesianWidget::setZoom(double zoom)
 {
     mzoom = zoom;
+
+    calcBounds();
+
     emit zoomChanged(mzoom);
-    update();
 }
 
 void CartesianWidget::reset()
@@ -134,7 +148,9 @@ void CartesianWidget::reset()
     setCenter(0.0, 0.0);
     setScale(100, 100);
     setZoom(1.0);
+
     level = Level1;
+
     update();
 }
 
@@ -143,10 +159,12 @@ void CartesianWidget::calcBounds()
     int w = width();
     int h = height();
 
-    mxmin = centerX() - (double)(w/2.0) / (double)scaleX();
-    mxmax = centerX() + (double)(w/2.0) / (double)scaleX();
-    mymin = centerY() - (double)(h/2.0) / (double)scaleY();
-    mymax = centerY() + (double)(h/2.0) / (double)scaleY();
+    mxmin = centerX() - (double)(w/2.0) / ((double)scaleX()/zoom());
+    mxmax = centerX() + (double)(w/2.0) / ((double)scaleX()/zoom());
+    mymin = centerY() - (double)(h/2.0) / ((double)scaleY()/zoom());
+    mymax = centerY() + (double)(h/2.0) / ((double)scaleY()/zoom());
+
+    emit boundsChanged(mxmin, mymin, mxmax, mymax);
 }
 
 void CartesianWidget::addFunctionConfig(FunctionConfig fc)
@@ -156,7 +174,7 @@ void CartesianWidget::addFunctionConfig(FunctionConfig fc)
 
 QString CartesianWidget::axisNumber(double number) const
 {
-    int precition = 15;
+    int precition = 12;
     QString s = QString::number(number, 'f', precition);
     while(s.endsWith('0') )
     {

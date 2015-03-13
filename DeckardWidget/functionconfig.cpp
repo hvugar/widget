@@ -5,6 +5,7 @@ double f1(double x) { return x*x-x*x*x*x+0.5; }
 double f2(double x) { return x*x; }
 double f3(double x) { return -.5*x + 1; }
 double f4(double x) { return sin(x)*cos(x); }
+double f5(double x) { return sqrt(x); }
 
 double LagrangePolynomial(double x0, double* x, double* y, int n)
 {

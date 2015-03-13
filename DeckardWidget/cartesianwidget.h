@@ -60,6 +60,8 @@ public:
     void addFunctionConfig(FunctionConfig fc);
 
 protected:
+    virtual void resizeEvent(QResizeEvent*);
+
     virtual void drawGridLines(QPainter& painter) = 0;
     virtual void drawGridLabel(QPainter& painter) = 0;
     virtual void drawR1Graphic(QPainter& painter) = 0;
@@ -96,6 +98,7 @@ signals:
     void centerChanged(double centerX, double centerY);
     void scaleChanged(int scaleX, int scaleY);
     void offsetChanged(int offsetX, int offsetY);
+    void boundsChanged(double xmin, double ymin, double xmax, double ymax);
     void zoomChanged(double zoom);
 
 public slots:

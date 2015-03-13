@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     cartesianWidget = new CartesianWidget2;
     setCentralWidget(cartesianWidget);
-    setWindowState(Qt::WindowMaximized);
+    //setWindowState(Qt::WindowMaximized);
 
     toolBar->addAction("A", cartesianWidget, SLOT(reset()));
 
@@ -40,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cartesianWidget, SIGNAL(offsetChanged(int,int)), this, SLOT(cwOffsetChanged(int,int)));
     connect(cartesianWidget, SIGNAL(scaleChanged(int,int)), this, SLOT(cwScaleChanged(int,int)));
     connect(cartesianWidget, SIGNAL(zoomChanged(double)), this, SLOT(cwZoomChanged(double)));
+    connect(cartesianWidget, SIGNAL(boundsChanged(double,double,double,double)), this, SLOT(cwBoundsChanged(double,double,double,double)));
+
+    cartesianWidget->reset();
 }
 
 MainWindow::~MainWindow()
@@ -48,19 +51,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::initFunction()
 {
-//    FunctionConfig fc1;
-//    fc1.f = sin;
-//    fc1.a = -2.5;
-//    fc1.b = +2.5;
-//    fc1.penColor = 0xff0000;
-//    cartesianWidget->addFunctionConfig(fc1);
+    FunctionConfig fc1;
+    fc1.f = f5;
+    fc1.a = -20.5;
+    fc1.b = +20.5;
+    fc1.penColor = 0xff0000;
+    cartesianWidget->addFunctionConfig(fc1);
 
-//    FunctionConfig fc2;
-//    fc2.f = f1;
-//    fc2.a = -2.5;
-//    fc2.b = +2.5;
-//    fc2.penColor = 0x0000ff;
-//    cartesianWidget->addFunctionConfig(fc2);
+    FunctionConfig fc2;
+    fc2.f = f1;
+    fc2.a = -2.5;
+    fc2.b = +2.5;
+    fc2.penColor = 0x0000ff;
+    cartesianWidget->addFunctionConfig(fc2);
 
     FunctionConfig fc3;
     fc3.f = f2;
@@ -75,12 +78,6 @@ void MainWindow::cwCenterChanged(double centerX, double centerY)
     label1->setText(QString("Center: (%1 %2)")
                     .arg(centerX, 6, 'f')
                     .arg(centerY, 6, 'f'));
-
-    label2->setText(QString("Bounds: (%1 %2 %3 %4)")
-                    .arg(cartesianWidget->xmin(), 6, 'f')
-                    .arg(cartesianWidget->xmax(), 6, 'f')
-                    .arg(cartesianWidget->ymin(), 6, 'f')
-                    .arg(cartesianWidget->ymax(), 6, 'f'));
 }
 
 void MainWindow::cwOffsetChanged(int, int)
@@ -95,3 +92,9 @@ void MainWindow::cwZoomChanged(double zoom)
 {
     label4->setText(QString("Zoom: %1").arg((zoom)));
 }
+
+void MainWindow::cwBoundsChanged(double xmin, double ymin, double xmax, double ymax)
+{
+    label2->setText(QString("Bounds: (%1 %2 %3 %4)").arg(xmin, 6, 'f').arg(xmax, 6, 'f').arg(ymin, 6, 'f').arg(ymax, 6, 'f'));
+}
+

@@ -41,12 +41,12 @@ private:
     QLabel* label3;
     QLabel* label4;
 
-
 public slots:
     void cwCenterChanged(double, double);
     void cwOffsetChanged(int, int);
     void cwScaleChanged(int, int);
     void cwZoomChanged(double);
+    void cwBoundsChanged(double,double,double,double);
 };
 
 #endif // MAINWINDOW_H
