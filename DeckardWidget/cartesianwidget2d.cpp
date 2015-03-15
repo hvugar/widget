@@ -38,6 +38,9 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
 
     double dx = w/2.0 - centerX() * ((double)scaleX() / zoom());
     double dy = h/2.0 + centerY() * ((double)scaleY() / zoom());
+
+    qDebug() << dx << dy;
+
     painter.translate(dx, dy);
 
     drawGridLines(painter);
@@ -145,9 +148,13 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
             double number = ( i / scaleX() ) * zoom();
             QString s = axisNumber(number, zoomLevel());
 
+            //qDebug() << topY << bottomY << leftX << rightX << scaleX() << i;
+
             if (topY <= 0)
             {
+                //qDebug() << "topY" << topY << i;
                 painter.setPen(QPen(QColor(0x6B6B47)));
+                qDebug() << "ok" << i-fm.width(s)/2 << topY - fm.height()/3;
                 painter.drawText(i-fm.width(s)/2, topY - fm.height()/3, s);
             }
             else if (bottomY >= 0)
@@ -168,7 +175,7 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
     {
         if (i % scaleY() == 0 && i != 0)
         {
-            double number = ( i / scaleY() ) * zoom();
+            double number = -( i / scaleY() ) * zoom();
             QString s = axisNumber(number, zoomLevel());
             if (leftX >= 0)
             {
