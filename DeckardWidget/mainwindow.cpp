@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     toolBar->addAction("R", cartesianWidget, SLOT(reset()));
     toolBar->addAction("+", this, SLOT(cwZoomIn()));
     toolBar->addAction("-", this, SLOT(cwZoomOut()));
+    toolBar->addAction("S", this, SLOT(showSettingDialog()));
 
 
     initFunction();
@@ -107,6 +108,7 @@ void MainWindow::cwZoomIn()
     {
         QTimer* timer = new QTimer();
         connect(timer, SIGNAL(timeout()), cartesianWidget, SLOT(zoomIn()));
+        //connect(timer, SIGNAL(timeout()), this, SLOT(deleteLater()));
         timer->setInterval(20*(8-i));
         timer->setSingleShot(true);
         timer->start();
@@ -119,9 +121,25 @@ void MainWindow::cwZoomOut()
     {
         QTimer* timer = new QTimer();
         connect(timer, SIGNAL(timeout()), cartesianWidget, SLOT(zoomOut()));
+        //connect(timer, SIGNAL(timeout()), this, SLOT(deleteLater()));
         timer->setInterval(20*(8-i));
         timer->setSingleShot(true);
         timer->start();
     }
 }
 
+void MainWindow::showSettingDialog()
+{
+    SettingWidget* sw = new SettingWidget(this);
+    sw->setCenter(cartesianWidget->centerX(), cartesianWidget->centerY());
+    sw->setXRange(cartesianWidget->xmin(), cartesianWidget->xmax());
+
+    sw->exec();
+
+    QPointF c = sw->center();
+    QPointF r = sw->xrange();
+
+    cartesianWidget->setCenter(c.x(), c.y());
+    cartesianWidget->setXRange(r.x(), r.y());
+    cartesianWidget->update();
+}

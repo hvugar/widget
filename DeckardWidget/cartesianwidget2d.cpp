@@ -30,7 +30,7 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
 
     QFont font1;
     font1.setFamily("Consolas");
-    font1.setPointSize(10);
+    font1.setPointSize(8);
     setFont(font1);
 
     QPainter painter(this);
@@ -43,7 +43,6 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
     drawGridLines(painter);
     drawGridLabel(painter);
     drawR1Graphic(painter);
-    //drawHiddenGridLines(painter);
 
     painter.restore();
 
@@ -143,8 +142,8 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
     {
         if (i % scaleX() == 0 && i != 0)
         {
-            double number = (double)(i) / ((double)scaleX()/zoom());
-            QString s = axisNumber(number);
+            double number = ( i / scaleX() ) * zoom();
+            QString s = axisNumber(number, zoomLevel());
 
             if (topY <= 0)
             {
@@ -169,8 +168,8 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
     {
         if (i % scaleY() == 0 && i != 0)
         {
-            double number = -(double)(i) / ((double)scaleY()/zoom());
-            QString s = axisNumber(number);
+            double number = ( i / scaleY() ) * zoom();
+            QString s = axisNumber(number, zoomLevel());
             if (leftX >= 0)
             {
                 painter.setPen(QPen(QColor(0x6B6B47)));
@@ -243,6 +242,8 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
 
 void Cartesian2DWidget::setXRange(double a, double b)
 {
+    double z = (double)width() / ((double)scaleX() * (b-a));
+    setZoom(z);
     setCenter(0.5*(a+b), centerY());
     update();
 }

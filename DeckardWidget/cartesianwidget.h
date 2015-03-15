@@ -53,6 +53,8 @@ public:
     // zoom
     double zoom() const;
     void setZoom(double zoom);
+    int zoomLevel() const;
+    void setZoomLevel(int level);
 
     // functions
     void setFunctionConfig(FunctionConfig fc);
@@ -65,7 +67,7 @@ protected:
     virtual void drawGridLabel(QPainter& painter) = 0;
     virtual void drawR1Graphic(QPainter& painter) = 0;
 
-    QString axisNumber(double) const;
+    QString axisNumber(double number, int zoomLevel) const;
 
     void calcBounds();
 
@@ -74,6 +76,7 @@ protected:
     double mymin;
     double mymax;
     double mzoom;
+    int mzoomLevel;
 
     bool leftButtonPressed;
     bool rightButtonPressed;

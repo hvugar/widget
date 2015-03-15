@@ -1,4 +1,5 @@
 #include "cartesianwidget.h"
+#include <math.h>
 
 #define scale_min 80
 #define scale_max 150
@@ -146,12 +147,34 @@ void CartesianWidget::setZoom(double zoom)
     emit zoomChanged(mzoom);
 }
 
+int CartesianWidget::zoomLevel() const
+{
+    return mzoomLevel;
+}
+
+void CartesianWidget::setZoomLevel(int level)
+{
+    mzoomLevel = level;
+    if (mzoomLevel == 0) {
+        setZoom(1.0);
+    }
+    if (mzoomLevel < 0) {
+        int lvl = -(level-1)/3;
+        setZoom(pow(2,level)*pow(0.8, lvl));
+    }
+    if (mzoomLevel > 0) {
+        int lvl = -(level+1)/3;
+        setZoom(pow(2,level)*pow(0.8, lvl));
+    }
+}
+
 void CartesianWidget::reset()
 {
     setOffset(0, 0);
     setCenter(0.0, 0.0);
     setScale(100, 100);
     setZoom(1.0);
+    setZoomLevel(0);
 
     level = Level1;
 
@@ -172,11 +195,12 @@ void CartesianWidget::zoomIn()
             setScale(min, min);
             switch (level)
             {
-            case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
-            case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
-            case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
+            //case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
+            //case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
+            //case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
             default: break;
             }
+            setZoomLevel(zoomLevel()-1);
         }
     }
     update();
@@ -188,16 +212,20 @@ void CartesianWidget::zoomOut()
     int max = scale_max;
     int stp = scale_stp;
 
-    setScale(scaleX() - stp, scaleY() - stp);
-    if (scaleX() < min)
+    if (zoom() < 1000000000.0)
     {
-        setScale(max, max);
-        switch (level)
+        setScale(scaleX() - stp, scaleY() - stp);
+        if (scaleX() < min)
         {
-        case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
-        case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
-        case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
-        default: break;
+            setScale(max, max);
+            switch (level)
+            {
+            //case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
+            //case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
+            //case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
+            default: break;
+            }
+            setZoomLevel(zoomLevel()+1);
         }
     }
     update();
@@ -221,11 +249,14 @@ void CartesianWidget::addFunctionConfig(FunctionConfig fc)
     fcs.append(fc);
 }
 
-QString CartesianWidget::axisNumber(double number) const
+QString CartesianWidget::axisNumber(double number, int zoomLevel)  const
 {
     int precition = 12;
+    if (zoomLevel < 0) precition = -zoomLevel/3+1;
+    if (zoomLevel >= 0) precition = 1;
     QString s = QString::number(number, 'f', precition);
-    while(s.endsWith('0') )
+
+    while(s.endsWith('0'))
     {
         s.chop(1);
         if (s.endsWith('.'))
@@ -234,5 +265,6 @@ QString CartesianWidget::axisNumber(double number) const
             break;
         }
     }
+
     return s;
 }
