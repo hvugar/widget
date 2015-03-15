@@ -10,6 +10,8 @@ public:
     explicit Cartesian2DWidget(QWidget *parent = 0);
     virtual ~Cartesian2DWidget();
 
+    virtual void setXRange(double a, double b);
+
 protected:
     virtual void resizeEvent(QResizeEvent*);
     virtual void paintEvent(QPaintEvent*);

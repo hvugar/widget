@@ -3,6 +3,7 @@
 #include <QtGui/QFontMetrics>
 #include <QtGui/QFontMetricsF>
 #include <QtCore/QDebug>
+#include <math.h>
 
 Cartesian2DWidget::Cartesian2DWidget(QWidget *parent) : CartesianWidget(parent)
 {
@@ -238,4 +239,10 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
     }
 
     painter.restore();
+}
+
+void Cartesian2DWidget::setXRange(double a, double b)
+{
+    setCenter(0.5*(a+b), centerY());
+    update();
 }

@@ -59,21 +59,21 @@ void MainWindow::initFunction()
     fc1.a = -10.5;
     fc1.b = +10.5;
     fc1.penColor = 0xff0000;
-    //cartesianWidget->addFunctionConfig(fc1);
+    cartesianWidget->addFunctionConfig(fc1);
 
     FunctionConfig fc2;
     fc2.f = f1;
     fc2.a = -2.5;
     fc2.b = +2.5;
     fc2.penColor = 0x0000ff;
-    //cartesianWidget->addFunctionConfig(fc2);
+    cartesianWidget->addFunctionConfig(fc2);
 
     FunctionConfig fc3;
     fc3.f = f2;
     fc3.a = -1.5;
     fc3.b = +2.5;
     fc3.penColor = 0x0000ff;
-    //cartesianWidget->addFunctionConfig(fc3);
+    cartesianWidget->addFunctionConfig(fc3);
 }
 
 void MainWindow::cwCenterChanged(double centerX, double centerY)

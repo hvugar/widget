@@ -12,7 +12,6 @@
 #include <QWheelEvent>
 #include <QMouseEvent>
 
-#include <math.h>
 #include "functionconfig.h"
 
 typedef enum { Level1, Level2, Level3 } Levels;
