@@ -3,12 +3,12 @@
 
 #include "cartesianwidget.h"
 
-class CartesianWidget2 : public CartesianWidget
+class Cartesian2DWidget : public CartesianWidget
 {
     Q_OBJECT
 public:
-    explicit CartesianWidget2(QWidget *parent = 0);
-    virtual ~CartesianWidget2();
+    explicit Cartesian2DWidget(QWidget *parent = 0);
+    virtual ~Cartesian2DWidget();
 
 protected:
     virtual void resizeEvent(QResizeEvent*);

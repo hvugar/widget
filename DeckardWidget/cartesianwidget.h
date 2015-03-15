@@ -103,6 +103,8 @@ signals:
 
 public slots:
     void reset();
+    void zoomIn();
+    void zoomOut();
 };
 
 #endif // CARTESIANWIDGET_H

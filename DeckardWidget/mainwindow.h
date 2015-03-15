@@ -12,10 +12,9 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QStatusBar>
+#include <QTimer>
 
-#include "cartesianwidget0.h"
-#include "cartesianwidget1.h"
-#include "cartesianwidget2.h"
+#include "cartesianwidget2d.h"
 
 class MainWindow : public QMainWindow
 {
@@ -47,6 +46,9 @@ public slots:
     void cwScaleChanged(int, int);
     void cwZoomChanged(double);
     void cwBoundsChanged(double,double,double,double);
+
+    void cwZoomIn();
+    void cwZoomOut();
 };
 
 #endif // MAINWINDOW_H

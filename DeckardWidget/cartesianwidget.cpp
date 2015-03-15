@@ -1,5 +1,9 @@
 #include "cartesianwidget.h"
 
+#define scale_min 80
+#define scale_max 150
+#define scale_stp 10
+
 CartesianWidget::CartesianWidget(QWidget *parent) : QWidget(parent)
 {
     setAutoFillBackground(true);
@@ -151,6 +155,51 @@ void CartesianWidget::reset()
 
     level = Level1;
 
+    update();
+}
+
+void CartesianWidget::zoomIn()
+{
+    int min = scale_min;
+    int max = scale_max;
+    int stp = scale_stp;
+
+    if (zoom() > 0.00000001)
+    {
+        setScale(scaleX() + stp, scaleY() + stp);
+        if (scaleX() > max)
+        {
+            setScale(min, min);
+            switch (level)
+            {
+            case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
+            case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
+            case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
+            default: break;
+            }
+        }
+    }
+    update();
+}
+
+void CartesianWidget::zoomOut()
+{
+    int min = scale_min;
+    int max = scale_max;
+    int stp = scale_stp;
+
+    setScale(scaleX() - stp, scaleY() - stp);
+    if (scaleX() < min)
+    {
+        setScale(max, max);
+        switch (level)
+        {
+        case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
+        case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
+        case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
+        default: break;
+        }
+    }
     update();
 }
 

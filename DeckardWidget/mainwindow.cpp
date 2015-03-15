@@ -28,11 +28,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     setStatusBar(statusBar);
 
-    cartesianWidget = new CartesianWidget2;
+    cartesianWidget = new Cartesian2DWidget;
     setCentralWidget(cartesianWidget);
     //setWindowState(Qt::WindowMaximized);
 
-    toolBar->addAction("A", cartesianWidget, SLOT(reset()));
+    toolBar->addAction("R", cartesianWidget, SLOT(reset()));
+    toolBar->addAction("+", this, SLOT(cwZoomIn()));
+    toolBar->addAction("-", this, SLOT(cwZoomOut()));
+
 
     initFunction();
 
@@ -53,24 +56,24 @@ void MainWindow::initFunction()
 {
     FunctionConfig fc1;
     fc1.f = f5;
-    fc1.a = -20.5;
-    fc1.b = +20.5;
+    fc1.a = -10.5;
+    fc1.b = +10.5;
     fc1.penColor = 0xff0000;
-    cartesianWidget->addFunctionConfig(fc1);
+    //cartesianWidget->addFunctionConfig(fc1);
 
     FunctionConfig fc2;
     fc2.f = f1;
     fc2.a = -2.5;
     fc2.b = +2.5;
     fc2.penColor = 0x0000ff;
-    cartesianWidget->addFunctionConfig(fc2);
+    //cartesianWidget->addFunctionConfig(fc2);
 
     FunctionConfig fc3;
     fc3.f = f2;
     fc3.a = -1.5;
     fc3.b = +2.5;
     fc3.penColor = 0x0000ff;
-    cartesianWidget->addFunctionConfig(fc3);
+    //cartesianWidget->addFunctionConfig(fc3);
 }
 
 void MainWindow::cwCenterChanged(double centerX, double centerY)
@@ -96,5 +99,29 @@ void MainWindow::cwZoomChanged(double zoom)
 void MainWindow::cwBoundsChanged(double xmin, double ymin, double xmax, double ymax)
 {
     label2->setText(QString("Bounds: (%1 %2 %3 %4)").arg(xmin, 6, 'f').arg(xmax, 6, 'f').arg(ymin, 6, 'f').arg(ymax, 6, 'f'));
+}
+
+void MainWindow::cwZoomIn()
+{
+    for (int i=0; i<8; i++)
+    {
+        QTimer* timer = new QTimer();
+        connect(timer, SIGNAL(timeout()), cartesianWidget, SLOT(zoomIn()));
+        timer->setInterval(20*(8-i));
+        timer->setSingleShot(true);
+        timer->start();
+    }
+}
+
+void MainWindow::cwZoomOut()
+{
+    for (int i=0; i<8; i++)
+    {
+        QTimer* timer = new QTimer();
+        connect(timer, SIGNAL(timeout()), cartesianWidget, SLOT(zoomOut()));
+        timer->setInterval(20*(8-i));
+        timer->setSingleShot(true);
+        timer->start();
+    }
 }
 
