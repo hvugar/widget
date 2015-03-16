@@ -168,14 +168,21 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
             if (topY <= 0)
             {
                 painter.setPen(QPen(QColor(0x6B6B47)));
-                painter.drawText(i-fm.width(s)/2, topY - fm.height()/3, s);
-                painter.setPen(QPen(QColor(0xff0000)));
-                painter.drawEllipse(i-fm.width(s)/2, topY - fm.height()/3, 5, 5);
+                painter.translate(+i, topY);
+//                painter.drawText(i-fm.width(s)/2, topY - fm.height()/3, s);
+                painter.drawText(-fm.width(s)/2, -fm.height()/3, s);
+//                painter.setPen(QPen(QColor(0xff0000)));
+//                painter.drawEllipse(-fm.width(s)/2, -fm.height()/3, 5, 5);
+//                painter.drawText(-fm.width(s)/2, -fm.height()/3, s);
+                painter.translate(-i, -topY);
             }
             else if (bottomY >= 0)
             {
                 painter.setPen(QPen(QColor(0x6B6B47)));
-                painter.drawText(i-fm.width(s)/2, bottomY + fm.height(), s);
+                painter.translate(+i, +bottomY);
+//                painter.drawText(i-fm.width(s)/2, bottomY + fm.height(), s);
+                painter.drawText(-fm.width(s)/2, fm.height(), s);
+                painter.translate(-i, -bottomY);
             }
             else
             {

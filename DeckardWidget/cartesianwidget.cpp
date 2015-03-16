@@ -171,10 +171,10 @@ void CartesianWidget::setZoomLevel(int level)
 void CartesianWidget::reset()
 {
     setOffset(0, 0);
-    setCenter(0.0, 0.0);
+    setCenter(1.0, 1.0);
     setScale(100, 100);
     setZoom(1.0);
-    setZoomLevel(0);
+    setZoomLevel(-16);
 
     level = Level1;
 
