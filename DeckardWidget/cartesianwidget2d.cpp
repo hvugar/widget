@@ -36,12 +36,17 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
     QPainter painter(this);
     painter.save();
 
-    double dx = w/2.0 - centerX() * ((double)scaleX() / zoom());
-    double dy = h/2.0 + centerY() * ((double)scaleY() / zoom());
+    double dx = w/2.0;
+    double dy = h/2.0;
 
-    qDebug() << dx << dy;
+    double cx = - centerX() * ((double)scaleX() / zoom());
+    double cy = + centerY() * ((double)scaleY() / zoom());
+
+    qDebug() << "void Cartesian2DWidget::paintEvent(QPaintEvent *e) [" << dx << ", " << dy << "]";
+    qDebug() << "void Cartesian2DWidget::paintEvent(QPaintEvent *e) [" << cx << ", " << cy << "]";
 
     painter.translate(dx, dy);
+    painter.translate(cx, cy);
 
     drawGridLines(painter);
     drawGridLabel(painter);
@@ -52,6 +57,11 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
     painter.setPen(Qt::red);
     painter.drawLine(w/2.0-2.0, h/2.0,     w/2.0+2.0, h/2.0);
     painter.drawLine(w/2.0,     h/2.0-2.0, w/2.0,     h/2.0+2.0);
+
+//     50000399 -49999699  100 2e-07 5e+07 5e+07 0.1 0.1
+//    painter.translate(dx, dy);
+//    painter.translate(-33554431, 0);
+//    painter.drawText( +33554431, 0, "aaaaaaa");
 
     painter.end();
 }
@@ -103,10 +113,13 @@ void Cartesian2DWidget::drawGridLines(QPainter& painter)
     int topY    = +h/2 - dy;
     int bottomY = -h/2 - dy;
 
+    qDebug() << "void Cartesian2DWidget::drawGridLines(QPainter& painter) [" << leftX << ", " << rightX << "] [" << bottomY << ", " << topY << "]";
+
     int a=1;
     if (scaleX() % 5 == 0) {a = 5;} else
         if (scaleX() % 4 == 0) {a = 4;} else
             if (scaleX() % 2 == 0) {a = 2;}
+    a=5;
 
     painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
     for (int i=leftX; i<rightX; i++) if ((i % (scaleX()/a)) == 0) painter.drawLine(i, bottomY, i, topY);
@@ -129,16 +142,18 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
 
     QFontMetrics fm = painter.fontMetrics();
 
-    int w = width();
-    int h = height();
+    double w = width();
+    double h = height();
 
-    int dx = centerX() * ((double)scaleX()/zoom());
-    int dy = centerY() * ((double)scaleY()/zoom());
+    double dx = centerX() * ((double)scaleX()/zoom());
+    double dy = centerY() * ((double)scaleY()/zoom());
 
-    int leftX   = -w/2 + dx;
-    int rightX  = +w/2 + dx;
-    int topY    = +h/2 - dy;
-    int bottomY = -h/2 - dy;
+    int leftX   = -w/2.0 + dx;
+    int rightX  = +w/2.0 + dx;
+    int topY    = +h/2.0 - dy;
+    int bottomY = -h/2.0 - dy;
+
+    qDebug()  << leftX << rightX << topY << bottomY << scaleX() << zoom() << dx << dy << centerX() << centerY();
 
     // draw absis scale numbers
     for (int i=leftX; i<rightX; i++)
@@ -152,10 +167,10 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
 
             if (topY <= 0)
             {
-                //qDebug() << "topY" << topY << i;
                 painter.setPen(QPen(QColor(0x6B6B47)));
-                qDebug() << "ok" << i-fm.width(s)/2 << topY - fm.height()/3;
                 painter.drawText(i-fm.width(s)/2, topY - fm.height()/3, s);
+                painter.setPen(QPen(QColor(0xff0000)));
+                painter.drawEllipse(i-fm.width(s)/2, topY - fm.height()/3, 5, 5);
             }
             else if (bottomY >= 0)
             {

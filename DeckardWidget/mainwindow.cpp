@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    resize(800, 600);
+    //resize(800, 600);
 
     statusBar = new QStatusBar;
 
@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     setStatusBar(statusBar);
 
     cartesianWidget = new Cartesian2DWidget;
+    cartesianWidget->resize(800, 600);
+    cartesianWidget->setMinimumSize(800, 600);
     setCentralWidget(cartesianWidget);
     //setWindowState(Qt::WindowMaximized);
 
@@ -140,6 +142,6 @@ void MainWindow::showSettingDialog()
     QPointF r = sw->xrange();
 
     cartesianWidget->setCenter(c.x(), c.y());
-    cartesianWidget->setXRange(r.x(), r.y());
+    //cartesianWidget->setXRange(r.x(), r.y());
     cartesianWidget->update();
 }
