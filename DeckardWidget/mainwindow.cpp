@@ -96,7 +96,7 @@ void MainWindow::cwScaleChanged(int scaleX, int scaleY)
 
 void MainWindow::cwZoomChanged(double zoom)
 {
-    label4->setText(QString("Zoom: %1").arg((zoom)));
+    label4->setText(QString("Zoom: %1").arg(zoom, 8, 'f'));
 }
 
 void MainWindow::cwBoundsChanged(double xmin, double ymin, double xmax, double ymax)
