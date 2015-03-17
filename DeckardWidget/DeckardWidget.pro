@@ -17,10 +17,12 @@ SOURCES += main.cpp\
     functionconfig.cpp \
     cartesianwidget.cpp \
     cartesianwidget2d.cpp \
+    cartesianwidget2d_1.cpp \
     settingwidget.cpp
 
 HEADERS  += mainwindow.h \
     functionconfig.h \
     cartesianwidget.h \
     cartesianwidget2d.h \
+    cartesianwidget2d_1.h \
     settingwidget.h

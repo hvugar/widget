@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setStatusBar(statusBar);
 
-    cartesianWidget = new Cartesian2DWidget;
+    cartesianWidget = new Cartesian2DWidget1;
     cartesianWidget->resize(800, 600);
     cartesianWidget->setMinimumSize(800, 600);
     setCentralWidget(cartesianWidget);

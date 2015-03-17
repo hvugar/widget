@@ -15,6 +15,7 @@
 #include <QTimer>
 
 #include "cartesianwidget2d.h"
+#include "cartesianwidget2d_1.h"
 #include "settingwidget.h"
 
 class MainWindow : public QMainWindow
@@ -28,7 +29,7 @@ public:
     void initFunction();
 
 private:
-    Cartesian2DWidget* cartesianWidget;
+    Cartesian2DWidget1* cartesianWidget;
     SettingWidget* settingWidget;
 
     QToolBar* toolBar;

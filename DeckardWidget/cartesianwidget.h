@@ -1,6 +1,13 @@
 #ifndef CARTESIANWIDGET_H
 #define CARTESIANWIDGET_H
 
+#define SCALE_MIN 80
+#define SCALE_MAX 150
+#define SCALE_STP 10
+
+#define ZOOM_MINIMUM 0.00000001
+#define ZOOM_MAXIMUM 100000000
+
 #include <QDebug>
 #include <QWidget>
 #include <QPainter>

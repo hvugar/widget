@@ -1,10 +1,6 @@
 #include "cartesianwidget.h"
 #include <math.h>
 
-#define scale_min 80
-#define scale_max 150
-#define scale_stp 10
-
 CartesianWidget::CartesianWidget(QWidget *parent) : QWidget(parent)
 {
     setAutoFillBackground(true);
@@ -171,10 +167,10 @@ void CartesianWidget::setZoomLevel(int level)
 void CartesianWidget::reset()
 {
     setOffset(0, 0);
-    setCenter(1.0, 1.0);
+    setCenter(0.0, 0.0);
     setScale(100, 100);
     setZoom(1.0);
-    setZoomLevel(-16);
+    setZoomLevel(0);
 
     level = Level1;
 
@@ -183,24 +179,20 @@ void CartesianWidget::reset()
 
 void CartesianWidget::zoomIn()
 {
-    int min = scale_min;
-    int max = scale_max;
-    int stp = scale_stp;
-
-    if (zoom() > 0.00000001)
+    if (zoom() > ZOOM_MINIMUM)
     {
-        setScale(scaleX() + stp, scaleY() + stp);
-        if (scaleX() > max)
+        setScale(scaleX() + SCALE_STP, scaleY() + SCALE_STP);
+        if (scaleX() > SCALE_MAX)
         {
-            setScale(min, min);
-            switch (level)
-            {
-            //case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
-            //case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
-            //case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
-            default: break;
-            }
+            setScale(SCALE_MIN, SCALE_MIN);
             setZoomLevel(zoomLevel()-1);
+//            switch (level)
+//            {
+//            case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
+//            case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
+//            case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
+//            default: break;
+//            }
         }
     }
     update();
@@ -208,24 +200,20 @@ void CartesianWidget::zoomIn()
 
 void CartesianWidget::zoomOut()
 {
-    int min = scale_min;
-    int max = scale_max;
-    int stp = scale_stp;
-
-    if (zoom() < 1000000000.0)
+    if (zoom() < ZOOM_MAXIMUM)
     {
-        setScale(scaleX() - stp, scaleY() - stp);
-        if (scaleX() < min)
+        setScale(scaleX() - SCALE_STP, scaleY() - SCALE_STP);
+        if (scaleX() < SCALE_MIN)
         {
-            setScale(max, max);
-            switch (level)
-            {
-            //case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
-            //case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
-            //case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
-            default: break;
-            }
+            setScale(SCALE_MAX, SCALE_MAX);
             setZoomLevel(zoomLevel()+1);
+//            switch (level)
+//            {
+//            case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
+//            case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
+//            case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
+//            default: break;
+//            }
         }
     }
     update();
