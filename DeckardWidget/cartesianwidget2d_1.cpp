@@ -66,7 +66,7 @@ void Cartesian2DWidget1::paintEvent(QPaintEvent *e)
         {
             painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
             painter.drawLine(i, -y1, i, -y2);
-            painter.drawLine(-i, -y1, -i, -y2);
+            //painter.drawLine(-i, -y1, -i, -y2);
         }
         painter.setPen(QPen(QColor(0xCACABC)));
         if ( i % scaleX() == 0)
@@ -81,7 +81,7 @@ void Cartesian2DWidget1::paintEvent(QPaintEvent *e)
                 QString s1 = axisNumber(number, zoomLevel());
                 QString s2 = axisNumber(-number, zoomLevel());
                 painter.drawText(i-fm.width(s1)/2, fm.height(), s1);
-                painter.drawText(-i-fm.width(s2)/2, fm.height(), s2);
+                //painter.drawText(-i-fm.width(s2)/2, fm.height(), s2);
             }
         }
     }
@@ -100,13 +100,14 @@ void Cartesian2DWidget1::paintEvent(QPaintEvent *e)
             painter.drawLine(x1, i, x2, i);
             painter.drawLine(x1, -i, x2, -i);
 
-            if ( i != 0 ) {
+            if ( i != 0 )
+            {
                 painter.setPen(QPen(Qt::black));
                 double number = ( i / scaleY() ) * zoom();
                 QString s1 = axisNumber(-number, zoomLevel());
                 QString s2 = axisNumber(number, zoomLevel());
                 painter.drawText(-fm.width(s1)-4, i+fm.height()/2-3, s1);
-                painter.drawText(-fm.width(s2)-4, -i+fm.height()/2-3, s2);
+                //painter.drawText(-fm.width(s2)-4, -i+fm.height()/2-3, s2);
             }
         }
     }

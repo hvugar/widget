@@ -67,12 +67,17 @@ public:
     void setFunctionConfig(FunctionConfig fc);
     void addFunctionConfig(FunctionConfig fc);
 
+    void addLine(QLineF line);
+    void addPoint(QPointF point);
+
 protected:
     virtual void resizeEvent(QResizeEvent*);
 
     virtual void drawGridLines(QPainter& painter) = 0;
     virtual void drawGridLabel(QPainter& painter) = 0;
     virtual void drawR1Graphic(QPainter& painter) = 0;
+    virtual QPoint toDisplayPoint(double x, double y) = 0;
+    virtual QPointF fromDisplayPoint(int x, int y) = 0;
 
     QString axisNumber(double number, int zoomLevel) const;
 
@@ -92,6 +97,8 @@ protected:
     QList<FunctionConfig> fcs;
     Levels level;
 
+    QList<QPointF> points;
+    QList<QLineF> lines;
 
 private:
     int m_scaleX;
@@ -109,6 +116,7 @@ signals:
     void offsetChanged(int offsetX, int offsetY);
     void boundsChanged(double xmin, double ymin, double xmax, double ymax);
     void zoomChanged(double zoom);
+    void zoomLevelChanged(int zoomLevel);
 
 public slots:
     void reset();

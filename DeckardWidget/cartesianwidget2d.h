@@ -24,6 +24,9 @@ protected:
     virtual void drawGridLabel(QPainter& painter);
     virtual void drawR1Graphic(QPainter& painter);
 
+    virtual QPoint toDisplayPoint(double x, double y);
+    virtual QPointF fromDisplayPoint(int x, int y);
+
 signals:
 
 public slots:

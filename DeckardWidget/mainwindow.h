@@ -18,6 +18,8 @@
 #include "cartesianwidget2d_1.h"
 #include "settingwidget.h"
 
+#include <methods.h>
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -29,7 +31,7 @@ public:
     void initFunction();
 
 private:
-    Cartesian2DWidget1* cartesianWidget;
+    Cartesian2DWidget* cartesianWidget;
     SettingWidget* settingWidget;
 
     QToolBar* toolBar;
@@ -49,11 +51,14 @@ public slots:
     void cwScaleChanged(int, int);
     void cwZoomChanged(double);
     void cwBoundsChanged(double,double,double,double);
-
     void cwZoomIn();
     void cwZoomOut();
 
     void showSettingDialog();
+    void func1();
+    void printer(RnFunction f, double *x, int n);
+
+    void conjugate_gradient_method(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon);
 };
 
 #endif // MAINWINDOW_H

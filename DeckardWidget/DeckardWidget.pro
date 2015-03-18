@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DeckardWidget
 TEMPLATE = app
 
+INCLUDEPATH = ../../../num_methods/trunk/gradient
+LIBS += -L../../../num_methods/trunk/gradient -lgradient.dll
 
 SOURCES += main.cpp\
     mainwindow.cpp \

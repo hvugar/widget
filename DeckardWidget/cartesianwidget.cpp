@@ -134,13 +134,26 @@ double CartesianWidget::zoom() const
     return mzoom;
 }
 
-void CartesianWidget::setZoom(double zoom)
+void CartesianWidget::setZoom(double zm)
 {
-    mzoom = zoom;
+    mzoom = zm;
 
     calcBounds();
 
-    emit zoomChanged(mzoom);
+    if (zm == 1.0)
+    {
+        mzoomLevel = 0;
+    }
+    if (zm < 1.0)
+    {
+        mzoomLevel = (int)floor(log(zm*pow(1.25, 1.0/3.0)) / log(2*pow(1.25, 1.0/3.0)));
+    }
+    if (zm > 1.0)
+    {
+        mzoomLevel = (int)ceil(log(zm*pow(0.8, 1.0/3.0)) / log(2*pow(1.25, 1.0/3.0)));
+    }
+
+    emit zoomChanged(zm);
 }
 
 int CartesianWidget::zoomLevel() const
@@ -151,17 +164,24 @@ int CartesianWidget::zoomLevel() const
 void CartesianWidget::setZoomLevel(int level)
 {
     mzoomLevel = level;
-    if (mzoomLevel == 0) {
+
+    if (level == 0) {
         setZoom(1.0);
     }
-    if (mzoomLevel < 0) {
-        int lvl = -(level-1)/3;
+
+    if (level < 0)
+    {
+        int lvl = (1-level)/3.0;
         setZoom(pow(2,level)*pow(0.8, lvl));
     }
-    if (mzoomLevel > 0) {
-        int lvl = -(level+1)/3;
+
+    if (level > 0)
+    {
+        int lvl = -(level+1)/3.0;
         setZoom(pow(2,level)*pow(0.8, lvl));
     }
+
+    emit zoomLevelChanged(level);
 }
 
 void CartesianWidget::reset()
@@ -235,6 +255,16 @@ void CartesianWidget::calcBounds()
 void CartesianWidget::addFunctionConfig(FunctionConfig fc)
 {
     fcs.append(fc);
+}
+
+void CartesianWidget::addLine(QLineF line)
+{
+    lines.append(line);
+}
+
+void CartesianWidget::addPoint(QPointF point)
+{
+    points.append(point);
 }
 
 QString CartesianWidget::axisNumber(double number, int zoomLevel)  const
