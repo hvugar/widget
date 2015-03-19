@@ -146,8 +146,8 @@ void MainWindow::showSettingDialog()
     QPointF c = sw->center();
     QPointF r = sw->xrange();
 
-//    cartesianWidget->setCenter(c.x(), c.y());
-    cartesianWidget->setXRange(r.x(), r.y());
+    cartesianWidget->setCenter(c.x(), c.y());
+//    cartesianWidget->setXRange(r.x(), r.y());
     cartesianWidget->update();
 }
 
@@ -181,103 +181,104 @@ void MainWindow::func1()
     free(x);
 }
 
-double argmin(double alpha);
+void MainWindow::printer(RnFunction f, double *x, int n)
+{}
 
 void MainWindow::conjugate_gradient_method(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon)
 {
-    int i = 0;
-    int k = 0;
+//    int i = 0;
+//    int k = 0;
 
-    int iteration = 0;
-    int count = 0;
+//    int iteration = 0;
+//    int count = 0;
 
-    // Direction
-    double *s  = (double*) malloc(sizeof(double) * n);
-    // Saves last point coordinates
-    double *x1 = (double*) malloc(sizeof(double) * n);
-    // Used for one dimention minimization for stopring next point coordinates
-    double *x2 = (double*) malloc(sizeof(double) * n);
+//    // Direction
+//    double *s  = (double*) malloc(sizeof(double) * n);
+//    // Saves last point coordinates
+//    double *x1 = (double*) malloc(sizeof(double) * n);
+//    // Used for one dimention minimization for stopring next point coordinates
+//    double *x2 = (double*) malloc(sizeof(double) * n);
 
-    // Gradient of x(k) point
-    double* gr1 = (double*) malloc(sizeof(double) * n);
-    // Gradinet of x(k+1) point
-    double* gr2 = (double*) malloc(sizeof(double) * n);
+//    // Gradient of x(k) point
+//    double* gr1 = (double*) malloc(sizeof(double) * n);
+//    // Gradinet of x(k+1) point
+//    double* gr2 = (double*) malloc(sizeof(double) * n);
 
-    double gr1_mod = 0.0;
-    double gr2_mod = 0.0;
-    do
-    {
-        // First iteration
-        if (k == 0)
-        {
-            // Gradient of objectiv function in current point
-            gradient(f, x, n, grad_step, gr1);
+//    double gr1_mod = 0.0;
+//    double gr2_mod = 0.0;
+//    do
+//    {
+//        // First iteration
+//        if (k == 0)
+//        {
+//            // Gradient of objectiv function in current point
+//            gradient(f, x, n, grad_step, gr1);
 
-            // First direction is antigradient
-            for (i=0; i<n; i++) s[i] = -gr1[i];
+//            // First direction is antigradient
+//            for (i=0; i<n; i++) s[i] = -gr1[i];
 
-            // Module of gradient
-            gr1_mod = 0.0;
-            for (i=0; i<n; i++) gr1_mod += gr1[i]*gr1[i];
-        }
-        else
-        {
-            /// Gradient of objectiv function in next point
-            gradient(f, x, n, grad_step, gr2);
+//            // Module of gradient
+//            gr1_mod = 0.0;
+//            for (i=0; i<n; i++) gr1_mod += gr1[i]*gr1[i];
+//        }
+//        else
+//        {
+//            /// Gradient of objectiv function in next point
+//            gradient(f, x, n, grad_step, gr2);
 
-            // Module of next gradient
-            gr2_mod = 0.0;
-            for (i=0; i<n; i++) gr2_mod = gr2_mod + gr2[i]*gr2[i];
+//            // Module of next gradient
+//            gr2_mod = 0.0;
+//            for (i=0; i<n; i++) gr2_mod = gr2_mod + gr2[i]*gr2[i];
 
-            double w = gr2_mod / gr1_mod;
-            gr1_mod = gr2_mod;
+//            double w = gr2_mod / gr1_mod;
+//            gr1_mod = gr2_mod;
 
-            // Direction in next (k+1) iteration
-            for (i=0; i<n; i++) s[i] = -gr2[i] + s[i] * w;
-        }
+//            // Direction in next (k+1) iteration
+//            for (i=0; i<n; i++) s[i] = -gr2[i] + s[i] * w;
+//        }
 
-        iteration++;
+//        iteration++;
 
-        // Minimization in one dimensional direction
-        double argmin(double alpha)
-        {
-            for (int i=0; i<n; i++) x2[i] = x[i] + alpha * s[i];
-            return f(x2, n);
-        }
+//        // Minimization in one dimensional direction
+//        double argmin(double alpha)
+//        {
+//            for (int i=0; i<n; i++) x2[i] = x[i] + alpha * s[i];
+//            return f(x2, n);
+//        }
 
-        double a,b;
-        double alpha0 = 0.0;
-        straight_line_search_metod(argmin, alpha0, line_step, &a, &b);
-        double alpha = golden_section_search_min(argmin, a, b, gold_step);
-        //double alpha = minimize(f, x, s1, n, alpha0, line_step, gold_step);
-        //line_step /= 1.2;
+//        double a,b;
+//        double alpha0 = 0.0;
+//        straight_line_search_metod(argmin, alpha0, line_step, &a, &b);
+//        double alpha = golden_section_search_min(argmin, a, b, gold_step);
+//        //double alpha = minimize(f, x, s1, n, alpha0, line_step, gold_step);
+//        //line_step /= 1.2;
 
-        //
-        if (argmin(alpha)>argmin(alpha0)) alpha = alpha0;
+//        //
+//        if (argmin(alpha)>argmin(alpha0)) alpha = alpha0;
 
-        // Saving last point coordinates
-        memcpy(x1, x, sizeof(double) * n);
+//        // Saving last point coordinates
+//        memcpy(x1, x, sizeof(double) * n);
 
-        // Calculating next point coordinates
-        for (i=0; i<n; i++)
-        {
-            x[i] = x[i] + alpha * s[i];
-        }
+//        // Calculating next point coordinates
+//        for (i=0; i<n; i++)
+//        {
+//            x[i] = x[i] + alpha * s[i];
+//        }
 
-        //mod_s = 0.0;
-        //for (i=0; i<n; i++) mod_s = mod_s + s[i]*s[i];
-        //mod_s = vertor_norm(s, n);
-        //dist = distance(x1, x, n);
+//        //mod_s = 0.0;
+//        //for (i=0; i<n; i++) mod_s = mod_s + s[i]*s[i];
+//        //mod_s = vertor_norm(s, n);
+//        //dist = distance(x1, x, n);
 
-        if ( k == n ) { k = 0; } else { k++; }
+//        if ( k == n ) { k = 0; } else { k++; }
 
-    } while ( vertor_norm(s, n) > epsilon && distance(x1, x, n) > epsilon );
+//    } while ( vertor_norm(s, n) > epsilon && distance(x1, x, n) > epsilon );
 
-    free(gr1);
-    free(gr2);
-    free(s);
-    free(x1);
-    free(x2);
+//    free(gr1);
+//    free(gr2);
+//    free(s);
+//    free(x1);
+//    free(x2);
 
-    gr1 = gr2 = s = x1 = x2 = NULL;
+//    gr1 = gr2 = s = x1 = x2 = NULL;
 }

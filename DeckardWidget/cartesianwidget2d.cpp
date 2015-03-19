@@ -39,35 +39,79 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
     double dx = w/2.0;
     double dy = h/2.0;
 
+//    setCenter(1.0, 1.0);
+
     double cx = - centerX() * ((double)scaleX() / zoom());
     double cy = + centerY() * ((double)scaleY() / zoom());
 
-    painter.translate(dx, dy);
-    painter.translate(cx, cy);
+//    painter.translate(dx, dy);
+//    painter.translate(cx, cy);
 
-    drawGridLines(painter);
-    drawGridLabel(painter);
-    drawR1Graphic(painter);
+    double xmn = xmin() / zoom();
+    double xmx = xmax() / zoom();
+    double ymn = ymin() / zoom();
+    double ymx = ymax() / zoom();
 
-    painter.setPen(Qt::blue);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    for (int i=0; i<lines.size(); i++)
+    double intpart;
+    double fractX = modf (xmn , &intpart);
+    double fractY = modf (ymn , &intpart);
+
+    int x = fractX*scaleX();
+    int y = fractY*scaleY();
+
+    qDebug() << xmin() << xmax() <<xmn << xmx << fractX << intpart << x << y;
+
+    painter.translate(-x, y);
+
+    for (int i=x; i<x+width(); i++)
     {
-        QLineF line1 = lines.at(i);
-        QLineF line2;
-        line2.setP1(toDisplayPoint(line1.p1().x(), line1.p1().y()));
-        line2.setP2(toDisplayPoint(line1.p2().x(), line1.p2().y()));
-        painter.drawLine(line2);
+        if (i % scaleX() == 0)
+        {
+            painter.drawLine(i, 0, i, height());
+
+        }
     }
 
-    painter.setPen(Qt::blue);
-    painter.setBrush(Qt::red);
-    for (int i=0; i<points.size(); i++)
+    for (int i=y; i<y+width(); i++)
     {
-        QPointF point1 = points.at(i);
-        QPointF point2(toDisplayPoint(point1.x(), point1.y()));
-        painter.drawEllipse(point2, 2, 2);
+        if (i % scaleY() == 0)
+        {
+            painter.drawLine(0, i, width(), i);
+        }
     }
+
+//    setZoom(0.01);
+
+//    drawGridLines(painter);
+//    drawGridLabel(painter);
+//    drawR1Graphic(painter);
+
+//    painter.setPen(Qt::blue);
+//    painter.setRenderHint(QPainter::Antialiasing, true);
+//    for (int i=0; i<lines.size(); i++)
+//    {
+//        QLineF line1 = lines.at(i);
+//        QLineF line2;
+//        line2.setP1(toDisplayPoint(line1.p1().x(), line1.p1().y()));
+//        line2.setP2(toDisplayPoint(line1.p2().x(), line1.p2().y()));
+//        painter.drawLine(line2);
+//    }
+
+//    painter.setPen(Qt::blue);
+//    painter.setBrush(Qt::red);
+//    for (int i=0; i<points.size(); i++)
+//    {
+//        QPointF point1 = points.at(i);
+//        QPointF point2(toDisplayPoint(point1.x(), point1.y()));
+//        painter.drawEllipse(point2, 2, 2);
+//    }
+
+   // QPointF point2(toDisplayPoint(1.0, 0.0));
+  //  painter.drawEllipse(point2, 2, 2);
+
+    QPointF c1(toDisplayPoint(0, 0));
+    painter.drawLine(c1.x()-10, c1.y(), c1.x()+10, c1.y());
+    painter.drawLine(c1.x(), c1.y()-10, c1.x(), c1.y()+10);
 
     painter.restore();
 
