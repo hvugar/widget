@@ -286,3 +286,23 @@ QString CartesianWidget::axisNumber(double number, int zoomLevel)  const
 
     return s;
 }
+
+void CartesianWidget::setXRange(double a, double b)
+{
+    setCenter((a+b)/2.0, centerY());
+    if (xmax()-xmin() > (b-a))
+    {
+        while ( xmax()-xmin() > (b-a) )
+        {
+            setZoomLevel(zoomLevel()-1);
+        }
+    }
+    else
+    {
+        while ( xmax()-xmin() < (b-a) )
+        {
+            setZoomLevel(zoomLevel()+1);
+        }
+    }
+    update();
+}

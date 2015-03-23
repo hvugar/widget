@@ -1,5 +1,5 @@
-#ifndef CARTESIANWIDGET2_H
-#define CARTESIANWIDGET2_H
+#ifndef CARTESIANWIDGET2D_H
+#define CARTESIANWIDGET2D_H
 
 #include "cartesianwidget.h"
 
@@ -33,4 +33,4 @@ public slots:
 
 };
 
-#endif // CARTESIANWIDGET2_H
+#endif // CARTESIANWIDGET2D_H

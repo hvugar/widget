@@ -49,7 +49,10 @@ public:
     void setCenterX(double centerX);
     double centerY() const;
     void setCenterY(double centerY);
-    virtual void setCenter(double x, double y);
+    void setCenter(double x, double y);
+
+    // range
+    void setXRange(double a, double b);
 
     // bounds
     double xmin() const;

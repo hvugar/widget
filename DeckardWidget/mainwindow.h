@@ -16,6 +16,7 @@
 
 #include "cartesianwidget2d.h"
 #include "cartesianwidget2d_1.h"
+#include "cartesianwidget2d_2.h"
 #include "settingwidget.h"
 
 #include <methods.h>
@@ -31,7 +32,7 @@ public:
     void initFunction();
 
 private:
-    Cartesian2DWidget* cartesianWidget;
+    CartesianWidget* cartesianWidget;
     SettingWidget* settingWidget;
 
     QToolBar* toolBar;

@@ -7,6 +7,10 @@
 
 SettingWidget::SettingWidget(QWidget *parent) : QDialog(parent)
 {
+    radioButton1 = new QRadioButton;
+    radioButton2 = new QRadioButton;
+    radioButton1->setChecked(true);
+
     doubleSpinBox1 = new QDoubleSpinBox;
     doubleSpinBox1->setDecimals(DECIMALS);
     doubleSpinBox1->setSingleStep(SINGLE_STP);
@@ -28,10 +32,12 @@ SettingWidget::SettingWidget(QWidget *parent) : QDialog(parent)
     doubleSpinBox4->setRange(CENTER_MIN, CENTER_MAX);
 
     QHBoxLayout *hlayout1 = new QHBoxLayout;
+    hlayout1->addWidget(radioButton1);
     hlayout1->addWidget(doubleSpinBox1);
     hlayout1->addWidget(doubleSpinBox2);
 
     QHBoxLayout *hlayout2 = new QHBoxLayout;
+    hlayout2->addWidget(radioButton2);
     hlayout2->addWidget(doubleSpinBox3);
     hlayout2->addWidget(doubleSpinBox4);
 

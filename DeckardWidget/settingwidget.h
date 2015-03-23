@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include <QDoubleSpinBox>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QPointF>
 #include <QDebug>
 
@@ -23,9 +24,13 @@ public:
     void setXRange(double a, double b);
     QPointF xrange() const;
 
+    QRadioButton *radioButton1;
+    QRadioButton *radioButton2;
+
 private:
     QDoubleSpinBox *doubleSpinBox1;
     QDoubleSpinBox *doubleSpinBox2;
+
     QDoubleSpinBox *doubleSpinBox3;
     QDoubleSpinBox *doubleSpinBox4;
 
