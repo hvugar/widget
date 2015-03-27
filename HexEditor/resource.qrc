@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file>resources/fonts/consola.ttf</file>
+        <file>resources/fonts/consolab.ttf</file>
+        <file>resources/fonts/consolai.ttf</file>
+        <file>resources/fonts/consolaz.ttf</file>
+    </qresource>
+    <qresource prefix="/"/>
+    <qresource prefix="/images">
+        <file alias="images">resources/images/open_file.png</file>
+    </qresource>
+</RCC>
