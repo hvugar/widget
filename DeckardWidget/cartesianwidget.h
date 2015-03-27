@@ -21,8 +21,6 @@
 
 #include "functionconfig.h"
 
-typedef enum { Level1, Level2, Level3 } Levels;
-
 class CartesianWidget : public QWidget
 {
     Q_OBJECT
@@ -67,20 +65,19 @@ public:
     void setZoomLevel(int level);
 
     // functions
-    void setFunctionConfig(FunctionConfig fc);
-    void addFunctionConfig(FunctionConfig fc);
-
-    void addLine(QLineF line);
-    void addPoint(QPointF point);
-
+    QList<FunctionConfig>& functions();
+    QList<QLineF>& lines();
+    QList<QPointF>& points();
 protected:
     virtual void resizeEvent(QResizeEvent*);
 
     virtual void drawGridLines(QPainter& painter) = 0;
     virtual void drawGridLabel(QPainter& painter) = 0;
     virtual void drawR1Graphic(QPainter& painter) = 0;
-    virtual QPoint toDisplayPoint(double x, double y) = 0;
-    virtual QPointF fromDisplayPoint(int x, int y) = 0;
+    virtual void drawLines(QPainter& painter) = 0;
+    virtual void drawPoints(QPainter& painter) = 0;
+    virtual QPointF toDisplayPoint(double x, double y) = 0;
+    virtual QPointF fromDisplayPoint(double x, double y) = 0;
 
     QString axisNumber(double number, int zoomLevel) const;
 
@@ -98,10 +95,9 @@ protected:
     QPoint last;
 
     QList<FunctionConfig> fcs;
-    Levels level;
 
-    QList<QPointF> points;
-    QList<QLineF> lines;
+    QList<QPointF> mpoints;
+    QList<QLineF> mlines;
 
 private:
     int m_scaleX;

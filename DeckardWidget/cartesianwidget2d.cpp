@@ -51,9 +51,9 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
 
     painter.setPen(Qt::blue);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    for (int i=0; i<lines.size(); i++)
+    for (int i=0; i<lines().size(); i++)
     {
-        QLineF line1 = lines.at(i);
+        QLineF line1 = lines().at(i);
         QLineF line2;
         line2.setP1(toDisplayPoint(line1.p1().x(), line1.p1().y()));
         line2.setP2(toDisplayPoint(line1.p2().x(), line1.p2().y()));
@@ -62,9 +62,9 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
 
     painter.setPen(Qt::blue);
     painter.setBrush(Qt::red);
-    for (int i=0; i<points.size(); i++)
+    for (int i=0; i<points().size(); i++)
     {
-        QPointF point1 = points.at(i);
+        QPointF point1 = points().at(i);
         QPointF point2(toDisplayPoint(point1.x(), point1.y()));
         painter.drawEllipse(point2, 2, 2);
     }
@@ -274,17 +274,17 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
     painter.restore();
 }
 
-QPoint Cartesian2DWidget::toDisplayPoint(double x, double y)
+QPointF Cartesian2DWidget::toDisplayPoint(double x, double y)
 {
-    QPoint point;
-    int dx = x * ((double)scaleX() / zoom());
-    int dy = -y * ((double)scaleY() / zoom());
+    QPointF point;
+    double dx = x * ((double)scaleX() / zoom());
+    double dy = -y * ((double)scaleY() / zoom());
     point.setX(dx);
     point.setY(dy);
     return point;
 }
 
-QPointF Cartesian2DWidget::fromDisplayPoint(int x, int y)
+QPointF Cartesian2DWidget::fromDisplayPoint(double x, double y)
 {
     QPointF point;
     double dx  = (x / scaleX()) * zoom();
@@ -292,25 +292,4 @@ QPointF Cartesian2DWidget::fromDisplayPoint(int x, int y)
     point.setX(dx);
     point.setY(dy);
     return point;
-}
-
-
-void Cartesian2DWidget::setXRange(double a, double b)
-{
-    setCenter((a+b)/2.0, centerY());
-    if (xmax()-xmin() > (b-a))
-    {
-        while ( xmax()-xmin() > (b-a) )
-        {
-            setZoomLevel(zoomLevel()-1);
-        }
-    }
-    else
-    {
-        while ( xmax()-xmin() < (b-a) )
-        {
-            setZoomLevel(zoomLevel()+1);
-        }
-    }
-    update();
 }

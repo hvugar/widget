@@ -191,9 +191,6 @@ void CartesianWidget::reset()
     setScale(100, 100);
     setZoom(1.0);
     setZoomLevel(0);
-
-    level = Level1;
-
     update();
 }
 
@@ -206,13 +203,6 @@ void CartesianWidget::zoomIn()
         {
             setScale(SCALE_MIN, SCALE_MIN);
             setZoomLevel(zoomLevel()-1);
-//            switch (level)
-//            {
-//            case Level1: { setZoom(zoom()/2.0); level = Level2; } break;
-//            case Level2: { setZoom(zoom()/2.5); level = Level3; } break;
-//            case Level3: { setZoom(zoom()/2.0); level = Level1; } break;
-//            default: break;
-//            }
         }
     }
     update();
@@ -227,13 +217,6 @@ void CartesianWidget::zoomOut()
         {
             setScale(SCALE_MAX, SCALE_MAX);
             setZoomLevel(zoomLevel()+1);
-//            switch (level)
-//            {
-//            case Level1: { setZoom(zoom()*2.0); level = Level3; } break;
-//            case Level3: { setZoom(zoom()*2.5); level = Level2; } break;
-//            case Level2: { setZoom(zoom()*2.0); level = Level1; } break;
-//            default: break;
-//            }
         }
     }
     update();
@@ -252,19 +235,19 @@ void CartesianWidget::calcBounds()
     emit boundsChanged(mxmin, mymin, mxmax, mymax);
 }
 
-void CartesianWidget::addFunctionConfig(FunctionConfig fc)
+QList<FunctionConfig>& CartesianWidget::functions()
 {
-    fcs.append(fc);
+    return fcs;
 }
 
-void CartesianWidget::addLine(QLineF line)
+QList<QLineF>& CartesianWidget::lines()
 {
-    lines.append(line);
+    return mlines;
 }
 
-void CartesianWidget::addPoint(QPointF point)
+QList<QPointF>& CartesianWidget::points()
 {
-    points.append(point);
+    return mpoints;
 }
 
 QString CartesianWidget::axisNumber(double number, int zoomLevel)  const
@@ -295,6 +278,10 @@ void CartesianWidget::setXRange(double a, double b)
         while ( xmax()-xmin() > (b-a) )
         {
             setZoomLevel(zoomLevel()-1);
+        }
+        if ( xmax()-xmin() < (b-a) )
+        {
+            setZoomLevel(zoomLevel()+1);
         }
     }
     else

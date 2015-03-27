@@ -10,8 +10,6 @@ public:
     explicit Cartesian2DWidget2(QWidget *parent = 0);
     virtual ~Cartesian2DWidget2();
 
-    virtual void setXRange(double a, double b);
-
 protected:
     virtual void resizeEvent(QResizeEvent*);
     virtual void paintEvent(QPaintEvent*);
@@ -23,9 +21,11 @@ protected:
     virtual void drawGridLines(QPainter& painter);
     virtual void drawGridLabel(QPainter& painter);
     virtual void drawR1Graphic(QPainter& painter);
+    virtual void drawLines(QPainter& painter);
+    virtual void drawPoints(QPainter& painter);
 
-    virtual QPoint toDisplayPoint(double x, double y);
-    virtual QPointF fromDisplayPoint(int x, int y);
+    virtual QPointF toDisplayPoint(double x, double y);
+    virtual QPointF fromDisplayPoint(double x, double y);
 
 signals:
 
