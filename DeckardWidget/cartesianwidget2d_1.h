@@ -1,14 +1,14 @@
-#ifndef CARTESIANWIDGET2D_2_H
-#define CARTESIANWIDGET2D_2_H
+#ifndef CARTESIANWIDGET2D1_H
+#define CARTESIANWIDGET2D1_H
 
 #include "cartesianwidget.h"
 
-class Cartesian2DWidget2 : public CartesianWidget
+class Cartesian2DWidget1 : public CartesianWidget
 {
     Q_OBJECT
 public:
-    explicit Cartesian2DWidget2(QWidget *parent = 0);
-    virtual ~Cartesian2DWidget2();
+    explicit Cartesian2DWidget1(QWidget *parent = 0);
+    virtual ~Cartesian2DWidget1();
 
 protected:
     virtual void resizeEvent(QResizeEvent*);
@@ -21,8 +21,6 @@ protected:
     virtual void drawGridLines(QPainter& painter);
     virtual void drawGridLabel(QPainter& painter);
     virtual void drawR1Graphic(QPainter& painter);
-    virtual void drawLines(QPainter& painter);
-    virtual void drawPoints(QPainter& painter);
 
     virtual QPointF toDisplayPoint(double x, double y);
     virtual QPointF fromDisplayPoint(double x, double y);
@@ -33,4 +31,4 @@ public slots:
 
 };
 
-#endif // CARTESIANWIDGET2D_2_H
+#endif // CARTESIANWIDGET2D1_H

@@ -21,6 +21,8 @@ protected:
     virtual void drawGridLines(QPainter& painter);
     virtual void drawGridLabel(QPainter& painter);
     virtual void drawR1Graphic(QPainter& painter);
+    virtual void drawLines(QPainter& painter);
+    virtual void drawPoints(QPainter& painter);
 
     virtual QPointF toDisplayPoint(double x, double y);
     virtual QPointF fromDisplayPoint(double x, double y);

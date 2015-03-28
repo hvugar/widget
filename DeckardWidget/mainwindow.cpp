@@ -7,62 +7,73 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     //resize(800, 600);
-
-    statusBar = new QStatusBar;
-
-    label1 = new QLabel;
-    label2 = new QLabel;
-    label3 = new QLabel;
-    label4 = new QLabel;
-
-    toolButton1 = new QToolButton;
-    toolButton2 = new QToolButton;
-    toolButton3 = new QToolButton;
-    toolBar = new QToolBar;
-    addToolBar(toolBar);
-
-    statusBar->addWidget(label1);
-    statusBar->addWidget(label2);
-    statusBar->addWidget(label3);
-    statusBar->addWidget(label4);
-
-    setStatusBar(statusBar);
-
-    cartesianWidget = new Cartesian2DWidget2;
+    cartesianWidget = new Cartesian2DWidget;
     cartesianWidget->resize(800, 600);
     cartesianWidget->setMinimumSize(800, 600);
     setCentralWidget(cartesianWidget);
-    //    setWindowState(Qt::WindowMaximized);
+    setWindowState(Qt::WindowMaximized);
 
-    toolBar->addAction("R", cartesianWidget, SLOT(reset()));
-    toolBar->addAction("+", this, SLOT(cwZoomIn()));
-    toolBar->addAction("-", this, SLOT(cwZoomOut()));
-    toolBar->addAction("S", this, SLOT(showSettingDialog()));
-    toolBar->addAction("f1", this, SLOT(func1()));
-
-    initFunction();
+    createMenus();
+    createToolBars();
+    createDockWidgets();
+    createStatusBar();
 
     connect(cartesianWidget, SIGNAL(centerChanged(double,double)), this, SLOT(cwCenterChanged(double,double)));
     connect(cartesianWidget, SIGNAL(offsetChanged(int,int)), this, SLOT(cwOffsetChanged(int,int)));
     connect(cartesianWidget, SIGNAL(scaleChanged(int,int)), this, SLOT(cwScaleChanged(int,int)));
     connect(cartesianWidget, SIGNAL(zoomChanged(double)), this, SLOT(cwZoomChanged(double)));
     connect(cartesianWidget, SIGNAL(boundsChanged(double,double,double,double)), this, SLOT(cwBoundsChanged(double,double,double,double)));
-
     cartesianWidget->reset();
+    initFunction();
 }
 
 MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::createMenus()
+{}
+
+void MainWindow::createToolBars()
+{
+    toolButton1 = new QToolButton;
+    toolButton2 = new QToolButton;
+    toolButton3 = new QToolButton;
+    toolBar = new QToolBar;
+    addToolBar(toolBar);
+    toolBar->addAction("R", cartesianWidget, SLOT(reset()));
+    toolBar->addAction("+", this, SLOT(cwZoomIn()));
+    toolBar->addAction("-", this, SLOT(cwZoomOut()));
+    toolBar->addAction("S", this, SLOT(showSettingDialog()));
+    toolBar->addAction("f1", this, SLOT(func1()));
+}
+
+void MainWindow::createDockWidgets()
+{}
+
+void MainWindow::createStatusBar()
+{
+    label1 = new QLabel;
+    label2 = new QLabel;
+    label3 = new QLabel;
+    label4 = new QLabel;
+
+    statusBar = new QStatusBar;
+    setStatusBar(statusBar);
+    statusBar->addWidget(label1);
+    statusBar->addWidget(label2);
+    statusBar->addWidget(label3);
+    statusBar->addWidget(label4);
+}
+
 void MainWindow::initFunction()
 {
-//    FunctionConfig fc1;
-//    fc1.f = f5;
-//    fc1.a = -10.5;
-//    fc1.b = +10.5;
-//    fc1.penColor = 0xff0000;
-//    cartesianWidget->functions().append(fc1);
+    //    FunctionConfig fc1;
+    //    fc1.f = f5;
+    //    fc1.a = -10.5;
+    //    fc1.b = +10.5;
+    //    fc1.penColor = 0xff0000;
+    //    cartesianWidget->functions().append(fc1);
 
     FunctionConfig fc2;
     fc2.f = sin;

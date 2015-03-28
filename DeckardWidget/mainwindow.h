@@ -15,7 +15,7 @@
 #include <QTimer>
 
 #include "cartesianwidget2d.h"
-#include "cartesianwidget2d_2.h"
+#include "cartesianwidget2d_1.h"
 #include "settingwidget.h"
 
 #include <methods.h>
@@ -44,6 +44,11 @@ private:
     QLabel* label2;
     QLabel* label3;
     QLabel* label4;
+
+    void createMenus();
+    void createToolBars();
+    void createDockWidgets();
+    void createStatusBar();
 
 public slots:
     void cwCenterChanged(double, double);

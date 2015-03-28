@@ -25,55 +25,22 @@ void Cartesian2DWidget::paintEvent(QPaintEvent *e)
 {
     Q_UNUSED(e)
 
-    double w = (double)width();
-    double h = (double)height();
-
     QFont font1;
     font1.setFamily("Consolas");
     font1.setPointSize(8);
     setFont(font1);
 
     QPainter painter(this);
-    painter.save();
-
-    double dx = w/2.0;
-    double dy = h/2.0;
-
-    double cx = - centerX() * ((double)scaleX() / zoom());
-    double cy = + centerY() * ((double)scaleY() / zoom());
-
-    painter.translate(dx, dy);
-    painter.translate(cx, cy);
 
     drawGridLines(painter);
     drawGridLabel(painter);
     drawR1Graphic(painter);
-
-    painter.setPen(Qt::blue);
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    for (int i=0; i<lines().size(); i++)
-    {
-        QLineF line1 = lines().at(i);
-        QLineF line2;
-        line2.setP1(toDisplayPoint(line1.p1().x(), line1.p1().y()));
-        line2.setP2(toDisplayPoint(line1.p2().x(), line1.p2().y()));
-        painter.drawLine(line2);
-    }
-
-    painter.setPen(Qt::blue);
-    painter.setBrush(Qt::red);
-    for (int i=0; i<points().size(); i++)
-    {
-        QPointF point1 = points().at(i);
-        QPointF point2(toDisplayPoint(point1.x(), point1.y()));
-        painter.drawEllipse(point2, 2, 2);
-    }
-
-    painter.restore();
+    drawLines(painter);
+    drawPoints(painter);
 
     painter.setPen(Qt::red);
-    painter.drawLine(w/2.0-2.0, h/2.0,     w/2.0+2.0, h/2.0);
-    painter.drawLine(w/2.0,     h/2.0-2.0, w/2.0,     h/2.0+2.0);
+    painter.drawLine(width()/2.0-2.0, height()/2.0,     width()/2.0+2.0, height()/2.0);
+    painter.drawLine(width()/2.0,     height()/2.0-2.0, width()/2.0,     height()/2.0+2.0);
 
     painter.end();
 }
@@ -113,34 +80,98 @@ void Cartesian2DWidget::mouseMoveEvent(QMouseEvent* e)
 void Cartesian2DWidget::drawGridLines(QPainter& painter)
 {
     painter.save();
+    double w = (double)width();
+    double h = (double)height();
+    //    double dx = w/2.0;
+    //    double dy = h/2.0;
+    //    double cx = - centerX() * ((double)scaleX() / zoom());
+    //    double cy = + centerY() * ((double)scaleY() / zoom());
 
-    int w = width();
-    int h = height();
+    double xmz = xmin() / zoom();
+    double fx = xmz - trunc(xmz);
+    double x = fx * scaleX();
 
-    int dx = centerX() * ((double)scaleX()/zoom());
-    int dy = centerY() * ((double)scaleY()/zoom());
+    double ymz = ymin() / zoom();
+    double fy = ymz - trunc(ymz);
+    double y = fy * scaleY();
 
-    int leftX   = -w/2 + dx;
-    int rightX  = +w/2 + dx;
-    int topY    = +h/2 - dy;
-    int bottomY = -h/2 - dy;
+    double numberX, numberY;
 
-    int a=1;
-    if (scaleX() % 5 == 0) {a = 5;} else
-        if (scaleX() % 4 == 0) {a = 4;} else
-            if (scaleX() % 2 == 0) {a = 2;}
+    numberX = (ceil(xmin()/zoom()))*zoom();
+    for (int i=x; i<w+x; i++)
+    {
+        int x1 = i-x;
+        if (i%(scaleX()/5) == 0)
+        {
+            painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
+            painter.drawLine(x1, 0, x1, height());
+        }
+        if (i % scaleX() == 0)
+        {
+            if (-zoom()/2.0 < numberX && numberX < zoom()/2.0)
+            {
+                painter.setPen(Qt::black);
+            }
+            else
+            {
+                painter.setPen(QPen(QColor(0xCACABC)));
+            }
+            painter.drawLine(x1, 0, x1, h);
+            numberX+=zoom();
+        }
+    }
 
-    painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
-    for (int i=leftX; i<rightX; i++) if ((i % (scaleX()/a)) == 0) painter.drawLine(i, bottomY, i, topY);
-    for (int i=bottomY; i<topY; i++) if ((i % (scaleY()/a)) == 0) painter.drawLine(leftX, i, rightX, i);
+    numberY = (ceil(ymin()/zoom()))*zoom();
+    for (int i=y; i<h+y; i++)
+    {
+        if (i%(scaleY()/5) == 0)
+        {
+            painter.setPen(QPen(QColor(0xE0E0D1),1.0, Qt::DashLine));
+            painter.drawLine(0, h-(i-y), w, h-(i-y));
+        }
+        if (i % scaleY() == 0)
+        {
+            if (-zoom()/2.0 < numberY && numberY < zoom()/2.0)
+            {
+                painter.setPen(Qt::black);
+            }
+            else
+            {
+                painter.setPen(QPen(QColor(0xCACABC)));
+            }
+            painter.drawLine(0, h-(i-y), w, h-(i-y));
+            numberY+=zoom();
+        }
+    }
 
-    painter.setPen(QPen(QColor(0xCACABC)));
-    for (int i=leftX; i<rightX; i++) if ((i % scaleX()) == 0) painter.drawLine(i, bottomY, i, topY);
-    for (int i=bottomY; i<topY; i++) if ((i % scaleY()) == 0) painter.drawLine(leftX, i, rightX, i);
+    numberX = (ceil(xmin()/zoom()))*zoom();
+    for (int i=x; i<w+x; i++)
+    {
+        int x1 = i-x;
+        if (i % scaleX() == 0)
+        {
+            if (-zoom()/2.0 < numberX && numberX < zoom()/2.0)
+            {
+                painter.setPen(Qt::black);
+                painter.drawLine(x1, 0, x1, h);
+            }
+            numberX+=zoom();
+        }
+    }
 
-    painter.setPen(QPen(Qt::black));
-    painter.drawLine(leftX, 0, rightX, 0);
-    painter.drawLine(0, bottomY, 0, topY);
+    numberY = (ceil(ymin()/zoom()))*zoom();
+    for (int i=y; i<h+y; i++)
+    {
+        if (i % scaleY() == 0)
+        {
+            if (-zoom()/2.0 < numberY && numberY < zoom()/2.0)
+            {
+                painter.setPen(Qt::black);
+                painter.drawLine(0, h-(i-y), w, h-(i-y));
+            }
+            numberY+=zoom();
+        }
+    }
 
     painter.restore();
 }
@@ -148,82 +179,107 @@ void Cartesian2DWidget::drawGridLines(QPainter& painter)
 void Cartesian2DWidget::drawGridLabel(QPainter& painter)
 {
     painter.save();
-
     QFontMetrics fm = painter.fontMetrics();
+    double w = (double)width();
+    double h = (double)height();
+    double dx = w/2.0;
+    double dy = h/2.0;
+    double cx = - centerX() * ((double)scaleX() / zoom());
+    double cy = + centerY() * ((double)scaleY() / zoom());
 
-    double w = width();
-    double h = height();
+    double xmz = xmin() / zoom();
+    double fx = xmz - trunc(xmz);
+    double numberX = (ceil(xmin()/zoom()))*zoom();
+    double x = fx * scaleX();
 
-    double dx = centerX() * ((double)scaleX()/zoom());
-    double dy = centerY() * ((double)scaleY()/zoom());
-
-    int leftX   = -w/2.0 + dx;
-    int rightX  = +w/2.0 + dx;
-    int topY    = +h/2.0 - dy;
-    int bottomY = -h/2.0 - dy;
-
-    // draw absis scale numbers
-    for (int i=leftX; i<rightX; i++)
+    for (int i=x; i<width()+x; i++)
     {
-        if (i % scaleX() == 0 && i != 0)
+        if (i % scaleX() == 0)
         {
-            double number = ( i / scaleX() ) * zoom();
-            QString s = axisNumber(number, zoomLevel());
-
-            if (topY <= 0)
+            QString s = axisNumber(numberX, zoomLevel());
+            double x1 = i-x-fm.width(s)/2;
+            if (-zoom()/2.0 >= numberX || numberX >= zoom()/2.0)
             {
-                painter.setPen(QPen(QColor(0x6B6B47)));
-                painter.translate(+i, topY);
-//                painter.drawText(i-fm.width(s)/2, topY - fm.height()/3, s);
-                painter.drawText(-fm.width(s)/2, -fm.height()/3, s);
-//                painter.setPen(QPen(QColor(0xff0000)));
-//                painter.drawEllipse(-fm.width(s)/2, -fm.height()/3, 5, 5);
-//                painter.drawText(-fm.width(s)/2, -fm.height()/3, s);
-                painter.translate(-i, -topY);
+                if (cy < -h/2.0)
+                {
+                    painter.setPen(QPen(QColor(0x6B6B47)));
+                    painter.drawText(x1, fm.height()-1, s);
+                }
+                else if (cy > h/2.0)
+                {
+                    painter.setPen(QPen(QColor(0x6B6B47)));
+                    painter.drawText(x1, h-fm.height()/2-3, s);
+                }
+                else
+                {
+                    painter.setPen(Qt::black);
+                    painter.drawText(x1, cy+dy+fm.height(), s);
+                }
             }
-            else if (bottomY >= 0)
-            {
-                painter.setPen(QPen(QColor(0x6B6B47)));
-                painter.translate(+i, +bottomY);
-//                painter.drawText(i-fm.width(s)/2, bottomY + fm.height(), s);
-                painter.drawText(-fm.width(s)/2, fm.height(), s);
-                painter.translate(-i, -bottomY);
-            }
-            else
-            {
-                painter.setPen(QPen(Qt::black));
-                painter.drawText(i-fm.width(s)/2, fm.height(), s);
-            }
+            numberX+=zoom();
         }
     }
 
-    // draw ordinate scale numbers
-    for (int i=bottomY; i<topY; i++)
+    double ymz = ymin() / zoom();
+    double fy = ymz - trunc(ymz);
+    double numberY = (ceil(ymin()/zoom()))*zoom();
+    double y = fy * scaleY();
+    for (int i=y; i<height()+y; i++)
     {
-        if (i % scaleY() == 0 && i != 0)
+        if (i % scaleY() == 0)
         {
-            double number = -( i / scaleY() ) * zoom();
-            QString s = axisNumber(number, zoomLevel());
-            if (leftX >= 0)
+            QString s = axisNumber(numberY, zoomLevel());
+            double y1 = height()-(i-y)+fm.height()/3-1;
+            if (-zoom()/2.0 >= numberY || numberY >= zoom()/2.0)
             {
-                painter.setPen(QPen(QColor(0x6B6B47)));
-                painter.drawText(leftX + 6, i+fm.height()/2-3, s);
+                if (cx < -w/2.0)
+                {
+                    painter.setPen(QPen(QColor(0x6B6B47)));
+                    painter.drawText(5, y1, s);
+                }
+                else if (cx > w/2.0)
+                {
+                    painter.setPen(QPen(QColor(0x6B6B47)));
+                    painter.drawText(width()-fm.width(s)-5, y1, s);
+                }
+                else
+                {
+                    painter.setPen(Qt::black);
+                    painter.drawText(cx+dx-fm.width(s)-3, y1, s);
+                }
             }
-            else if (rightX <= 0)
-            {
-                painter.setPen(QPen(QColor(0x6B6B47)));
-                painter.drawText(rightX - fm.width(s)-4, i+fm.height()/2-3, s);
-            }
-            else
-            {
-                painter.setPen(QPen(Qt::black));
-                painter.drawText(-fm.width(s)-4, i+fm.height()/2-3, s);
-            }
+            numberY+=zoom();
         }
     }
 
-    // draw zero number
-    painter.drawText(-fm.width("0")-4, fm.height(), "0");
+    QString s = "0";
+    double y1 = cy+dy+fm.height();
+    double x1 = cx+dx-fm.width(s)-5;
+    if (cx > w/2.0)
+    {
+        painter.setPen(QPen(QColor(0x6B6B47)));
+        painter.drawText(width()-fm.width(s)-5, y1, s);
+    }
+    else if (cx < -w/2.0)
+    {
+        painter.setPen(QPen(QColor(0x6B6B47)));
+        painter.drawText(5, y1, s);
+    }
+    else if (cy > h/2.0)
+    {
+        painter.setPen(QPen(QColor(0x6B6B47)));
+        painter.drawText(x1, h-fm.height()/2-3, s);
+    }
+    else if (cy < -h/2.0)
+    {
+        painter.setPen(QPen(QColor(0x6B6B47)));
+        painter.drawText(x1, fm.height()-1, s);
+    }
+    else
+    {
+        painter.setPen(Qt::black);
+        painter.drawText(x1, y1, s);
+    }
 
     painter.restore();
 }
@@ -231,44 +287,69 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
 void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
 {
     painter.save();
-
     painter.setRenderHint(QPainter::Antialiasing, true);
-
     for (int i=0; i<fcs.size(); i++)
     {
         FunctionConfig fc = fcs.at(i);
-        painter.setPen(QPen(QColor(fc.penColor), 1.0));
+        painter.setPen(QColor(fc.penColor));
 
-        int min = fc.a * ((double)scaleX() / zoom());
-        int max = fc.b * ((double)scaleX() / zoom());
+        double min = fc.a;
+        double max = fc.b;
+        if (min < xmin()) min = xmin();
+        if (max > xmax()) max = xmax();
 
-        if (fc.a < xmin()) min = xmin() * ((double)scaleX() / zoom());
-        if (fc.b > xmax()) max = xmax() * ((double)scaleX() / zoom());
+        double a = (min - xmin())/(xmax()-xmin()) * width();
+        double b = (max - xmin())/(xmax()-xmin()) * width();
 
         QPainterPath path;
-        for (int i=min; i<max; i++)
+        for (double i=a; i<=b; i++)
         {
-            double x1 = (double)(i)/(double)scaleX()*zoom();
-            //double x2 = (double)(i+1)/(double)scaleX()*zoom();
+            double x = i*(xmax()-xmin())/width() + xmin();
+            double y = fc.f(x);
+            double j = height()-(y - ymin())/(ymax()-ymin()) * height();
+            painter.drawPoint(i,j);
 
-            double y1 = -fc.f(x1);
-            //double y2 = -fc.f(x2);
-
-            int y11 = y1*scaleY()/zoom();
-            //int y12 = y2*scaleY()/zoom();
-
-            //painter.drawLine(i, y11, i+1, y12);
-
-            if(!isnan(y1))
+            if(!isnan(j) && !isinf(j))
             {
                 if (path.elementCount()==0) {
-                    path.moveTo(i, y11);
+                    path.moveTo(i, j);
                 } else {
-                    path.lineTo(i, y11);
+                    path.lineTo(i, j);
                 }
             }
         }
         painter.drawPath(path);
+    }
+    painter.restore();
+}
+
+void Cartesian2DWidget::drawLines(QPainter& painter)
+{
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setPen(Qt::blue);
+    for (int i=0; i<mlines.size(); i++)
+    {
+        const QLineF &line = mlines.at(i);
+        QPointF p1 = toDisplayPoint(line.p1().x(), line.p1().y());
+        QPointF p2 = toDisplayPoint(line.p2().x(), line.p2().y());
+        painter.drawLine(QLineF(p1, p2));
+    }
+
+    painter.restore();
+}
+
+void Cartesian2DWidget::drawPoints(QPainter& painter)
+{
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setBrush(Qt::red);
+    painter.setPen(Qt::blue);
+    for (int i=0; i<mpoints.size(); i++)
+    {
+        const QPointF &point = mpoints.at(i);
+        QPointF p = toDisplayPoint(point.x(), point.y());
+        painter.drawEllipse(p.x()-1, p.y()-1, 3, 3);
     }
 
     painter.restore();
@@ -277,8 +358,8 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
 QPointF Cartesian2DWidget::toDisplayPoint(double x, double y)
 {
     QPointF point;
-    double dx = x * ((double)scaleX() / zoom());
-    double dy = -y * ((double)scaleY() / zoom());
+    double dx = (x - xmin())/(xmax()-xmin()) * width();
+    double dy = height()-(y - ymin())/(ymax()-ymin()) * height();
     point.setX(dx);
     point.setY(dy);
     return point;
@@ -287,7 +368,7 @@ QPointF Cartesian2DWidget::toDisplayPoint(double x, double y)
 QPointF Cartesian2DWidget::fromDisplayPoint(double x, double y)
 {
     QPointF point;
-    double dx  = (x / scaleX()) * zoom();
+    double dx  = +(x / scaleX()) * zoom();
     double dy  = -(y / scaleY()) * zoom();
     point.setX(dx);
     point.setY(dy);
