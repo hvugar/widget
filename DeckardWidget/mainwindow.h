@@ -28,10 +28,11 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    static MainWindow* mw;
     void initFunction();
 
-private:
     CartesianWidget* cartesianWidget;
+private:
     SettingWidget* settingWidget;
 
     QToolBar* toolBar;
@@ -49,6 +50,9 @@ private:
     void createToolBars();
     void createDockWidgets();
     void createStatusBar();
+    void info(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b);
+    void conjugate_gradient_method1(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon);
+    void printer(RnFunction f, double *x, int n);
 
 public slots:
     void cwCenterChanged(double, double);
@@ -61,9 +65,6 @@ public slots:
 
     void showSettingDialog();
     void func1();
-    void printer(RnFunction f, double *x, int n);
-
-    void conjugate_gradient_method(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon);
 };
 
 #endif // MAINWINDOW_H
