@@ -11,8 +11,15 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DeckardWidget
 TEMPLATE = app
 
+<<<<<<< .mine
+#INCLUDEPATH += ../../../num_methods/trunk/minimum
+INCLUDEPATH += ../Minimum
+#LIBS += -L../../../num_methods/trunk/minimum -lminimum.dll
+LIBS += -L../Minimum/debug -lMinimum
+=======
 INCLUDEPATH = ../../../num_methods/trunk/minimum
 LIBS += -L../../../num_methods/trunk/minimum -lminimum.dll
+>>>>>>> .r41
 
 SOURCES += main.cpp\
     mainwindow.cpp \
