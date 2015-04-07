@@ -239,6 +239,18 @@ void MainWindow::info(RnFunction f, double *x, int n, int iteration, double *gra
 >>>>>>> .r41
 
 <<<<<<< .mine
+void MainWindow::info2(double *x, int n, int iteration, double *grad, double *s, double alpha, double a, double b)
+{
+
+}
+
+typedef struct {
+    static GetInfo info;
+} Helper;
+
+//Cartesian2DWidget cw1;
+=======
+<<<<<<< .mine
 //    // Direction
 //    double *s  = (double*) malloc(sizeof(double) * n);
 //    // Saves last point coordinates
@@ -247,29 +259,38 @@ void MainWindow::info(RnFunction f, double *x, int n, int iteration, double *gra
 //    double *x2 = (double*) malloc(sizeof(double) * n);
 =======
 Cartesian2DWidget cw1;
+>>>>>>> .r42
 void info1(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b)
 {
-    Cartesian2DWidget *cw = new Cartesian2DWidget;
-    cw->resize(800, 600);
-    cw->reset();
-//    Cartesian2DWidget *cw = qobject_cast<Cartesian2DWidget*>(MainWindow::mw->cartesianWidget);
-    cw->functions().clear();
-    FunctionConfig fc;
-    fc.f = min;
-    fc.a = a;
-    fc.b = b;
-    fc.penColor = 0x00ffff;
-    cw->functions().append(fc);
-    cw->setXRange(alpha-0.1, alpha+0.1);
-    cw->setCenterY(min(alpha));
-    qDebug() << min(alpha);
-    cw->update();
-    QPixmap pixmap = QPixmap::grabWidget(cw, 0, 0, cw->width(), cw->height());
-    pixmap.save(QString("D:\\image%1.png").arg(iteration), "png");
-    cw->functions().clear();
-    delete cw;
 >>>>>>> .r41
 
+<<<<<<< .mine
+
+//    Cartesian2DWidget *cw = new Cartesian2DWidget;
+//    cw->resize(800, 600);
+//    cw->reset();
+////    Cartesian2DWidget *cw = qobject_cast<Cartesian2DWidget*>(MainWindow::mw->cartesianWidget);
+//    cw->functions().clear();
+//    FunctionConfig fc;
+//    fc.f = min;
+//    fc.a = a;
+//    fc.b = b;
+//    fc.penColor = 0x00ffff;
+//    cw->functions().append(fc);
+//    cw->setXRange(alpha-0.1, alpha+0.1);
+//    cw->setCenterY(min(alpha));
+//    qDebug() << min(alpha);
+//    cw->update();
+//    QPixmap pixmap = QPixmap::grabWidget(cw, 0, 0, cw->width(), cw->height());
+//    pixmap.save(QString("D:\\image%1.png").arg(iteration), "png");
+//    cw->functions().clear();
+//    delete cw;
+
+//    cw1.resize(800,600);
+//    cw1.points().append(QPointF(x[0], x[1]));
+//    QPixmap pixmap1 = QPixmap::grabWidget(&cw1, 0, 0, cw1.width(), cw1.height());
+//    pixmap1.save(QString("D:\\image_%1.png").arg(iteration), "png");
+=======
 <<<<<<< .mine
 //    // Gradient of x(k) point
 //    double* gr1 = (double*) malloc(sizeof(double) * n);
@@ -280,9 +301,19 @@ void info1(RnFunction f, double *x, int n, int iteration, double *grad, double *
     cw1.points().append(QPointF(x[0], x[1]));
     QPixmap pixmap1 = QPixmap::grabWidget(&cw1, 0, 0, cw1.width(), cw1.height());
     pixmap1.save(QString("D:\\image_%1.png").arg(iteration), "png");
+>>>>>>> .r42
 }
 >>>>>>> .r41
 
+<<<<<<< .mine
+typedef double (MainWindow::*FunctionType)(double);
+
+double MainWindow::func2(double x)
+{
+    return 0;
+}
+
+=======
 <<<<<<< .mine
 //    double gr1_mod = 0.0;
 //    double gr2_mod = 0.0;
@@ -294,9 +325,10 @@ void info1(RnFunction f, double *x, int n, int iteration, double *grad, double *
 //            // Gradient of objectiv function in current point
 //            gradient(f, x, n, grad_step, gr1);
 =======
+>>>>>>> .r42
 void MainWindow::conjugate_gradient_method1(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon)
 {
-    conjugate_gradient_method(f, x, n, line_step, gold_step, grad_step, epsilon, NULL, info1);
+    conjugate_gradient_method(f, x, n, line_step, gold_step, grad_step, epsilon, NULL, MainWindow::info);
     //    int i = 0;
     //    int k = 0;
 >>>>>>> .r41

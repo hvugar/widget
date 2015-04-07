@@ -51,9 +51,14 @@ private:
     void createToolBars();
     void createDockWidgets();
     void createStatusBar();
-    void info(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b);
+
+    static void info(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b);
+
+    void info2(double *x, int n, int iteration, double *grad, double *s, double alpha, double a, double b);
     void conjugate_gradient_method1(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon);
     void printer(RnFunction f, double *x, int n);
+
+    double func2(double);
 
 public slots:
     void cwCenterChanged(double, double);
