@@ -18,8 +18,7 @@
 #include "cartesianwidget2d_1.h"
 #include "settingwidget.h"
 
-//#include <methods.h>
-#include <minimum.h>
+#include <methods.h>
 
 class MainWindow : public QMainWindow
 {
