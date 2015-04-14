@@ -73,9 +73,9 @@ void MainWindow::createStatusBar()
 void MainWindow::initFunction()
 {
     FunctionConfig fc1;
-    fc1.f = lagrange1;
-    fc1.a = -0;
-    fc1.b = +1.0;
+    fc1.f = argmin;
+    fc1.a = -1.0;
+    fc1.b = +2.0;
     fc1.penColor = 0xff0000;
     cartesianWidget->functions().append(fc1);
 

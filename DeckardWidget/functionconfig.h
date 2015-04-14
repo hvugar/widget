@@ -21,5 +21,6 @@ double f5(double x);
 double LagrangePolynomial(double x0, double* x, double* y, int n);
 double lagrange(double x);
 double lagrange1(double x);
+double argmin(double alpha);
 
 #endif // FUNCTIONCONFIG_H

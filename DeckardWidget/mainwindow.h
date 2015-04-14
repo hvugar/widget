@@ -18,8 +18,6 @@
 #include "cartesianwidget2d_1.h"
 #include "settingwidget.h"
 
-#include <methods.h>
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
