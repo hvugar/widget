@@ -1,6 +1,6 @@
 #include "settingwidget.h"
 
-#define DECIMALS   6
+#define DECIMALS   10
 #define SINGLE_STP 1.0
 #define CENTER_MIN -1000000000.0
 #define CENTER_MAX +1000000000.0
@@ -67,7 +67,7 @@ SettingWidget::SettingWidget(QWidget *parent) : QDialog(parent)
 
 SettingWidget::~SettingWidget()
 {
-
+    Q_UNUSED
 }
 
 void SettingWidget::setCenter(double x, double y)
