@@ -13,9 +13,12 @@
 #include <QToolButton>
 #include <QStatusBar>
 #include <QTimer>
+#include <QThread>
 
 #include "cartesianwidget2d.h"
 #include "settingwidget.h"
+#include <gradient.h>
+#include "samplegradient.h"
 
 class MainWindow : public QMainWindow
 {
@@ -28,7 +31,7 @@ public:
     static MainWindow* mw;
     void initFunction();
 
-    CartesianWidget* cartesianWidget;
+    Cartesian2DWidget* cartesianWidget;
 private:
     SettingWidget* settingWidget;
 
@@ -48,14 +51,6 @@ private:
     void createDockWidgets();
     void createStatusBar();
 
-    static void info(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b);
-
-    void info2(double *x, int n, int iteration, double *grad, double *s, double alpha, double a, double b);
-    void conjugate_gradient_method1(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon);
-    void printer(RnFunction f, double *x, int n);
-
-    double func2(double);
-
 public slots:
     void cwCenterChanged(double, double);
     void cwOffsetChanged(int, int);
@@ -66,7 +61,8 @@ public slots:
     void cwZoomOut();
 
     void showSettingDialog();
-    void func1();
+    void gradient();
+    void showCoordinares(const std::vector<double>&);
 };
 
 #endif // MAINWINDOW_H

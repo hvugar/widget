@@ -99,6 +99,7 @@ protected:
 
     QList<QPointF> mpoints;
     QList<QLineF> mlines;
+    QList<QLineF> segments;
 
 private:
     int m_scaleX;

@@ -49,7 +49,7 @@ void MainWindow::createToolBars()
     toolBar->addAction("+", this, SLOT(cwZoomIn()));
     toolBar->addAction("-", this, SLOT(cwZoomOut()));
     toolBar->addAction("S", this, SLOT(showSettingDialog()));
-    toolBar->addAction("f1", this, SLOT(func1()));
+    toolBar->addAction("gr", this, SLOT(gradient()));
 }
 
 void MainWindow::createDockWidgets()
@@ -177,70 +177,22 @@ double g1(double *x, int n) { return 10*x[0] - x[0]*x[0] + 10*x[1] - x[1]*x[1]- 
 double g2(double *x, int n) { return x[0]; }
 double g3(double *x, int n) { return x[1]; }
 
-double f_rosenbrock(double *x, int n)
+void MainWindow::gradient()
 {
-    double x1 = x[0];
-    double x2 = x[1];
-    return ((1-x1)*(1-x1)) + 100*(x2-x1*x1)*(x2-x1*x1);
+    std::vector<double> x;
+    x.push_back(-1.0);
+    x.push_back(+1.2);
+
+    SampleGradient gm;
+    connect(&gm, SIGNAL(showCoordinares(const std::vector<double>&)), this, SLOT(showCoordinares(const std::vector<double>&)));
+    gm.setEpsilon(0.00001);
+    gm.setPoint(x);
+    gm.fastProximalGradientMethod();
 }
 
-void MainWindow::func1()
-{
-    double epsilon	= 0.0001;		//dovrun sona catma meyari
-    double grad_eps	= 0.005;		//gradient
-    double line_eps	= 0.1;			//parcani bolme
-    double gold_eps	= 0.0001;		//qizil qayda ucun
-
-    int n = 2;
-    double* x  = (double*) malloc( sizeof(double) * n );
-
-    x[0]    = -1.2;
-    x[1]    = +1.0;
-    conjugate_gradient_method1(f_rosenbrock, x, n, line_eps, gold_eps, grad_eps, epsilon);
-
-    free(x);
-}
-
-void MainWindow::printer(RnFunction f, double *x, int n)
-{}
-
-struct T {
-    static int n;
-    static double *x;
-    static double *x2;
-    static double *s;
-    static RnFunction f;
-    static double argmin(double alpha)
-    {
-        for (int i=0; i<n; i++) x2[i] = x[i] + alpha * s[i];
-        return f(x2, n);
-    }
-};
-
-int T::n = 0;
-double* T::x = 0;
-double* T::x2 = 0;
-double* T::s = 0;
-RnFunction T::f = 0;
-
-void MainWindow::info(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b)
-{
-}
-
-void MainWindow::info2(double *x, int n, int iteration, double *grad, double *s, double alpha, double a, double b)
+void MainWindow::showCoordinares(const std::vector<double>& x)
 {
 
-}
-
-void info1(RnFunction f, double *x, int n, int iteration, double *grad, double *s, R1Function min, double alpha, double a, double b)
-{
-}
-
-double MainWindow::func2(double x)
-{
-    return 0;
-}
-
-void MainWindow::conjugate_gradient_method1(RnFunction f, double *x, int n, double line_step, double gold_step, double grad_step, double epsilon)
-{
+    cartesianWidget->points().append(QPointF(x[0], x[1]));
+    cartesianWidget->update();
 }
