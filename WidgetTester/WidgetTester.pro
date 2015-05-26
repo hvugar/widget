@@ -13,6 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+        settingwidget.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h settingwidget.h
+
+INCLUDEPATH += ../extWidget
+LIBS += -L../extWidget/debug -lextWidget
