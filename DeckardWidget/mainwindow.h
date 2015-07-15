@@ -29,7 +29,7 @@ public:
     static MainWindow* mw;
     void initFunction();
 
-    CartesianWidget* cartesianWidget;
+    Cartesian2DWidget* cartesianWidget;
 private:
     SettingWidget* settingWidget;
 

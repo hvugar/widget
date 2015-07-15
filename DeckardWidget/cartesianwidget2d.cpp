@@ -23,26 +23,18 @@ void Cartesian2DWidget::resizeEvent(QResizeEvent *e)
 
 void Cartesian2DWidget::paintEvent(QPaintEvent *e)
 {
-    Q_UNUSED(e)
+    CartesianWidget::paintEvent(e);
 
-    QFont font1;
-    font1.setFamily("Consolas");
-    font1.setPointSize(8);
-    setFont(font1);
+//    QPainter painter(this);
+//    drawR1Function(painter);
+//    drawLines(painter);
+//    drawPoints(painter);
 
-    QPainter painter(this);
+//    painter.setPen(Qt::red);
+//    painter.drawLine(width()/2.0-2.0, height()/2.0,     width()/2.0+2.0, height()/2.0);
+//    painter.drawLine(width()/2.0,     height()/2.0-2.0, width()/2.0,     height()/2.0+2.0);
 
-    drawGridLines(painter);
-    drawGridLabel(painter);
-    drawR1Graphic(painter);
-    drawLines(painter);
-    drawPoints(painter);
-
-    painter.setPen(Qt::red);
-    painter.drawLine(width()/2.0-2.0, height()/2.0,     width()/2.0+2.0, height()/2.0);
-    painter.drawLine(width()/2.0,     height()/2.0-2.0, width()/2.0,     height()/2.0+2.0);
-
-    painter.end();
+//    painter.end();
 }
 
 void Cartesian2DWidget::wheelEvent(QWheelEvent* e)
@@ -56,7 +48,7 @@ void Cartesian2DWidget::mousePressEvent(QMouseEvent* e)
     if (e->button() == Qt::LeftButton)
     {
         leftButtonPressed = true;
-        last = e->pos();
+        lastPressed = e->pos();
         setCursor(QCursor(Qt::ClosedHandCursor));
     }
 }
@@ -70,11 +62,26 @@ void Cartesian2DWidget::mouseReleaseEvent(QMouseEvent* e)
 
 void Cartesian2DWidget::mouseMoveEvent(QMouseEvent* e)
 {
-    if (leftButtonPressed) setCenterX(centerX() - ((double)(e->pos().x() - last.x())/(double)scaleX()*zoom()));
-    if (leftButtonPressed) setCenterY(centerY() + ((double)(e->pos().y() - last.y())/(double)scaleY()*zoom()));
+    if (leftButtonPressed) setCenterX(centerX() - ((double)(e->pos().x() - lastPressed.x())/(double)scaleX()*zoom()));
+    if (leftButtonPressed) setCenterY(centerY() + ((double)(e->pos().y() - lastPressed.y())/(double)scaleY()*zoom()));
 
-    last = e->pos();
+    lastPressed = e->pos();
     update();
+}
+
+QList<FunctionConfig>& Cartesian2DWidget::functions()
+{
+    return mfunctions;
+}
+
+QList<QLineF>& Cartesian2DWidget::lines()
+{
+    return mlines;
+}
+
+QList<QPointF>& Cartesian2DWidget::points()
+{
+    return mpoints;
 }
 
 void Cartesian2DWidget::drawGridLines(QPainter& painter)
@@ -284,13 +291,13 @@ void Cartesian2DWidget::drawGridLabel(QPainter& painter)
     painter.restore();
 }
 
-void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
+void Cartesian2DWidget::drawR1Function(QPainter& painter)
 {
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
-    for (int i=0; i<fcs.size(); i++)
+    for (int i=0; i<mfunctions.size(); i++)
     {
-        FunctionConfig fc = fcs.at(i);
+        FunctionConfig fc = mfunctions.at(i);
         painter.setPen(QColor(fc.penColor));
 
         double min = fc.a;

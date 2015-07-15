@@ -21,6 +21,20 @@ void CartesianWidget::resizeEvent(QResizeEvent *e)
     update();
 }
 
+void CartesianWidget::paintEvent(QPaintEvent *e)
+{
+    QWidget::paintEvent(e);
+
+    QFont font1;
+    font1.setFamily("Consolas");
+    font1.setPointSize(8);
+    setFont(font1);
+
+    QPainter painter(this);
+    drawGridLines(painter);
+    drawGridLabel(painter);
+}
+
 int CartesianWidget::scaleX() const
 {
     return m_scaleX;
@@ -233,21 +247,6 @@ void CartesianWidget::calcBounds()
     mymax = centerY() + (double)(h/2.0) / ((double)scaleY()/zoom());
 
     emit boundsChanged(mxmin, mymin, mxmax, mymax);
-}
-
-QList<FunctionConfig>& CartesianWidget::functions()
-{
-    return fcs;
-}
-
-QList<QLineF>& CartesianWidget::lines()
-{
-    return mlines;
-}
-
-QList<QPointF>& CartesianWidget::points()
-{
-    return mpoints;
 }
 
 QString CartesianWidget::axisNumber(double number, int zoomLevel)  const

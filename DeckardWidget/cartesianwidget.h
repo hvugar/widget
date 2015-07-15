@@ -64,18 +64,13 @@ public:
     int zoomLevel() const;
     void setZoomLevel(int level);
 
-    // functions
-    QList<FunctionConfig>& functions();
-    QList<QLineF>& lines();
-    QList<QPointF>& points();
 protected:
     virtual void resizeEvent(QResizeEvent*);
+    virtual void paintEvent(QPaintEvent*);
 
     virtual void drawGridLines(QPainter& painter) = 0;
     virtual void drawGridLabel(QPainter& painter) = 0;
-    virtual void drawR1Graphic(QPainter& painter) = 0;
-    virtual void drawLines(QPainter& painter) = 0;
-    virtual void drawPoints(QPainter& painter) = 0;
+
     virtual QPointF toDisplayPoint(double x, double y) = 0;
     virtual QPointF fromDisplayPoint(double x, double y) = 0;
 
@@ -92,12 +87,7 @@ protected:
 
     bool leftButtonPressed;
     bool rightButtonPressed;
-    QPoint last;
-
-    QList<FunctionConfig> fcs;
-
-    QList<QPointF> mpoints;
-    QList<QLineF> mlines;
+    QPoint lastPressed;
 
 private:
     int m_scaleX;

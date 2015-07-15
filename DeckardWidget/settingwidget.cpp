@@ -67,7 +67,6 @@ SettingWidget::SettingWidget(QWidget *parent) : QDialog(parent)
 
 SettingWidget::~SettingWidget()
 {
-    Q_UNUSED
 }
 
 void SettingWidget::setCenter(double x, double y)

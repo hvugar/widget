@@ -1,9 +1,9 @@
 #ifndef CARTESIANWIDGET2D1_H
 #define CARTESIANWIDGET2D1_H
 
-#include "cartesianwidget.h"
+#include "cartesianwidget2d.h"
 
-class Cartesian2DWidget1 : public CartesianWidget
+class Cartesian2DWidget1 : public Cartesian2DWidget
 {
     Q_OBJECT
 public:
@@ -20,7 +20,7 @@ protected:
 
     virtual void drawGridLines(QPainter& painter);
     virtual void drawGridLabel(QPainter& painter);
-    virtual void drawR1Graphic(QPainter& painter);
+    virtual void drawR1Function(QPainter& painter);
 
     virtual QPointF toDisplayPoint(double x, double y);
     virtual QPointF fromDisplayPoint(double x, double y);

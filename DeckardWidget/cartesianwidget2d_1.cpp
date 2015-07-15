@@ -5,11 +5,11 @@
 #include <QtCore/QDebug>
 #include <math.h>
 
-Cartesian2DWidget1::Cartesian2DWidget1(QWidget *parent) : CartesianWidget(parent)
+Cartesian2DWidget1::Cartesian2DWidget1(QWidget *parent) : Cartesian2DWidget(parent)
 {
     setScale(100, 100);
     setCenter(0.0, 0.0);
-    setOffset(0, 0);
+//    setOffset(0, 0);
 }
 
 Cartesian2DWidget1::~Cartesian2DWidget1()
@@ -47,7 +47,7 @@ void Cartesian2DWidget1::paintEvent(QPaintEvent *e)
 
     drawGridLines(painter);
     drawGridLabel(painter);
-    drawR1Graphic(painter);
+    drawR1Function(painter);
 
     painter.setPen(Qt::blue);
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -89,7 +89,7 @@ void Cartesian2DWidget1::mousePressEvent(QMouseEvent* e)
     if (e->button() == Qt::LeftButton)
     {
         leftButtonPressed = true;
-        last = e->pos();
+        lastPressed = e->pos();
         setCursor(QCursor(Qt::ClosedHandCursor));
     }
 }
@@ -103,10 +103,10 @@ void Cartesian2DWidget1::mouseReleaseEvent(QMouseEvent* e)
 
 void Cartesian2DWidget1::mouseMoveEvent(QMouseEvent* e)
 {
-    if (leftButtonPressed) setCenterX(centerX() - ((double)(e->pos().x() - last.x())/(double)scaleX()*zoom()));
-    if (leftButtonPressed) setCenterY(centerY() + ((double)(e->pos().y() - last.y())/(double)scaleY()*zoom()));
+    if (leftButtonPressed) setCenterX(centerX() - ((double)(e->pos().x() - lastPressed.x())/(double)scaleX()*zoom()));
+    if (leftButtonPressed) setCenterY(centerY() + ((double)(e->pos().y() - lastPressed.y())/(double)scaleY()*zoom()));
 
-    last = e->pos();
+    lastPressed = e->pos();
     update();
 }
 
@@ -228,15 +228,15 @@ void Cartesian2DWidget1::drawGridLabel(QPainter& painter)
     painter.restore();
 }
 
-void Cartesian2DWidget1::drawR1Graphic(QPainter& painter)
+void Cartesian2DWidget1::drawR1Function(QPainter& painter)
 {
     painter.save();
 
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    for (int i=0; i<fcs.size(); i++)
+    for (int i=0; i<mfunctions.size(); i++)
     {
-        FunctionConfig fc = fcs.at(i);
+        FunctionConfig fc = mfunctions.at(i);
         painter.setPen(QPen(QColor(fc.penColor), 1.0));
 
         int min = fc.a * ((double)scaleX() / zoom());
