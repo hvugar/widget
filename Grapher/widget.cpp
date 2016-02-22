@@ -14,6 +14,26 @@ Widget::~Widget()
 
 void Widget::paintEvent(QPaintEvent *evt)
 {
+    image1(evt);
+}
+
+void Widget::image1(QPaintEvent *evt)
+{
+    QPainter painter(this);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::SolidLine));
+    painter.setRenderHint(QPainter::Antialiasing, true);
+
+    QPoint p1(300, 380);
+    QPoint p2(50, 280);
+    QPoint p3(550, 280);
+
+    painter.drawLine(p1, p2);
+    painter.drawLine(p1, p3);
+    painter.drawLine(50, 280, 50, 20);
+}
+
+void Widget::image2(QPaintEvent *evt)
+{
     QPainter painter(this);
     //painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setPen(QPen(Qt::black, 1.0, Qt::SolidLine));

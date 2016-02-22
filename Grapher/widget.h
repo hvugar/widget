@@ -15,6 +15,9 @@ public:
 
 protected:
     virtual void paintEvent(QPaintEvent *evt);
+
+    void image1(QPaintEvent *evt);
+    void image2(QPaintEvent *evt);
 };
 
 #endif // WIDGET_H
