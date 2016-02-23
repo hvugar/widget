@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPaintEvent>
+#include <QDebug>
+#include <math.h>
 
 class Widget : public QWidget
 {
@@ -19,8 +21,8 @@ protected:
     void image1(QPaintEvent *evt);
     void image2(QPaintEvent *evt);
     void image3(QPaintEvent *evt);
-
-    bool ok;
+    void image4(QPaintEvent *evt);
+    void image5(QPaintEvent *evt);
 };
 
 #endif // WIDGET_H
