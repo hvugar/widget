@@ -18,6 +18,9 @@ protected:
 
     void image1(QPaintEvent *evt);
     void image2(QPaintEvent *evt);
+    void image3(QPaintEvent *evt);
+
+    bool ok;
 };
 
 #endif // WIDGET_H
