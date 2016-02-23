@@ -5,14 +5,15 @@ Widget::Widget(QWidget *parent) : QWidget(parent)
     setAutoFillBackground(true);
     setBackgroundRole(QPalette::Base);
     resize(600, 400);
+    setMinimumSize(600, 400);
+    setMaximumSize(600, 400);
 }
 
 Widget::~Widget()
 {
     QPixmap screenshot;
     screenshot = QPixmap::grabWidget(this, rect());
-    screenshot.save("image/ok/image1.png","PNG");
-
+    screenshot.save("images/ok/image2.png","PNG");
 }
 
 void Widget::paintEvent(QPaintEvent *evt)
@@ -50,20 +51,13 @@ void Widget::image1(QPaintEvent *evt)
     painter.drawText(100-fm.width("-2")/2, 366, "-2");
     painter.drawText(200-fm.width("-1")/2, 366, "-1");
     painter.drawText(300-fm.width("0")/2, 366, "0");
-    painter.drawText(400-fm.width("2")/2, 366, "2");
-    painter.drawText(500-fm.width("1")/2, 366, "1");
+    painter.drawText(400-fm.width("1")/2, 366, "1");
+    painter.drawText(500-fm.width("2")/2, 366, "2");
 
-    QImage image1("images/delta.png", "PNG");
-    painter.drawImage(320, 30, image1);
-
-    QImage image2("images/arrow_left.png", "PNG");
-    painter.drawImage(545, 340, image2);
-
-    QImage image3("images/arrow_up.png", "PNG");
-    painter.drawImage(300-10, 40, image3);
-
-    QImage image4("images/x.png", "PNG");
-    painter.drawImage(550, 320, image4);
+    painter.drawPixmap(320, 30,  QPixmap("images/delta.png", "PNG"));
+    painter.drawPixmap(545, 340, QPixmap("images/arrow_left.png", "PNG"));
+    painter.drawPixmap(290, 40,  QPixmap("images/arrow_up.png", "PNG"));
+    painter.drawPixmap(550, 320, QPixmap("images/x.png", "PNG"));
 
     painter.setBrush(Qt::white);
     painter.drawEllipse(297, 346, 6, 6);
@@ -110,25 +104,26 @@ void Widget::image2(QPaintEvent *evt)
     QPoint p4(100, 50);
     painter.drawLine(p3, p4);
 
-    QImage image1("images/arrow_left.png", "PNG");
-    painter.drawImage(545, 320, image1);
+    painter.drawPixmap(545, 320, QPixmap("images/arrow_left.png", "PNG"));
+    painter.drawPixmap(90, 40, QPixmap("images/arrow_up.png", "PNG"));
 
-    QImage image2("images/arrow_up.png", "PNG");
-    painter.drawImage(90, 40, image2);
+    painter.drawLine(300, 327, 300, 333);
+//    painter.drawLine(250, 325, 250, 335);
+//    painter.drawLine(350, 325, 350, 335);
+    painter.drawLine(97, 100, 103, 100);
 
+    painter.setPen(QPen(Qt::black, 2.0));
+    painter.drawLine(50, 330, 250, 330);
+    painter.drawLine(251, 100, 350, 100);
+    painter.drawLine(351, 330, 550, 330);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::DashLine));
+    painter.drawLine(250, 330, 250, 100);
+    painter.drawLine(350, 330, 350, 100);
 
-    painter.drawLine(300, 325, 300, 335);
-    painter.drawLine(250, 325, 250, 335);
-    painter.drawLine(350, 325, 350, 335);
-
-    QImage image3("images/xi.png", "PNG");
-    painter.drawImage(300-image3.width()/2, 350, image3);
-
-    QImage image4("images/xi_minus_epsilon.png", "PNG");
-    painter.drawImage(240-image4.width()/2, 340, image4);
-
-    QImage image5("images/xi_plus_epsilon.png", "PNG");
-    painter.drawImage(320+image5.width()/2, 340, image5);
-
-
+    painter.drawPixmap(293, 350, QPixmap("images/xi.png", "PNG"));
+    painter.drawPixmap(224, 340, QPixmap("images/xi_minus_epsilon.png", "PNG"));
+    painter.drawPixmap(326, 340, QPixmap("images/xi_plus_epsilon.png", "PNG"));
+    painter.drawPixmap(550, 305, QPixmap("images/x.png", "PNG"));
+    painter.drawPixmap(120, 30, QPixmap("images/delta_epsilon.png", "PNG"));
+    painter.drawPixmap(80, 69, QPixmap("images/inverse_epsilon.png", "PNG"));
 }
