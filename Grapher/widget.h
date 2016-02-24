@@ -32,6 +32,7 @@ protected:
     void drawGraph16(QPainter &painter);
     void drawGraph17(QPainter &painter);
     void drawGraph18(QPainter &painter);
+    void drawGraph19(QPainter &painter);
 
     QPixmap pixmap;
 };

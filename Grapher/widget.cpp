@@ -17,7 +17,7 @@ void Widget::paintEvent(QPaintEvent *evt)
 {
     QPainter painter(this);
     painter.fillRect(0, 0, width(), height(), Qt::gray);
-    drawGraph18(painter);
+    drawGraph19(painter);
 }
 
 void Widget::drawGraph11(QPainter &painter1)
@@ -414,5 +414,58 @@ void Widget::drawGraph18(QPainter &painter1)
 
     pixmap.save("images/image18.png", "PNG");
 
+    painter1.drawPixmap(0, 0, pixmap);
+}
+
+void Widget::drawGraph19(QPainter &painter1)
+{
+    QPixmap pixmap(300, 400);
+    resize(300, 400);
+    setMinimumSize(300, 400);
+    setMaximumSize(300, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
+
+    QFont font;
+    font.setFamily("Arial");
+    font.setBold(true);
+    font.setPixelSize(16);
+    painter.setFont(font);
+
+    QFontMetrics fm(font);
+
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.drawLine(50, 30, 250, 120);
+    painter.drawLine(50, 120, 250, 30);
+
+    painter.drawLine(50, 150, 250, 240);
+    painter.drawLine(50, 240, 250, 150);
+
+    painter.drawLine(50, 270, 250, 360);
+    painter.drawLine(50, 360, 250, 270);
+
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::DashLine));
+    painter.drawLine(150, 75, 250, 75);
+    painter.drawLine(150, 195, 250, 195);
+    painter.drawLine(150, 315, 250, 315);
+
+    painter.setPen(QPen(Qt::black, 1.0, Qt::DashLine));
+    painter.drawLine(150, 75, 150, 315);
+
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::SolidLine));
+    painter.setBrush(Qt::white);
+    painter.drawEllipse(146, 71, 8, 8);
+    painter.drawEllipse(46, 26, 8, 8);
+    painter.drawEllipse(246, 116, 8, 8);
+    painter.drawEllipse(146, 191, 8, 8);
+    painter.drawEllipse(246, 146, 8, 8);
+    painter.drawEllipse(46, 236, 8, 8);
+    painter.drawEllipse(146, 311, 8, 8);
+    painter.drawEllipse(46, 266, 8, 8);
+    painter.drawEllipse(246, 356, 8, 8);
+
+    pixmap.save("images/image19.png", "PNG");
     painter1.drawPixmap(0, 0, pixmap);
 }
