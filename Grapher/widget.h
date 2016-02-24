@@ -24,8 +24,14 @@ protected:
     void image4(QPaintEvent *evt);
     void image5(QPaintEvent *evt);
 
-    void drawGraph6(int w, int h, QPainter &painter);
-    void drawGraph6(int w, int h, QPainter &painter);
+    void drawGraph11(QPainter &painter);
+    void drawGraph12(QPainter &painter);
+    void drawGraph13(QPainter &painter);
+    void drawGraph14(QPainter &painter);
+    void drawGraph15(QPainter &painter);
+    void drawGraph16(QPainter &painter);
+    void drawGraph17(QPainter &painter);
+    void drawGraph18(QPainter &painter);
 
     QPixmap pixmap;
 };

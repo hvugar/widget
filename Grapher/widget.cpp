@@ -11,22 +11,20 @@ Widget::Widget(QWidget *parent) : QWidget(parent)
 
 Widget::~Widget()
 {
-    QPixmap screenshot;
-    screenshot = QPixmap::grabWidget(this, rect());
-    screenshot.save("images/ok/image5.png","PNG");
 }
 
 void Widget::paintEvent(QPaintEvent *evt)
 {
-//    image5(evt);
     QPainter painter(this);
-    painter.fillRect(0,0,width(),height(), Qt::gray);
-    drawGraph6(300, 200, painter);
+    painter.fillRect(0, 0, width(), height(), Qt::gray);
+    drawGraph18(painter);
 }
 
-void Widget::image1(QPaintEvent *evt)
+void Widget::drawGraph11(QPainter &painter1)
 {
-    QPainter painter(this);
+    QPixmap pixmap(600, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
 
     QFont font;
     font.setFamily("Courier New");
@@ -66,11 +64,94 @@ void Widget::image1(QPaintEvent *evt)
     painter.drawEllipse(297, 346, 6, 6);
 
     painter.end();
+
+    pixmap.save("images/image11.png", "PNG");
+    painter1.drawPixmap(0, 0, pixmap);
 }
 
-void Widget::image2(QPaintEvent *evt)
+void Widget::drawGraph12(QPainter &painter1)
 {
-    QPainter painter(this);
+    QPixmap pixmap(600, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
+
+    QFont font;
+    font.setFamily("Courier New");
+    font.setBold(true);
+    font.setPixelSize(16);
+    painter.setFont(font);
+
+    QFontMetrics fm(font);
+
+    QPoint p1(50, 330);
+    QPoint p2(550, 330);
+    painter.drawLine(p1, p2);
+    QPoint p3(100, 370);
+    QPoint p4(100, 50);
+    painter.drawLine(p3, p4);
+    painter.drawPixmap(545, 320, QPixmap("images/arrow_left.png", "PNG"));
+    painter.drawPixmap(90, 40, QPixmap("images/arrow_up.png", "PNG"));
+    painter.drawPixmap(550, 305, QPixmap("images/x.png", "PNG"));
+    painter.drawPixmap(110, 30, QPixmap("images/t.png", "PNG"));
+
+    painter.drawText(90-fm.width("0")/2, 345, "0");
+
+    painter.setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
+    painter.drawLine(101, 330, 500, 330);
+    painter.drawLine(101, 330, 101, 90);
+    painter.drawLine(500, 330, 500, 90);
+    painter.drawLine(101, 90, 500, 90);
+
+    painter.setPen(QPen(Qt::black, 1.0, Qt::DotLine));
+    for (int j=90; j<=330; j+=40)
+    {
+        painter.drawLine(101, j, 500, j);
+    }
+    for (int i=100; i<=500; i+=40)
+    {
+        painter.drawLine(i, 90, i, 330);
+    }
+
+    painter.drawPixmap(497, 340, QPixmap("images/l.png", "PNG"));
+    painter.drawPixmap(80, 80, QPixmap("images/T1.png", "PNG"));
+
+    pixmap.save("images/image12.png", "PNG");
+    painter1.drawPixmap(0, 0, pixmap);
+}
+
+void Widget::drawGraph13(QPainter &painter1)
+{
+    QPixmap pixmap(300, 200);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
+
+    painter.setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
+    painter.drawLine(50, 50, 250, 50);
+    painter.drawLine(150, 50, 150, 150);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::SolidLine));
+    painter.setBrush(Qt::white);
+    painter.drawEllipse(46, 46, 7, 7);
+    painter.drawEllipse(146, 46, 7, 7);
+    painter.drawEllipse(246, 46, 7, 7);
+    painter.drawEllipse(146, 146, 7, 7);
+
+    painter.drawPixmap(138, 25, QPixmap("images/ij.png", "PNG"));
+    painter.drawPixmap(20, 25, QPixmap("images/im1j.png", "PNG"));
+    painter.drawPixmap(220, 25, QPixmap("images/ip1j.png", "PNG"));
+    painter.drawPixmap(120, 155, QPixmap("images/ijm1.png", "PNG"));
+
+    painter.end();
+
+    pixmap.save("images/image13.png", "PNG");
+
+    painter1.drawPixmap(0, 0, pixmap);
+}
+
+void Widget::drawGraph14(QPainter &painter1)
+{
+    QPixmap pixmap(600, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
 
     QFont font;
     font.setFamily("Courier New");
@@ -108,11 +189,17 @@ void Widget::image2(QPaintEvent *evt)
     painter.drawPixmap(550, 305, QPixmap("images/x.png", "PNG"));
     painter.drawPixmap(120, 30, QPixmap("images/delta_epsilon.png", "PNG"));
     painter.drawPixmap(80, 69, QPixmap("images/inverse_epsilon.png", "PNG"));
+
+    pixmap.save("images/image14.png", "PNG");
+
+    painter1.drawPixmap(0, 0, pixmap);
 }
 
-void Widget::image3(QPaintEvent *evt)
+void Widget::drawGraph15(QPainter &painter1)
 {
-    QPainter painter(this);
+    QPixmap pixmap(600, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
 
     QFont font;
     font.setFamily("Courier New");
@@ -137,7 +224,7 @@ void Widget::image3(QPaintEvent *evt)
     painter.drawLine(300, 327, 300, 333);
     painter.drawPixmap(249, 345, QPixmap("images/x_i.png", "PNG"));
     painter.drawPixmap(344, 345, QPixmap("images/x_i1.png", "PNG"));
-    painter.drawLine(97, 100, 103, 100);
+    //painter.drawLine(97, 100, 103, 100);
 
     painter.setPen(QPen(Qt::black, 2.0));
     painter.drawLine(50, 330, 260, 330);
@@ -151,19 +238,25 @@ void Widget::image3(QPaintEvent *evt)
 
     painter.drawPixmap(550, 305, QPixmap("images/x.png", "PNG"));
     painter.drawPixmap(120, 30, QPixmap("images/delta_epsilon.png", "PNG"));
-    painter.drawPixmap(20, 85, QPixmap("images/inverse_epsilon_1.png", "PNG"));
-    //    painter.drawPixmap(20, 85, QPixmap("images/inverse_epsilon_1.png", "PNG"));
-    painter.drawPixmap(10, 135, QPixmap("images/inverse_epsilon_2.png", "PNG"));
-    //    painter.drawPixmap(10, 135, QPixmap("images/inverse_epsilon_2.png", "PNG"));
+    //painter.drawPixmap(20, 85, QPixmap("images/inverse_epsilon_1.png", "PNG"));
+    //painter.drawPixmap(20, 85, QPixmap("images/inverse_epsilon_1.png", "PNG"));
+    //painter.drawPixmap(10, 135, QPixmap("images/inverse_epsilon_2.png", "PNG"));
+    //painter.drawPixmap(10, 135, QPixmap("images/inverse_epsilon_2.png", "PNG"));
 
-    painter.setPen(QPen(Qt::black, 1.0, Qt::DotLine));
-    painter.drawLine(100, 100, 260, 100);
-    painter.drawLine(100, 150, 370, 150);
+    //painter.setPen(QPen(Qt::black, 1.0, Qt::DotLine));
+    //painter.drawLine(100, 100, 260, 100);
+    //painter.drawLine(100, 150, 370, 150);
+
+    pixmap.save("images/image15.png", "PNG");
+
+    painter1.drawPixmap(0, 0, pixmap);
 }
 
-void Widget::image4(QPaintEvent *evt)
+void Widget::drawGraph16(QPainter &painter1)
 {
-    QPainter painter(this);
+    QPixmap pixmap(600, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
 
     QFont font;
     font.setFamily("Courier New");
@@ -231,13 +324,18 @@ void Widget::image4(QPaintEvent *evt)
         QPointF p_2(i, height()-70-a*20000);
         painter.drawLine(p_1, p_2);
         p_1 = p_2;
-        if (i==360) qDebug() << p_1.y();
     }
+
+    pixmap.save("images/image16.png", "PNG");
+
+    painter1.drawPixmap(0, 0, pixmap);
 }
 
-void Widget::image5(QPaintEvent *evt)
+void Widget::drawGraph17(QPainter &painter1)
 {
-    QPainter painter(this);
+    QPixmap pixmap(600, 400);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
 
     QFont font;
     font.setFamily("Courier New");
@@ -255,55 +353,66 @@ void Widget::image5(QPaintEvent *evt)
     painter.drawLine(p3, p4);
     painter.drawPixmap(545, 320, QPixmap("images/arrow_left.png", "PNG"));
     painter.drawPixmap(90, 40, QPixmap("images/arrow_up.png", "PNG"));
-    painter.drawPixmap(550, 305, QPixmap("images/x.png", "PNG"));
-    painter.drawPixmap(110, 30, QPixmap("images/t.png", "PNG"));
 
-    painter.drawText(90-fm.width("0")/2, 345, "0");
-
-    painter.setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
-    painter.drawLine(101, 330, 500, 330);
-    painter.drawLine(101, 330, 101, 90);
-    painter.drawLine(500, 330, 500, 90);
-    painter.drawLine(101, 90, 500, 90);
+    painter.drawPixmap(120,105,QPixmap("images/convex_polygon1.png", "PNG"));
 
     painter.setPen(QPen(Qt::black, 1.0, Qt::DotLine));
-    for (int j=90; j<=330; j+=40)
-    {
-        painter.drawLine(101, j, 500, j);
-    }
-    for (int i=100; i<=500; i+=40)
-    {
-        painter.drawLine(i, 90, i, 330);
-    }
+    for (int i=100; i<450; i+=25) painter.drawLine(i, 80, i, 330);
+    for (int j=330; j>=105; j-=25) painter.drawLine(100, j, 450, j);
 
-    painter.drawPixmap(497, 340, QPixmap("images/l.png", "PNG"));
-    painter.drawPixmap(80, 80, QPixmap("images/T1.png", "PNG"));
+    painter.drawPixmap(550, 305, QPixmap("images/x1.png", "PNG"));
+    painter.drawPixmap(110,  30, QPixmap("images/x2.png", "PNG"));
+    painter.drawText(90-fm.width("0")/2, 345, "0");
+    painter.drawPixmap(330, 183, QPixmap("images/Omega.png", "PNG"));
+
+    pixmap.save("images/image17.png", "PNG");
+
+    painter1.drawPixmap(0, 0, pixmap);
 }
 
-void Widget::drawGraph6(int w, int h, QPainter &pntr)
+void Widget::drawGraph18(QPainter &painter1)
 {
-    QPixmap pixmap(300, 200);
+    QPixmap pixmap(600, 400);
     pixmap.fill(Qt::white);
     QPainter painter(&pixmap);
 
-    painter.setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
-    painter.drawLine(50, 50, 250, 50);
-    painter.drawLine(150, 50, 150, 150);
-    painter.setPen(QPen(Qt::black, 1.0, Qt::SolidLine));
-    painter.setBrush(Qt::white);
-    painter.drawEllipse(46, 46, 7, 7);
-    painter.drawEllipse(146, 46, 7, 7);
-    painter.drawEllipse(246, 46, 7, 7);
-    painter.drawEllipse(146, 146, 7, 7);
+    QFont font;
+    font.setFamily("Arial");
+    font.setBold(true);
+    font.setPixelSize(16);
+    painter.setFont(font);
 
-    painter.drawPixmap(138, 25, QPixmap("images/image6/ij.png", "PNG"));
-    painter.drawPixmap(20, 25, QPixmap("images/image6/im1j.png", "PNG"));
-    painter.drawPixmap(220, 25, QPixmap("images/image6/ip1j.png", "PNG"));
-    painter.drawPixmap(120, 155, QPixmap("images/image6/ijm1.png", "PNG"));
+    QFontMetrics fm(font);
 
-    painter.end();
+    painter.drawPixmap(170, 132, QPixmap("images/arc.png", "PNG"));
 
-    pixmap.save("images/ok/image6.png", "PNG");
+    QPoint p1(50, 330);
+    QPoint p2(550, 330);
+    painter.drawLine(p1, p2);
+    QPoint p3(100, 370);
+    QPoint p4(100, 50);
+    painter.drawLine(p3, p4);
+    painter.drawPixmap(545, 320, QPixmap("images/arrow_left.png", "PNG"));
+    painter.drawPixmap(90, 40, QPixmap("images/arrow_up.png", "PNG"));
 
-    pntr.drawPixmap(0, 0, pixmap);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::DotLine));
+    for (int i=100; i<450; i+=50) painter.drawLine(i, 80, i, 330);
+    for (int j=330; j>=105; j-=50) painter.drawLine(100, j, 450, j);
+
+    painter.drawPixmap(550, 305, QPixmap("images/x1.png", "PNG"));
+    painter.drawPixmap(110,  30, QPixmap("images/x2.png", "PNG"));
+    painter.drawText(90-fm.width("0")/2, 345, "0");
+
+    painter.setBrush(Qt::black);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.drawText(302, 228, "A");
+    painter.drawText(352, 228, "C");
+    painter.drawText(242, 228, "B");
+    painter.drawEllipse(298, 228, 4, 4);
+    painter.drawEllipse(348, 228, 4, 4);
+    painter.drawEllipse(256, 228, 4, 4);
+
+    pixmap.save("images/image18.png", "PNG");
+
+    painter1.drawPixmap(0, 0, pixmap);
 }
