@@ -23,6 +23,11 @@ protected:
     void image3(QPaintEvent *evt);
     void image4(QPaintEvent *evt);
     void image5(QPaintEvent *evt);
+
+    void drawGraph6(int w, int h, QPainter &painter);
+    void drawGraph6(int w, int h, QPainter &painter);
+
+    QPixmap pixmap;
 };
 
 #endif // WIDGET_H

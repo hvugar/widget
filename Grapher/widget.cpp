@@ -18,7 +18,10 @@ Widget::~Widget()
 
 void Widget::paintEvent(QPaintEvent *evt)
 {
-    image5(evt);
+//    image5(evt);
+    QPainter painter(this);
+    painter.fillRect(0,0,width(),height(), Qt::gray);
+    drawGraph6(300, 200, painter);
 }
 
 void Widget::image1(QPaintEvent *evt)
@@ -275,4 +278,32 @@ void Widget::image5(QPaintEvent *evt)
 
     painter.drawPixmap(497, 340, QPixmap("images/l.png", "PNG"));
     painter.drawPixmap(80, 80, QPixmap("images/T1.png", "PNG"));
+}
+
+void Widget::drawGraph6(int w, int h, QPainter &pntr)
+{
+    QPixmap pixmap(300, 200);
+    pixmap.fill(Qt::white);
+    QPainter painter(&pixmap);
+
+    painter.setPen(QPen(Qt::black, 2.0, Qt::SolidLine));
+    painter.drawLine(50, 50, 250, 50);
+    painter.drawLine(150, 50, 150, 150);
+    painter.setPen(QPen(Qt::black, 1.0, Qt::SolidLine));
+    painter.setBrush(Qt::white);
+    painter.drawEllipse(46, 46, 7, 7);
+    painter.drawEllipse(146, 46, 7, 7);
+    painter.drawEllipse(246, 46, 7, 7);
+    painter.drawEllipse(146, 146, 7, 7);
+
+    painter.drawPixmap(138, 25, QPixmap("images/image6/ij.png", "PNG"));
+    painter.drawPixmap(20, 25, QPixmap("images/image6/im1j.png", "PNG"));
+    painter.drawPixmap(220, 25, QPixmap("images/image6/ip1j.png", "PNG"));
+    painter.drawPixmap(120, 155, QPixmap("images/image6/ijm1.png", "PNG"));
+
+    painter.end();
+
+    pixmap.save("images/ok/image6.png", "PNG");
+
+    pntr.drawPixmap(0, 0, pixmap);
 }
