@@ -446,9 +446,9 @@ void Widget::drawGraph19(QPainter &painter1)
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(QPen(Qt::black, 1.0, Qt::DashLine));
-    painter.drawLine(150, 75, 250, 75);
-    painter.drawLine(150, 195, 250, 195);
-    painter.drawLine(150, 315, 250, 315);
+    painter.drawLine(150, 75, 230, 75);
+    painter.drawLine(150, 195, 230, 195);
+    painter.drawLine(150, 315, 230, 315);
 
     painter.setPen(QPen(Qt::black, 1.0, Qt::DashLine));
     painter.drawLine(150, 75, 150, 315);
@@ -465,6 +465,16 @@ void Widget::drawGraph19(QPainter &painter1)
     painter.drawEllipse(146, 311, 8, 8);
     painter.drawEllipse(46, 266, 8, 8);
     painter.drawEllipse(246, 356, 8, 8);
+
+    painter.drawPixmap(260, 110, QPixmap("images/x1.png", "PNG"));
+    painter.drawPixmap(10, 110, QPixmap("images/x2.png", "PNG"));
+    painter.drawPixmap(260, 230, QPixmap("images/x1.png", "PNG"));
+    painter.drawPixmap(10, 230, QPixmap("images/x2.png", "PNG"));
+    painter.drawPixmap(260, 350, QPixmap("images/x1.png", "PNG"));
+    painter.drawPixmap(10, 350, QPixmap("images/x2.png", "PNG"));
+    painter.drawPixmap(240, 70, QPixmap("images/k.png", "PNG"));
+    painter.drawPixmap(240, 175, QPixmap("images/k12.png", "PNG"));
+    painter.drawPixmap(240, 310, QPixmap("images/k1.png", "PNG"));
 
     pixmap.save("images/image19.png", "PNG");
     painter1.drawPixmap(0, 0, pixmap);
