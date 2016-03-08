@@ -17,7 +17,7 @@ void Widget::paintEvent(QPaintEvent *evt)
 {
     QPainter painter(this);
     painter.fillRect(0, 0, width(), height(), Qt::gray);
-    drawGraph19(painter);
+    drawGraph11(painter);
 }
 
 void Widget::drawGraph11(QPainter &painter1)
@@ -25,6 +25,7 @@ void Widget::drawGraph11(QPainter &painter1)
     QPixmap pixmap(600, 400);
     pixmap.fill(Qt::white);
     QPainter painter(&pixmap);
+
 
     QFont font;
     font.setFamily("Courier New");
@@ -62,6 +63,12 @@ void Widget::drawGraph11(QPainter &painter1)
 
     painter.setBrush(Qt::white);
     painter.drawEllipse(297, 346, 6, 6);
+
+    font.setFamily("Cambria Math");
+    font.setBold(false);
+    font.setPixelSize(20);
+    painter.setFont(font);
+    painter.drawText(100, 100, QString(QChar(0x03b4))+"(x)");
 
     painter.end();
 
