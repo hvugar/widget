@@ -17,7 +17,7 @@ void Widget::paintEvent(QPaintEvent *evt)
 {
     QPainter painter(this);
     painter.fillRect(0, 0, width(), height(), Qt::gray);
-    drawGraph18(painter);
+    drawGraph14(painter);
 }
 
 void Widget::drawGraph11(QPainter &painter1)
