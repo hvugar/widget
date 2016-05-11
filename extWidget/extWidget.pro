@@ -18,3 +18,6 @@ SOURCES += cartesianwidget.cpp functionconfig.cpp cartesianwidget2d.cpp
 HEADERS += extwidget_global.h cartesianwidget.h functionconfig.h cartesianwidget2d.h
 
 RESOURCES += resource.qrc
+
+INCLUDEPATH += ../../../num_methods/trunk/optimal/minimum
+LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum

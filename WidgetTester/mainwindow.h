@@ -17,7 +17,7 @@
 
 #include "cartesianwidget2d.h"
 #include "settingwidget.h"
-#include <gradient.h>
+//#include <gradient.h>
 #include "samplegradient.h"
 
 class MainWindow : public QMainWindow
@@ -62,7 +62,7 @@ public slots:
 
     void showSettingDialog();
     void gradient();
-    void showCoordinares(const std::vector<double>&);
+    void showCoordinares(const DoubleVector&);
 };
 
 #endif // MAINWINDOW_H

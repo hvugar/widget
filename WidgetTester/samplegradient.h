@@ -2,9 +2,11 @@
 #define SAMPLEGRADIENT_H
 
 #include <QObject>
-#include <gradient.h>
+#include <function.h>
+#include <gradient_cjt.h>
+#include <printer.h>
 
-class SampleGradient : public QObject, public Gradient
+class SampleGradient : public QObject, public RnFunction, public IGradient, public IPrinter, public ConjugateGradient
 {
     Q_OBJECT
 
@@ -13,13 +15,14 @@ public:
     virtual ~SampleGradient();
 
 protected:
-    virtual double fx(std::vector<double> x);
-    virtual void iterationInfo();
+    virtual double fx(const DoubleVector &x);
+    virtual void gradient(const DoubleVector &x, DoubleVector &g);
+    virtual void print(unsigned int iteration, const DoubleVector &x, const DoubleVector &gradient, double alpha, RnFunction *fn) const;
 
 public slots:
 
 signals:
-    void showCoordinares(const std::vector<double>& x);
+    void showCoordinares(const DoubleVector &x) const;
 };
 
 #endif // SAMPLEGRADIENT_H

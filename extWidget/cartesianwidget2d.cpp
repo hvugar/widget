@@ -305,7 +305,7 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
         for (double i=a; i<=b; i++)
         {
             double x = i*(xmax()-xmin())/width() + xmin();
-            double y = fc.f(x);
+            double y = fc.f->fx(x);
             double j = height()-(y - ymin())/(ymax()-ymin()) * height();
             painter.drawPoint(i,j);
 

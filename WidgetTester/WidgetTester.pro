@@ -20,6 +20,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h settingwidget.h samplegradient.h
 
 INCLUDEPATH += ../extWidget
-INCLUDEPATH += ../../../num_methods/trunk/optimal/minimum
 LIBS += -L../extWidget/debug -lextWidget
-LIBS += -L../../../num_methods/trunk/optimal/minimum/debug -lminimum
+
+INCLUDEPATH += ../../../num_methods/trunk/optimal/minimum
+LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum

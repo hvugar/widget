@@ -1,12 +1,11 @@
 #ifndef FUNCTIONCONFIG_H
 #define FUNCTIONCONFIG_H
 
-typedef double(*R1Function)(double x);
-typedef double(*RnFunction)(double* x, int size);
+#include <function.h>
 
 typedef struct
 {
-    R1Function f;
+    R1Function *f;
     double a;
     double b;
     unsigned int penColor;

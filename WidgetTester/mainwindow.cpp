@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cartesianWidget, SIGNAL(zoomChanged(double)), this, SLOT(cwZoomChanged(double)));
     connect(cartesianWidget, SIGNAL(boundsChanged(double,double,double,double)), this, SLOT(cwBoundsChanged(double,double,double,double)));
     cartesianWidget->reset();
-    initFunction();
 }
 
 MainWindow::~MainWindow()
@@ -68,36 +67,6 @@ void MainWindow::createStatusBar()
     statusBar->addWidget(label2);
     statusBar->addWidget(label3);
     statusBar->addWidget(label4);
-}
-
-void MainWindow::initFunction()
-{
-//    FunctionConfig fc1;
-//    fc1.f = argmin;
-//    fc1.a = -10.0;
-//    fc1.b = +10.0;
-//    fc1.penColor = 0xff0000;
-//    cartesianWidget->functions().append(fc1);
-
-    //    FunctionConfig fc2;
-    //    fc2.f = sin;
-    //    fc2.a = -2000.5;
-    //    fc2.b = +2000.5;
-    //    fc2.penColor = 0x0000ff;
-    //    cartesianWidget->functions().append(fc2);
-
-    //    FunctionConfig fc3;
-    //    fc3.f = f2;
-    //    fc3.a = -1.5;
-    //    fc3.b = +2.5;
-    //    fc3.penColor = 0x0000ff;
-    //    cartesianWidget->functions().append(fc3);
-
-    //    QLineF line(0.5, 1.4, 2.3, 2.0);
-    //    cartesianWidget->lines().append(line);
-    //    cartesianWidget->points().append(QPointF(0.2, 0.2));
-
-    //    gradient();
 }
 
 void MainWindow::cwCenterChanged(double centerX, double centerY)
@@ -179,18 +148,20 @@ double g3(double *x, int n) { return x[1]; }
 
 void MainWindow::gradient()
 {
-    std::vector<double> x;
+    DoubleVector x;
     x.push_back(-1.0);
     x.push_back(+1.2);
 
     SampleGradient gm;
-    connect(&gm, SIGNAL(showCoordinares(const std::vector<double>&)), this, SLOT(showCoordinares(const std::vector<double>&)));
-    gm.setEpsilon(0.00001);
-    gm.setPoint(x);
-    gm.fastProximalGradientMethod();
+    connect(&gm, SIGNAL(showCoordinares(const DoubleVector &)), this, SLOT(showCoordinares(const DoubleVector &)));
+    gm.setEpsilon1(0.00001);
+    gm.setEpsilon2(0.00001);
+    gm.setEpsilon3(0.00001);
+    gm.setR1MinimizeEpsilon(0.01, 0.00001);
+    gm.calculate(x);
 }
 
-void MainWindow::showCoordinares(const std::vector<double>& x)
+void MainWindow::showCoordinares(const DoubleVector& x)
 {
 
     cartesianWidget->points().append(QPointF(x[0], x[1]));
