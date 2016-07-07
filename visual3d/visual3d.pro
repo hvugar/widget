@@ -14,6 +14,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = visual3d
 TEMPLATE = app
 
+INCLUDEPATH += ../../../num_methods/trunk/optimal/minimum
+INCLUDEPATH += ../../../num_methods/trunk/optimal/cminimum
+LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum -lcminimum
+
 SOURCES += main.cpp\
         widget.cpp \
     surfacegraph.cpp

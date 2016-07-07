@@ -1,10 +1,8 @@
-#include "surfacegraph.h"
+//#include "surfacegraph.h"
 
 #include <QApplication>
-#include <QtDataVisualization/Q3DSurface>
+#include "widget.h"
 #include <QtWidgets/QMessageBox>
-
-using namespace QtDataVisualization;
 
 int main(int argc, char *argv[])
 {
@@ -19,10 +17,10 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    QWidget *w = QWidget::createWindowContainer(graph);;
-    w->show();
+    Widget w(graph);
+    w.show();
 
-    SurfaceGraph *modifier = new SurfaceGraph(graph);
+//    SurfaceGraph *modifier = new SurfaceGraph(graph);
 
     return a.exec();
 }
