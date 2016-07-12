@@ -20,7 +20,9 @@ LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum -lcminimum
 
 SOURCES += main.cpp\
         widget.cpp \
-    surfacegraph.cpp
+    surfacegraph.cpp \
+    rosenbrocksurface.cpp bealesurface.cpp booth.cpp
 
 HEADERS  += widget.h \
-    surfacegraph.h
+    surfacegraph.h \
+    rosenbrocksurface.h bealesurface.h booth.h

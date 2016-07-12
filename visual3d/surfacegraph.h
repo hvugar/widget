@@ -5,14 +5,15 @@
 #include <QtCore/QTimer>
 #include <QtCore/QFile>
 #include <QtGui/QLinearGradient>
+
+/** QtDataVisualization **/
 #include <QtDataVisualization/Q3DSurface>
 #include <QtDataVisualization/QValue3DAxis>
 #include <QtDataVisualization/QSurfaceDataProxy>
 #include <QtDataVisualization/QSurface3DSeries>
+#include <QtDataVisualization/Q3DCamera>
 
 #include <doublevector.h>
-
-#include <QtDataVisualization/Q3DCamera>
 
 using namespace QtDataVisualization;
 
@@ -26,8 +27,6 @@ public:
     void fillSqrtSinProxy();
 
     void loadMatrix(DoubleMatrix &m, unsigned k, unsigned int height, unsigned int width);
-
-
 
 signals:
 
