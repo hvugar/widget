@@ -61,13 +61,14 @@ RosenbrockSurface::RosenbrockSurface() : Q3DSurface()
 //    gr.setColorAt(0.7, 0xFF7700);
 //    gr.setColorAt(1.0, Qt::darkRed);
 
-    QImage pixmap("spectra.png", "PNG");
+    QImage pixmap("heat_spectra.JPG", "JPG");
     int w = pixmap.width();
     double h = 1.0 / (double)w;
 
     for (int i=0; i<w; i++)    {
-        QRgb rgb = pixmap.pixel(w-i,1);
-        gr.setColorAt(i*h, rgb);
+        QColor c = pixmap.pixelColor(i,1);
+        gr.setColorAt(i*h, c);
+        printf("%5d %5d %5d %5d %5d\n", i, c.red(), c.green(), c.black(), c.alpha());
     }
 
     m_Series->setBaseGradient(gr);

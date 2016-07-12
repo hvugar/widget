@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     //    SurfaceGraph *modifier = new SurfaceGraph(graph);
 
-    Q3DSurface *surface = new BoothSurface();
+    Q3DSurface *surface = new RosenbrockSurface();
 
     if (!surface->hasContext()) {
         QMessageBox msgBox;
