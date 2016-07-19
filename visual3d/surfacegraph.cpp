@@ -138,10 +138,10 @@ void SurfaceGraph::timeout()
     }
     m_sqrtSinProxy->resetArray(dataArray);
 
-    Q3DCamera *camera = m_graph->scene()->activeCamera();
-    float rotateX = camera->xRotation();
-//    camera->setXRotation(++rotateX);
-    //    camera->setYRotation(30.0);
+    //Q3DCamera *camera = m_graph->scene()->activeCamera();
+    //float rotateX = camera->xRotation();
+    //camera->setXRotation(++rotateX);
+    //camera->setYRotation(30.0);
 }
 
 void SurfaceGraph::loadMatrix(DoubleMatrix &m, unsigned k, unsigned int height, unsigned int width)
