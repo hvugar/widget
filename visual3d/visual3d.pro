@@ -15,14 +15,15 @@ TARGET = visual3d
 TEMPLATE = app
 
 INCLUDEPATH += ../../../num_methods/trunk/optimal/minimum
-INCLUDEPATH += ../../../num_methods/trunk/optimal/cminimum
-LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum -lcminimum
+LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum
 
 SOURCES += main.cpp\
         widget.cpp \
     surfacegraph.cpp \
-    rosenbrocksurface.cpp bealesurface.cpp booth.cpp
+    rosenbrocksurface.cpp bealesurface.cpp \
+    boothsurface.cpp
 
 HEADERS  += widget.h \
     surfacegraph.h \
-    rosenbrocksurface.h bealesurface.h booth.h
+    rosenbrocksurface.h bealesurface.h \
+    boothsurface.h

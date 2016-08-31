@@ -6,7 +6,7 @@
 
 #include "rosenbrocksurface.h"
 #include "bealesurface.h"
-#include "booth.h"
+#include "boothsurface.h"
 
 int main(int argc, char *argv[])
 {

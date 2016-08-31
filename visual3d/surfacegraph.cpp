@@ -159,7 +159,7 @@ void SurfaceGraph::loadMatrix(DoubleMatrix &m, unsigned k, unsigned int height, 
     double maximum = -9999.9;
     double minimum = +9999.9;
 
-    m.resize(height);
+    m.resize(height, width);
 
     unsigned int j=0;
     QString line = in.readLine();
@@ -167,7 +167,6 @@ void SurfaceGraph::loadMatrix(DoubleMatrix &m, unsigned k, unsigned int height, 
     {
         unsigned int i=0;
         QStringList list = line.split(" ");
-        m[j].resize(width);
         for (int k=0; k<list.size(); k++)
         {
             QString str = list[k];

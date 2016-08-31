@@ -1,4 +1,4 @@
-#include "booth.h"
+#include "boothsurface.h"
 
 BoothSurface::BoothSurface() : Q3DSurface()
 {

@@ -13,7 +13,8 @@
 #include <QtDataVisualization/QSurface3DSeries>
 #include <QtDataVisualization/Q3DCamera>
 
-#include <doublevector.h>
+#include <vector2d.h>
+#include <matrix2d.h>
 
 using namespace QtDataVisualization;
 
