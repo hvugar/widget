@@ -6,8 +6,8 @@
 
 QT += core gui datavisualization
 
-INCLUDEPATH += ../../../include
-LIBS += -L$$OUT_PWD/../../../lib
+#INCLUDEPATH += ../../../include
+#LIBS += -L$$OUT_PWD/../../../lib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
