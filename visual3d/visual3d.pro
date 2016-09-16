@@ -21,9 +21,11 @@ SOURCES += main.cpp\
         widget.cpp \
     surfacegraph.cpp \
     rosenbrocksurface.cpp bealesurface.cpp \
-    boothsurface.cpp
+    boothsurface.cpp \
+    matrixsurface.cpp
 
 HEADERS  += widget.h \
     surfacegraph.h \
     rosenbrocksurface.h bealesurface.h \
-    boothsurface.h
+    boothsurface.h \
+    matrixsurface.h

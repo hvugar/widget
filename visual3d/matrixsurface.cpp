@@ -1,13 +1,13 @@
-#include "rosenbrocksurface.h"
+#include "matrixsurface.h"
 
-RosenbrockSurface::RosenbrockSurface() : Q3DSurface()
+MatrixSurface::MatrixSurface()
 {
-    minX = -1.5f;
-    maxX = +1.5f;
-    minZ = -1.5f;
-    maxZ = +1.5f;
+    minX = +0.0f;
+    maxX = +1.0f;
+    minZ = +0.0f;
+    maxZ = +1.0f;
     minY = 0.0f;
-    maxY = 1400.0f;
+    maxY = 1.0f;
 
     rotationX = 30.0f;
     rotationY = 90.0f;
@@ -69,12 +69,10 @@ RosenbrockSurface::RosenbrockSurface() : Q3DSurface()
     {
         QColor c = pixmap.pixelColor(i,1);
         gr.setColorAt(i*h, c);
-        printf("%5d %5d %5d %5d %5d\n", i, c.red(), c.green(), c.black(), c.alpha());
     }
 
     m_Series->setBaseGradient(gr);
     m_Series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
-
 
     setReflection(false);
     setSelectionMode(QAbstract3DGraph::SelectionNone);
@@ -89,32 +87,53 @@ RosenbrockSurface::RosenbrockSurface() : Q3DSurface()
     //activeTheme()->setLabelBackgroundColor(Qt::white);
     //activeTheme()->setWindowColor(Qt::black);
 
-    fillRosenbrockData();
+    fillMatrix();
 }
 
-RosenbrockSurface::~RosenbrockSurface()
-{}
+MatrixSurface::~MatrixSurface() {}
 
-float RosenbrockSurface::function(float x, float z)
+void MatrixSurface::fillMatrix()
 {
-    return (1.0f-x*x)*(1.0f-x*x)+100.0f*(z-x*x)*(z-x*x);
-}
+    DoubleMatrix m(101, 101);
 
-void RosenbrockSurface::fillRosenbrockData()
-{
-    float stepX = (maxX - minX) / float(countX);
-    float stepZ = (maxZ - minZ) / float(countZ);
+    QFile file("d:\\data1.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+
+    unsigned int j=0;
+    QString line = in.readLine();
+    while (!line.isNull() && !line.isEmpty())
+    {
+        unsigned int i=0;
+        QStringList list = line.split(" ");
+        for (int k=0; k<list.size(); k++)
+        {
+            QString str = list[k];
+            if (!str.isNull() && !str.isEmpty())
+            {
+                double u = str.toDouble();
+                m[j][i] = u;
+//                if (u<=minimum) minimum = u;
+//                if (u>=maximum) maximum = u;
+                i++;
+            }
+        }
+        line = in.readLine();
+        j++;
+    }
+    file.close();
+
 
     QSurfaceDataArray *dataArray = new QSurfaceDataArray;
     dataArray->reserve(countZ+1);
 
     for (int i = 0 ; i <= countZ ; i++) {
         QSurfaceDataRow *newRow = new QSurfaceDataRow(countX+1);
-        float z = qMin(maxZ, (i * stepZ + minZ));
+        float z = i*0.01;
         int index = 0;
         for (int j = 0; j <= countX; j++) {
-            float x = qMin(maxX, (j * stepX + minX));
-            float y = function(x, z);
+            float x = j*0.01;
+            float y = (float) m.at(i, j);
             (*newRow)[index++].setPosition(QVector3D(x, y, z));
         }
         *dataArray << newRow;

@@ -7,6 +7,7 @@
 #include "rosenbrocksurface.h"
 #include "bealesurface.h"
 #include "boothsurface.h"
+#include "matrixsurface.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
 
     //    SurfaceGraph *modifier = new SurfaceGraph(graph);
 
-    Q3DSurface *surface = new RosenbrockSurface();
+    Q3DSurface *surface = new MatrixSurface();
 
     if (!surface->hasContext()) {
         QMessageBox msgBox;
