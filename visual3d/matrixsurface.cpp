@@ -3,11 +3,11 @@
 MatrixSurface::MatrixSurface()
 {
     minX = +0.0f;
-    maxX = +1.0f;
+    maxX = +100.0f;
     minZ = +0.0f;
-    maxZ = +1.0f;
+    maxZ = +100.0f;
     minY = 0.0f;
-    maxY = 1.0f;
+    maxY = 10000.0f;
 
     rotationX = 30.0f;
     rotationY = 90.0f;
@@ -96,7 +96,7 @@ void MatrixSurface::fillMatrix()
 {
     DoubleMatrix m(101, 101);
 
-    QFile file("d:\\data1.txt");
+    QFile file("d:\\data2.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(&file);
 
@@ -129,11 +129,11 @@ void MatrixSurface::fillMatrix()
 
     for (int i = 0 ; i <= countZ ; i++) {
         QSurfaceDataRow *newRow = new QSurfaceDataRow(countX+1);
-        float z = i*0.01;
+        float z = i;
         int index = 0;
         for (int j = 0; j <= countX; j++) {
-            float x = j*0.01;
-            float y = (float) m.at(i, j);
+            float x = j;
+            float y = (float) m.at(i, j)*100;
             (*newRow)[index++].setPosition(QVector3D(x, y, z));
         }
         *dataArray << newRow;
