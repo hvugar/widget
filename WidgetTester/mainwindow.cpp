@@ -149,8 +149,7 @@ double g3(double *x, int n) { return x[1]; }
 void MainWindow::gradient()
 {
     DoubleVector x;
-    x.push_back(-1.0);
-    x.push_back(+1.2);
+    x << -1.0 << +1.2;
 
     SampleGradient gm;
     connect(&gm, SIGNAL(showCoordinares(const DoubleVector &)), this, SLOT(showCoordinares(const DoubleVector &)));

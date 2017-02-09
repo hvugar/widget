@@ -2,6 +2,8 @@
 #define CARTESIANWIDGET2D_H
 
 #include "cartesianwidget.h"
+#include <math.h>
+#include <cmath>
 
 class EXT_WIDGETSHARED_EXPORT Cartesian2DWidget : public CartesianWidget
 {

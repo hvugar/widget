@@ -259,14 +259,15 @@ void Cartesian2DWidget1::drawR1Function(QPainter& painter)
 
             //painter.drawLine(i, y11, i+1, y12);
 
-            if(!isnan(y1))
-            {
-                if (path.elementCount()==0) {
-                    path.moveTo(i, y11);
-                } else {
-                    path.lineTo(i, y11);
-                }
-            }
+
+//            if(!isnan(y1))
+//            {
+//                if (path.elementCount()==0) {
+//                    path.moveTo(i, y11);
+//                } else {
+//                    path.lineTo(i, y11);
+//                }
+//            }
         }
         painter.drawPath(path);
     }
