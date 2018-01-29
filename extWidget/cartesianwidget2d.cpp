@@ -3,6 +3,8 @@
 #include <QtGui/QFontMetrics>
 #include <QtGui/QFontMetricsF>
 #include <QtCore/QDebug>
+#include <cmath>
+#include <climits>
 
 Cartesian2DWidget::Cartesian2DWidget(QWidget *parent) : CartesianWidget(parent)
 {
@@ -308,6 +310,25 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
             double j = height()-(y - ymin())/(ymax()-ymin()) * height();
             painter.drawPoint(i,j);
 
+<<<<<<< .mine
+            if(/*!isnan(j) && !isinf(j)*/true)
+            {
+                if (path.elementCount()==0) {
+                    path.moveTo(i, j);
+                } else {
+                    path.lineTo(i, j);
+                }
+            }
+||||||| .r88
+            if(!isnan(j) && !isinf(j))
+            {
+                if (path.elementCount()==0) {
+                    path.moveTo(i, j);
+                } else {
+                    path.lineTo(i, j);
+                }
+            }
+=======
 //            if(!isnan(j) && !isinf(j))
 //            {
 //                if (path.elementCount()==0) {
@@ -316,6 +337,7 @@ void Cartesian2DWidget::drawR1Graphic(QPainter& painter)
 //                    path.lineTo(i, j);
 //                }
 //            }
+>>>>>>> .r93
         }
         painter.drawPath(path);
     }

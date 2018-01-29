@@ -2,6 +2,7 @@
 #include <math.h>
 #include <string.h>
 #include <QDebug>
+#include <QDockWidget>
 
 MainWindow* MainWindow::mw = 0;
 

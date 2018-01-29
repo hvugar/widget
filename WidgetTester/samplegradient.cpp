@@ -10,7 +10,7 @@ SampleGradient::SampleGradient()
 SampleGradient::~SampleGradient()
 {}
 
-double SampleGradient::fx(const DoubleVector &x)
+double SampleGradient::fx(const DoubleVector &x) const
 {
     double x1 = x[0];
     double x2 = x[1];
@@ -22,7 +22,8 @@ void SampleGradient::gradient(const DoubleVector &x, DoubleVector &g)
     IGradient::Gradient(this, 0.0001, x, g);
 }
 
-void SampleGradient::print(unsigned int iteration, const DoubleVector &x, const DoubleVector &gradient, double alpha, RnFunction *fn) const
+void SampleGradient::print(unsigned int i, const DoubleVector &x, const DoubleVector &g,
+                           double f, GradientMethod::MethodResult result) const
 {
     emit showCoordinares(x);
 }

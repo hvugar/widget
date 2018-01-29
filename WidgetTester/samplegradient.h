@@ -15,9 +15,11 @@ public:
     virtual ~SampleGradient();
 
 protected:
-    virtual double fx(const DoubleVector &x);
+    virtual double fx(const DoubleVector &x) const;
     virtual void gradient(const DoubleVector &x, DoubleVector &g);
-    virtual void print(unsigned int iteration, const DoubleVector &x, const DoubleVector &gradient, double alpha, RnFunction *fn) const;
+    virtual void print(unsigned int iteration, const DoubleVector &x, const DoubleVector &g,
+                       double f, GradientMethod::MethodResult result) const;
+
 
 public slots:
 
