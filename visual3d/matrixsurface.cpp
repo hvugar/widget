@@ -2,12 +2,14 @@
 
 MatrixSurface::MatrixSurface()
 {
+    connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
     minX = +0.0f;
     maxX = +100.0f;
     minZ = +0.0f;
     maxZ = +100.0f;
-    minY = 0.0f;
-    maxY = 10000.0f;
+    minY = -200.0f;
+    maxY = +200.0;
 
     rotationX = 30.0f;
     rotationY = 90.0f;
@@ -16,9 +18,9 @@ MatrixSurface::MatrixSurface()
     countX = 100;
     countZ = 100;
 
-    setAxisX(new QValue3DAxis);
-    setAxisY(new QValue3DAxis);
-    setAxisZ(new QValue3DAxis);
+    setAxisX(new QValue3DAxis());
+    setAxisY(new QValue3DAxis());
+    setAxisZ(new QValue3DAxis());
 
     m_Proxy = new QSurfaceDataProxy();
 
@@ -30,26 +32,29 @@ MatrixSurface::MatrixSurface()
     axisX()->setLabelFormat("x: %.2f");
     axisZ()->setLabelFormat("z: %.2f");
     axisY()->setLabelFormat("y: %.2f");
+
     axisX()->setRange(minX, maxX);
     axisY()->setRange(minY, maxY);
     axisZ()->setRange(minZ, maxZ);
 
-    axisX()->setLabelAutoRotation(rotationX);
-    axisY()->setLabelAutoRotation(rotationY);
-    axisZ()->setLabelAutoRotation(rotationZ);
+    axisX()->setLabelAutoRotation(30.0f);
+    axisY()->setLabelAutoRotation(90.0f);
+    axisZ()->setLabelAutoRotation(30.0f);
+
+
 
     QLinearGradient gr;
-//    gr.setColorAt(0.0, 0x0000FF);
-//    gr.setColorAt(0.1, 0x0064FF);
-//    gr.setColorAt(0.2, 0x009FFF);
-//    gr.setColorAt(0.3, 0x00D1FF);
-//    gr.setColorAt(0.4, 0x01FFFF);
-//    gr.setColorAt(0.5, 0x01FF00);
-//    gr.setColorAt(0.6, 0xFFFF00);
-//    gr.setColorAt(0.7, 0xFFC700);
-//    gr.setColorAt(0.8, 0xFF7700);
-//    gr.setColorAt(0.9, 0xFF0000);
-//    gr.setColorAt(1.0, Qt::darkRed);
+    gr.setColorAt(0.0, 0x0000FF);
+    gr.setColorAt(0.1, 0x0064FF);
+    gr.setColorAt(0.2, 0x009FFF);
+    gr.setColorAt(0.3, 0x00D1FF);
+    gr.setColorAt(0.4, 0x01FFFF);
+    gr.setColorAt(0.5, 0x01FF00);
+    gr.setColorAt(0.6, 0xFFFF00);
+    gr.setColorAt(0.7, 0xFFC700);
+    gr.setColorAt(0.8, 0xFF7700);
+    gr.setColorAt(0.9, 0xFF0000);
+    gr.setColorAt(1.0, Qt::darkRed);
 
 //    gr.setColorAt(0.0, Qt::darkBlue);
 //    gr.setColorAt(0.1, Qt::blue);
@@ -61,22 +66,26 @@ MatrixSurface::MatrixSurface()
 //    gr.setColorAt(0.7, 0xFF7700);
 //    gr.setColorAt(1.0, Qt::darkRed);
 
-    QImage pixmap("heat_spectra.JPG", "JPG");
-    int w = pixmap.width();
-    double h = 1.0 / (double)w;
+    //QImage pixmap("heat_spectra.JPG", "JPG");
+    //int w = pixmap.width();
+    //double h = 1.0 / (double)w;
 
-    for (int i=0; i<w; i++)
-    {
-        QColor c = pixmap.pixelColor(i,1);
-        gr.setColorAt(i*h, c);
-    }
+    //for (int i=0; i<w; i++)
+    //{
+    //    QColor c = pixmap.pixelColor(i,1);
+    //    gr.setColorAt(i*h, c);
+    //}
 
     m_Series->setBaseGradient(gr);
     m_Series->setColorStyle(Q3DTheme::ColorStyleRangeGradient);
 
-    setReflection(false);
+    setReflection(true);
     setSelectionMode(QAbstract3DGraph::SelectionNone);
     setShadowQuality(QAbstract3DGraph::ShadowQualityNone);
+
+    scene()->activeCamera()->setXRotation(45.0f);
+    scene()->activeCamera()->setYRotation(15.0f);
+    scene()->activeCamera()->setZoomLevel(75.0f);
 
     //activeTheme()->setGridEnabled(false);
     //activeTheme()->setBackgroundEnabled(false);
@@ -87,16 +96,19 @@ MatrixSurface::MatrixSurface()
     //activeTheme()->setLabelBackgroundColor(Qt::white);
     //activeTheme()->setWindowColor(Qt::black);
 
-    fillMatrix();
+    QString filename = "d:/data.txt";
+    //fillMatrix(filename);
+    timer.setInterval( 10 );
+    timer.start();
 }
 
 MatrixSurface::~MatrixSurface() {}
 
-void MatrixSurface::fillMatrix()
+void MatrixSurface::fillMatrix(const QString filename)
 {
     DoubleMatrix m(101, 101);
 
-    QFile file("d:\\data2.txt");
+    QFile file(filename);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(&file);
 
@@ -139,4 +151,14 @@ void MatrixSurface::fillMatrix()
         *dataArray << newRow;
     }
     m_Proxy->resetArray(dataArray);
+
+    qDebug() << counter;
+}
+
+void MatrixSurface::timeout()
+{
+    QString filename = QString("E:/project/hvugar/num_methods/trunk/"
+                               "optimal/bin/data/problem0H/c/txt/c_%1.txt").arg(counter, 4, 10, QChar('0'));
+    fillMatrix(filename);
+    counter++;
 }

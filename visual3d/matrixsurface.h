@@ -7,6 +7,7 @@
 #include <QRgb>
 
 #include <QLinearGradient>
+#include <QTimer>
 
 /** QtDataVisualization **/
 #include <QtDataVisualization/Q3DSurface>
@@ -21,6 +22,7 @@ using namespace QtDataVisualization;
 
 class MatrixSurface  : public Q3DSurface
 {
+    Q_OBJECT
 public:
     MatrixSurface();
     virtual ~MatrixSurface();
@@ -42,8 +44,14 @@ public:
     int countX;
     int countZ;
 
+    unsigned int counter = 0;
+
 private:
-    void fillMatrix();
+    void fillMatrix(const QString filename = QString::null);
+    QTimer timer;
+
+public slots:
+    void timeout();
 };
 
 #endif // MATRIXSURFACE_H

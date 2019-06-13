@@ -4,12 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui datavisualization
-
-#INCLUDEPATH += ../../../include
-#LIBS += -L$$OUT_PWD/../../../lib
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui widgets datavisualization
 
 TARGET = visual3d
 TEMPLATE = app
@@ -19,13 +14,13 @@ LIBS += -L../../../num_methods/trunk/optimal/bin -lminimum
 
 SOURCES += main.cpp\
         widget.cpp \
-    surfacegraph.cpp \
-    rosenbrocksurface.cpp bealesurface.cpp \
-    boothsurface.cpp \
+#    surfacegraph.cpp \
+#    rosenbrocksurface.cpp bealesurface.cpp \
+#    boothsurface.cpp \
     matrixsurface.cpp
 
 HEADERS  += widget.h \
-    surfacegraph.h \
-    rosenbrocksurface.h bealesurface.h \
-    boothsurface.h \
+#    surfacegraph.h \
+#    rosenbrocksurface.h bealesurface.h \
+#    boothsurface.h \
     matrixsurface.h
