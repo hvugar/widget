@@ -13,7 +13,7 @@ Widget::~Widget()
 {
 }
 
-void Widget::paintEvent(QPaintEvent *evt)
+void Widget::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.fillRect(0, 0, width(), height(), Qt::gray);

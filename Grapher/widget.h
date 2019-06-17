@@ -6,13 +6,14 @@
 #include <QPaintEvent>
 #include <QDebug>
 #include <math.h>
+#include <cmath>
 
 class Widget : public QWidget
 {
     Q_OBJECT
 
 public:
-    Widget(QWidget *parent = 0);
+    Widget(QWidget *parent = nullptr);
     ~Widget();
 
 protected:

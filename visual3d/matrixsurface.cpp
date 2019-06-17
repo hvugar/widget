@@ -8,8 +8,8 @@ MatrixSurface::MatrixSurface()
     maxX = +100.0f;
     minZ = +0.0f;
     maxZ = +100.0f;
-    minY = -5.0f;
-    maxY = +5.0;
+    minY = -0.30f;
+    maxY = +0.30f;
 
     rotationX = 30.0f;
     rotationY = 90.0f;
@@ -98,7 +98,7 @@ MatrixSurface::MatrixSurface()
 
     QString filename = "d:/data.txt";
     //fillMatrix(filename);
-    timer.setInterval( 10 );
+    timer.setInterval( 40 );
     timer.start();
 }
 
