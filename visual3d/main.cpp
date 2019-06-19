@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
     }
 
     QWidget *w = QWidget::createWindowContainer(surface);
+    w->setWindowState(Qt::WindowMaximized);
     w->show();
 
 
