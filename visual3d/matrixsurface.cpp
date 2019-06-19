@@ -8,8 +8,8 @@ MatrixSurface::MatrixSurface()
     maxX = +100.0f;
     minZ = +0.0f;
     maxZ = +100.0f;
-    minY = -0.30f;
-    maxY = +0.30f;
+    minY = -0.15f;
+    maxY = +0.15f;
 
     rotationX = 30.0f;
     rotationY = 90.0f;
@@ -158,7 +158,7 @@ void MatrixSurface::fillMatrix(const QString filename)
 void MatrixSurface::timeout()
 {
     QString filename = QString("E:/project/hvugar/num_methods/trunk/"
-                               "optimal/bin/data/problem0H/f/txt/f_%1.txt").arg(counter, 4, 10, QChar('0'));
+                               "optimal/bin/data/problem2H/f/txt/f_%1.txt").arg(counter, 4, 10, QChar('0'));
     fillMatrix(filename);
     counter++;
 }
